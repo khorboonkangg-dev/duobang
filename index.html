@@ -5,26 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>多帮 DuoBang | 发现，寻找，解决问题</title>
   <style>
-      /* 问诊功能样式 */
-    .question-step { margin-bottom: 20px; }
-    .step-label { font-weight: bold; color: #333; margin-bottom: 10px; font-size: 15px; display: block; }
-    .options-group { display: flex; flex-wrap: wrap; gap: 8px; }
-    .option-btn {
-      background: #f0f0f0;
-      border: 2px solid transparent;
-      border-radius: 20px;
-      padding: 8px 14px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .option-btn:hover { background: #e0e0e0; }
-    .option-btn.selected {
-      background: #ffe3e3;
-      border-color: #e63946;
-      color: #e63946;
-      font-weight: bold;
-    }
     * { box-sizing: border-box; }
     body {
       font-family: system-ui, -apple-system, sans-serif;
@@ -86,34 +66,40 @@
       font-size: 14px;
       cursor: pointer;
     }
-    .result {
-      margin-top: 16px;
-      padding: 14px;
-      background: #e8f5e9;
-      border-radius: 10px;
-      display: none;
-    }
-    .post {
-      margin-bottom: 14px;
-    }
-    .post-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 8px;
-    }
+    .post { margin-bottom: 14px; }
+    .post-header { display: flex; justify-content: space-between; font-size: 14px; color: #666; margin-bottom: 8px; }
     .post p { margin: 0 0 10px; line-height: 1.5; }
     .feed-empty { color: #999; text-align: center; padding: 20px; }
     .auth-msg { color: #e63946; font-size: 14px; min-height: 20px; }
     .footer { text-align: center; font-size: 13px; color: #999; margin: 24px 0; }
+    
+    /* 问诊功能样式 */
+    .question-step { margin-bottom: 20px; }
+    .step-label { font-weight: bold; color: #333; margin-bottom: 10px; font-size: 15px; display: block; }
+    .options-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .option-btn {
+      background: #f0f0f0;
+      border: 2px solid transparent;
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option-btn:hover { background: #e0e0e0; }
+    .option-btn.selected {
+      background: #ffe3e3;
+      border-color: #e63946;
+      color: #e63946;
+      font-weight: bold;
+    }
   </style>
-    <link rel="icon" type="image/png" href="logo.png">
+  <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
 
   <div class="card">
-       <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
       <img src="logo.png" alt="多帮 Logo" style="width: 50px; height: 50px; border-radius: 12px;">
       <h1 style="margin: 0;">多帮 DuoBang</h1>
     </div>
@@ -125,93 +111,84 @@
     <button id="tabCommunity" onclick="showTab('community')">社区</button>
   </div>
 
-           <!-- 预约服务（问诊模式） -->
-        <div id="bookingTab" class="tab active">
-          <div class="card">
-            <h2 style="color: #e63946; margin-top: 0;">🔍 您的车遇到了什么情况？</h2>
-            <p style="color: #666; margin-bottom: 20px;">简单点选，帮您生成专业的问诊单，让师傅对症下药。</p>
-            
-            <!-- 这里是一个 Netlify 表单 -->
-            <form name="duobang-booking" method="POST" data-netlify="true">
-              <!-- 隐藏的输入框，用来装最后生成的问诊描述 -->
-              <input type="hidden" name="problem" id="finalProblemDesc">
+  <!-- 预约服务（问诊模式） -->
+  <div id="bookingTab" class="tab active">
+    <div class="card">
+      <h2 style="color: #e63946; margin-top: 0;">🔍 您的车遇到了什么情况？</h2>
+      <p style="color: #666; margin-bottom: 20px;">简单点选，帮您生成专业的问诊单，让师傅对症下药。</p>
+      
+      <form name="duobang-booking" method="POST" data-netlify="true">
+        <input type="hidden" name="problem" id="finalProblemDesc">
 
-              <!-- 第1步 -->
-              <div class="question-step">
-                <label class="step-label">1. 什么时候出现？</label>
-                <div class="options-group" data-question="time">
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'time', '行驶中')">🛣️ 行驶中</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'time', '转弯时')">🔄 转弯时</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'time', '过减速带/坑洞')">🚧 过减速带</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'time', '刹车时')">🛑 刹车时</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'time', '启动/怠速时')">🔑 启动/怠速</button>
-                </div>
-              </div>
-
-              <!-- 第2步 -->
-              <div class="question-step">
-                <label class="step-label">2. 哪里感觉不对劲？</label>
-                <div class="options-group" data-question="feeling">
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有异响')">🔊 有异响</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有震动')">📳 有震动</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '没力/加速慢')">🐢 加速慢</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有异味')">👃 有异味</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '漏水/漏油')">💧 漏油水</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '仪表盘亮灯')">💡 亮故障灯</button>
-                </div>
-              </div>
-
-              <!-- 第3步 -->
-              <div class="question-step">
-                <label class="step-label">3. 声音或感觉像什么？</label>
-                <div class="options-group" data-question="sound">
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '金属摩擦声')">🔩 金属摩擦声</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '敲击声')">🔨 敲击声</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '吱吱声')">🐦 吱吱声</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '嗡嗡声')">🕳️ 嗡嗡声</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '咯噔声')">🎯 咯噔声</button>
-                </div>
-              </div>
-
-              <!-- 第4步 -->
-              <div class="question-step">
-                <label class="step-label">4. 严重程度？</label>
-                <div class="options-group" data-question="severity">
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '偶尔出现，不影响开')">🟢 偶尔出现</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '经常出现，有点担心')">🟡 经常出现</button>
-                  <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '一直出现，不敢开')">🔴 一直出现</button>
-                </div>
-              </div>
-
-              <!-- 联系方式 -->
-              <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
-                             <!-- 联系方式 -->
-              <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
-                <h3 style="margin-bottom: 12px; color: #333;">留下您的信息，师傅马上联系您</h3>
-
-                <label for="car_plate">车牌号码</label>
-                <input type="text" id="car_plate" name="car_plate" placeholder="例如：W 1234 A" required>
-
-                <label for="phone">电话号码</label>
-                <input type="tel" id="phone" name="phone" placeholder="例如：0123456789" required>
-
-                <label for="mode">服务方式</label>
-                <select id="mode" name="mode">
-                  <option value="到店维修">到店维修（堂食）</option>
-                  <option value="上门维修">上门维修（外卖）</option>
-                </select>
-                
-                <label for="extra">补充说明（选填）</label>
-                <textarea id="extra" name="extra" rows="2" placeholder="还有其他想告诉师傅的吗？"></textarea>
-              </div>
-
-              <button type="submit" class="primary" style="margin-top: 16px;">生成问诊单并提交</button>
-            </form>
+        <div class="question-step">
+          <label class="step-label">1. 什么时候出现？</label>
+          <div class="options-group" data-question="time">
+            <button type="button" class="option-btn" onclick="selectOption(this, 'time', '行驶中')">🛣️ 行驶中</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'time', '转弯时')">🔄 转弯时</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'time', '过减速带/坑洞')">🚧 过减速带</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'time', '刹车时')">🛑 刹车时</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'time', '启动/怠速时')">🔑 启动/怠速</button>
           </div>
         </div>
+
+        <div class="question-step">
+          <label class="step-label">2. 哪里感觉不对劲？</label>
+          <div class="options-group" data-question="feeling">
+            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有异响')">🔊 有异响</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有震动')">📳 有震动</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '没力/加速慢')">🐢 加速慢</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有异味')">👃 有异味</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '漏水/漏油')">💧 漏油水</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '仪表盘亮灯')">💡 亮故障灯</button>
+          </div>
+        </div>
+
+        <div class="question-step">
+          <label class="step-label">3. 声音或感觉像什么？</label>
+          <div class="options-group" data-question="sound">
+            <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '金属摩擦声')">🔩 金属摩擦声</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '敲击声')">🔨 敲击声</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '吱吱声')">🐦 吱吱声</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '嗡嗡声')">🕳️ 嗡嗡声</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '咯噔声')">🎯 咯噔声</button>
+          </div>
+        </div>
+
+        <div class="question-step">
+          <label class="step-label">4. 严重程度？</label>
+          <div class="options-group" data-question="severity">
+            <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '偶尔出现，不影响开')">🟢 偶尔出现</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '经常出现，有点担心')">🟡 经常出现</button>
+            <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '一直出现，不敢开')">🔴 一直出现</button>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
+          <h3 style="margin-bottom: 12px; color: #333;">留下您的信息，师傅马上联系您</h3>
+
+          <label for="car_plate">车牌号码</label>
+          <input type="text" id="car_plate" name="car_plate" placeholder="例如：W 1234 A" required>
+
+          <label for="phone">电话号码</label>
+          <input type="tel" id="phone" name="phone" placeholder="例如：0123456789" required>
+
+          <label for="mode">服务方式</label>
+          <select id="mode" name="mode">
+            <option value="到店维修">到店维修（堂食）</option>
+            <option value="上门维修">上门维修（外卖）</option>
+          </select>
+          
+          <label for="extra">补充说明（选填）</label>
+          <textarea id="extra" name="extra" rows="2" placeholder="还有其他想告诉师傅的吗？"></textarea>
+        </div>
+
+        <button type="submit" class="primary" style="margin-top: 16px;">生成问诊单并提交</button>
+      </form>
+    </div>
+  </div>
+
   <!-- 社区 -->
   <div id="communityTab" class="tab">
-    <!-- 登录/注册 -->
     <div id="authBox" class="card">
       <h2 style="margin-top:0;">登录 / 注册</h2>
       <input type="text" id="username" placeholder="用户名">
@@ -221,7 +198,6 @@
       <p id="authMsg" class="auth-msg"></p>
     </div>
 
-    <!-- 已登录 -->
     <div id="communityBox" style="display:none;">
       <div class="card">
         <p>你好，<strong id="currentUser"></strong>
@@ -237,23 +213,6 @@
   <div class="footer">多帮 DuoBang · 发现，寻找，解决问题</div>
 
   <script>
-    // ===== 预约 =====
-    function submitBooking() {
-      const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const mode = document.getElementById('mode').value;
-      const problem = document.getElementById('problem').value.trim();
-
-      if (!name || !phone) {
-        alert('请至少填写姓名和电话');
-        return;
-      }
-
-      document.getElementById('resultText').innerHTML =
-        `姓名：${name}<br>电话：${phone}<br>方式：${mode}<br>问题：${problem || '未填写'}`;
-      document.getElementById('result').style.display = 'block';
-    }
-
     // ===== 切换标签 =====
     function showTab(tab) {
       document.getElementById('bookingTab').classList.remove('active');
@@ -270,58 +229,33 @@
       }
     }
 
-    // ===== 本地数据 =====
+    // ===== 本地数据（社区） =====
     let currentUser = localStorage.getItem('duobang_currentUser') || null;
 
-    function getUsers() {
-      return JSON.parse(localStorage.getItem('duobang_users') || '[]');
-    }
-    function saveUsers(users) {
-      localStorage.setItem('duobang_users', JSON.stringify(users));
-    }
-    function getPosts() {
-      return JSON.parse(localStorage.getItem('duobang_posts') || '[]');
-    }
-    function savePosts(posts) {
-      localStorage.setItem('duobang_posts', JSON.stringify(posts));
-    }
+    function getUsers() { return JSON.parse(localStorage.getItem('duobang_users') || '[]'); }
+    function saveUsers(users) { localStorage.setItem('duobang_users', JSON.stringify(users)); }
+    function getPosts() { return JSON.parse(localStorage.getItem('duobang_posts') || '[]'); }
+    function savePosts(posts) { localStorage.setItem('duobang_posts', JSON.stringify(posts)); }
 
-    // ===== 注册 =====
     function register() {
       const u = document.getElementById('username').value.trim();
       const p = document.getElementById('password').value.trim();
       const msg = document.getElementById('authMsg');
-
-      if (!u || !p) {
-        msg.textContent = '请填写用户名和密码';
-        return;
-      }
-
+      if (!u || !p) { msg.textContent = '请填写用户名和密码'; return; }
       const users = getUsers();
-      if (users.find(x => x.username === u)) {
-        msg.textContent = '用户名已存在';
-        return;
-      }
-
+      if (users.find(x => x.username === u)) { msg.textContent = '用户名已存在'; return; }
       users.push({ username: u, password: p });
       saveUsers(users);
       msg.textContent = '注册成功，请点登录';
     }
 
-    // ===== 登录 =====
     function login() {
       const u = document.getElementById('username').value.trim();
       const p = document.getElementById('password').value.trim();
       const msg = document.getElementById('authMsg');
-
       const users = getUsers();
       const user = users.find(x => x.username === u && x.password === p);
-
-      if (!user) {
-        msg.textContent = '用户名或密码错误';
-        return;
-      }
-
+      if (!user) { msg.textContent = '用户名或密码错误'; return; }
       currentUser = u;
       localStorage.setItem('duobang_currentUser', u);
       msg.textContent = '';
@@ -329,7 +263,6 @@
       renderFeed();
     }
 
-    // ===== 退出 =====
     function logout() {
       currentUser = null;
       localStorage.removeItem('duobang_currentUser');
@@ -337,11 +270,9 @@
       renderFeed();
     }
 
-    // ===== 界面状态 =====
     function updateAuthUI() {
       const authBox = document.getElementById('authBox');
       const communityBox = document.getElementById('communityBox');
-
       if (currentUser) {
         authBox.style.display = 'none';
         communityBox.style.display = 'block';
@@ -352,48 +283,24 @@
       }
     }
 
-    // ===== 发帖 =====
     function createPost() {
-      if (!currentUser) {
-        alert('请先登录');
-        return;
-      }
-
+      if (!currentUser) { alert('请先登录'); return; }
       const content = document.getElementById('postContent').value.trim();
-      if (!content) {
-        alert('请输入内容');
-        return;
-      }
-
+      if (!content) { alert('请输入内容'); return; }
       const posts = getPosts();
-      posts.unshift({
-        id: Date.now(),
-        user: currentUser,
-        content: content,
-        time: new Date().toLocaleString(),
-        likes: 0,
-        likedBy: []
-      });
+      posts.unshift({ id: Date.now(), user: currentUser, content: content, time: new Date().toLocaleString(), likes: 0, likedBy: [] });
       savePosts(posts);
-
       document.getElementById('postContent').value = '';
       renderFeed();
     }
 
-    // ===== 点赞 =====
     function toggleLike(postId) {
-      if (!currentUser) {
-        alert('请先登录');
-        return;
-      }
-
+      if (!currentUser) { alert('请先登录'); return; }
       const posts = getPosts();
       const post = posts.find(p => p.id === postId);
       if (!post) return;
-
       post.likedBy = post.likedBy || [];
       const idx = post.likedBy.indexOf(currentUser);
-
       if (idx >= 0) {
         post.likedBy.splice(idx, 1);
         post.likes = Math.max(0, (post.likes || 0) - 1);
@@ -401,21 +308,17 @@
         post.likedBy.push(currentUser);
         post.likes = (post.likes || 0) + 1;
       }
-
       savePosts(posts);
       renderFeed();
     }
 
-    // ===== 渲染社区 =====
     function renderFeed() {
       const feed = document.getElementById('feed');
       const posts = getPosts();
-
       if (posts.length === 0) {
         feed.innerHTML = '<div class="card feed-empty">还没有帖子，快来发布第一条吧！</div>';
         return;
       }
-
       feed.innerHTML = posts.map(p => {
         const liked = currentUser && p.likedBy && p.likedBy.includes(currentUser);
         return `
@@ -439,38 +342,29 @@
       return div.innerHTML;
     }
 
-    // ===== 初始化 =====
-    document.addEventListener('DOMContentLoaded', function() {
-      updateAuthUI();
-      renderFeed();
-    });
-        // 问诊功能逻辑
+    // ===== 问诊功能逻辑 =====
     let formAnswers = { time: '', feeling: '', sound: '', severity: '' };
 
     function selectOption(btn, question, value) {
-      // 1. 清除同一组其他按钮的高亮状态
       const parent = btn.parentElement;
       parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-      
-      // 2. 高亮当前按钮
       btn.classList.add('selected');
-      
-      // 3. 记录选择
       formAnswers[question] = value;
-      
-      // 4. 自动拼接成给师傅看的话
       updateProblemDescription();
     }
 
     function updateProblemDescription() {
       const { time, feeling, sound, severity } = formAnswers;
-      
-      // 如果4步都选了，才生成完整的描述
       if (time && feeling && sound && severity) {
         const desc = `【车主报告】在${time}时，车辆出现${feeling}，感觉像是${sound}。严重程度：${severity}。`;
         document.getElementById('finalProblemDesc').value = desc;
       }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      updateAuthUI();
+      renderFeed();
+    });
   </script>
 </body>
 </html>
