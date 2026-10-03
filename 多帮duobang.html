@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多帮 DuoBang | 发现，寻找，解决问题</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 16px;
+      background: #f5f5f5;
+      color: #222;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      margin-bottom: 16px;
+    }
+    h1 { font-size: 26px; margin: 0; color: #e63946; }
+    .slogan { color: #666; margin: 4px 0 16px; font-size: 15px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+    .tabs button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #eee;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .tabs button.active { background: #e63946; color: #fff; }
+    .tab { display: none; }
+    .tab.active { display: block; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; color: #444; }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    button.primary {
+      width: 100%;
+      padding: 12px;
+      background: #e63946;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.primary:hover { background: #c1121f; }
+    button.small {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 8px;
+      background: #eee;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 16px;
+      padding: 14px;
+      background: #e8f5e9;
+      border-radius: 10px;
+      display: none;
+    }
+    .post {
+      margin-bottom: 14px;
+    }
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    .post p { margin: 0 0 10px; line-height: 1.5; }
+    .feed-empty { color: #999; text-align: center; padding: 20px; }
+    .auth-msg { color: #e63946; font-size: 14px; min-height: 20px; }
+    .footer { text-align: center; font-size: 13px; color: #999; margin: 24px 0; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>多帮 DuoBang</h1>
+    <p class="slogan">发现，寻找，解决问题</p>
+  </div>
+
+  <div class="tabs">
+    <button id="tabBooking" class="active" onclick="showTab('booking')">预约服务</button>
+    <button id="tabCommunity" onclick="showTab('community')">社区</button>
+  </div>
+
+  <!-- 预约服务 -->
+  <div id="bookingTab" class="tab active">
+    <div class="card">
+      <label for="name">姓名</label>
+      <input type="text" id="name" placeholder="请输入您的姓名">
+
+      <label for="phone">联系电话</label>
+      <input type="tel" id="phone" placeholder="例如：0123456789">
+
+      <label for="mode">服务方式</label>
+      <select id="mode">
+        <option value="到店维修">到店维修</option>
+        <option value="上门维修">上门维修</option>
+      </select>
+
+      <label for="problem">车辆问题</label>
+      <textarea id="problem" rows="3" placeholder="例如：刹车异响、换机油、变速箱顿挫"></textarea>
+
+      <button class="primary" onclick="submitBooking()">提交预约</button>
+
+      <div id="result" class="result">
+        <strong>✅ 多帮已收到您的预约！</strong>
+        <p id="resultText"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 社区 -->
+  <div id="communityTab" class="tab">
+    <!-- 登录/注册 -->
+    <div id="authBox" class="card">
+      <h2 style="margin-top:0;">登录 / 注册</h2>
+      <input type="text" id="username" placeholder="用户名">
+      <input type="password" id="password" placeholder="密码">
+      <button class="primary" onclick="login()">登录</button>
+      <button class="small" style="width:100%; margin-top:8px;" onclick="register()">注册新账号</button>
+      <p id="authMsg" class="auth-msg"></p>
+    </div>
+
+    <!-- 已登录 -->
+    <div id="communityBox" style="display:none;">
+      <div class="card">
+        <p>你好，<strong id="currentUser"></strong>
+          <button class="small" onclick="logout()">退出</button>
+        </p>
+        <textarea id="postContent" rows="3" placeholder="分享你的修车经验、求助或日常..."></textarea>
+        <button class="primary" onclick="createPost()">发布</button>
+      </div>
+      <div id="feed"></div>
+    </div>
+  </div>
+
+  <div class="footer">多帮 DuoBang · 发现，寻找，解决问题</div>
+
+  <script>
+    // ===== 预约 =====
+    function submitBooking() {
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const mode = document.getElementById('mode').value;
+      const problem = document.getElementById('problem').value.trim();
+
+      if (!name || !phone) {
+        alert('请至少填写姓名和电话');
+        return;
+      }
+
+      document.getElementById('resultText').innerHTML =
+        `姓名：${name}<br>电话：${phone}<br>方式：${mode}<br>问题：${problem || '未填写'}`;
+      document.getElementById('result').style.display = 'block';
+    }
+
+    // ===== 切换标签 =====
+    function showTab(tab) {
+      document.getElementById('bookingTab').classList.remove('active');
+      document.getElementById('communityTab').classList.remove('active');
+      document.getElementById('tabBooking').classList.remove('active');
+      document.getElementById('tabCommunity').classList.remove('active');
+
+      if (tab === 'booking') {
+        document.getElementById('bookingTab').classList.add('active');
+        document.getElementById('tabBooking').classList.add('active');
+      } else {
+        document.getElementById('communityTab').classList.add('active');
+        document.getElementById('tabCommunity').classList.add('active');
+      }
+    }
+
+    // ===== 本地数据 =====
+    let currentUser = localStorage.getItem('duobang_currentUser') || null;
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('duobang_users') || '[]');
+    }
+    function saveUsers(users) {
+      localStorage.setItem('duobang_users', JSON.stringify(users));
+    }
+    function getPosts() {
+      return JSON.parse(localStorage.getItem('duobang_posts') || '[]');
+    }
+    function savePosts(posts) {
+      localStorage.setItem('duobang_posts', JSON.stringify(posts));
+    }
+
+    // ===== 注册 =====
+    function register() {
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value.trim();
+      const msg = document.getElementById('authMsg');
+
+      if (!u || !p) {
+        msg.textContent = '请填写用户名和密码';
+        return;
+      }
+
+      const users = getUsers();
+      if (users.find(x => x.username === u)) {
+        msg.textContent = '用户名已存在';
+        return;
+      }
+
+      users.push({ username: u, password: p });
+      saveUsers(users);
+      msg.textContent = '注册成功，请点登录';
+    }
+
+    // ===== 登录 =====
+    function login() {
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value.trim();
+      const msg = document.getElementById('authMsg');
+
+      const users = getUsers();
+      const user = users.find(x => x.username === u && x.password === p);
+
+      if (!user) {
+        msg.textContent = '用户名或密码错误';
+        return;
+      }
+
+      currentUser = u;
+      localStorage.setItem('duobang_currentUser', u);
+      msg.textContent = '';
+      updateAuthUI();
+      renderFeed();
+    }
+
+    // ===== 退出 =====
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('duobang_currentUser');
+      updateAuthUI();
+      renderFeed();
+    }
+
+    // ===== 界面状态 =====
+    function updateAuthUI() {
+      const authBox = document.getElementById('authBox');
+      const communityBox = document.getElementById('communityBox');
+
+      if (currentUser) {
+        authBox.style.display = 'none';
+        communityBox.style.display = 'block';
+        document.getElementById('currentUser').textContent = currentUser;
+      } else {
+        authBox.style.display = 'block';
+        communityBox.style.display = 'none';
+      }
+    }
+
+    // ===== 发帖 =====
+    function createPost() {
+      if (!currentUser) {
+        alert('请先登录');
+        return;
+      }
+
+      const content = document.getElementById('postContent').value.trim();
+      if (!content) {
+        alert('请输入内容');
+        return;
+      }
+
+      const posts = getPosts();
+      posts.unshift({
+        id: Date.now(),
+        user: currentUser,
+        content: content,
+        time: new Date().toLocaleString(),
+        likes: 0,
+        likedBy: []
+      });
+      savePosts(posts);
+
+      document.getElementById('postContent').value = '';
+      renderFeed();
+    }
+
+    // ===== 点赞 =====
+    function toggleLike(postId) {
+      if (!currentUser) {
+        alert('请先登录');
+        return;
+      }
+
+      const posts = getPosts();
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+
+      post.likedBy = post.likedBy || [];
+      const idx = post.likedBy.indexOf(currentUser);
+
+      if (idx >= 0) {
+        post.likedBy.splice(idx, 1);
+        post.likes = Math.max(0, (post.likes || 0) - 1);
+      } else {
+        post.likedBy.push(currentUser);
+        post.likes = (post.likes || 0) + 1;
+      }
+
+      savePosts(posts);
+      renderFeed();
+    }
+
+    // ===== 渲染社区 =====
+    function renderFeed() {
+      const feed = document.getElementById('feed');
+      const posts = getPosts();
+
+      if (posts.length === 0) {
+        feed.innerHTML = '<div class="card feed-empty">还没有帖子，快来发布第一条吧！</div>';
+        return;
+      }
+
+      feed.innerHTML = posts.map(p => {
+        const liked = currentUser && p.likedBy && p.likedBy.includes(currentUser);
+        return `
+          <div class="card post">
+            <div class="post-header">
+              <strong>${escapeHtml(p.user)}</strong>
+              <span>${p.time}</span>
+            </div>
+            <p>${escapeHtml(p.content).replace(/\n/g, '<br>')}</p>
+            <button class="small" onclick="toggleLike(${p.id})">
+              ${liked ? '❤️' : '🤍'} ${p.likes || 0}
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ===== 初始化 =====
+    document.addEventListener('DOMContentLoaded', function() {
+      updateAuthUI();
+      renderFeed();
+    });
+  </script>
+</body>
+</html>
