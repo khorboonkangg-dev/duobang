@@ -105,33 +105,37 @@
     <button id="tabCommunity" onclick="showTab('community')">社区</button>
   </div>
 
-  <!-- 预约服务 -->
-  <div id="bookingTab" class="tab active">
-    <div class="card">
-      <label for="name">姓名</label>
-      <input type="text" id="name" placeholder="请输入您的姓名">
+          <!-- 预约服务 -->
+        <div id="bookingTab" class="tab active">
+          <div class="card">
+            <!-- 加入 Netlify 表单功能 -->
+            <form name="duobang-booking" method="POST" data-netlify="true">
+              
+              <!-- 核心：发现问题 -->
+              <h2 style="color: #e63946; margin-top: 0;">🔍 您遇到了什么汽车故障？</h2>
+              <p style="color: #666; margin-bottom: 16px;">描述您的问题，我们将为您寻找最合适的解决方案。</p>
+              
+              <textarea name="problem" rows="4" placeholder="例如：刹车异响、发动机抖动、冷气不冷、变速箱顿挫..." style="font-size: 16px; border: 2px solid #e63946; width: 100%; padding: 12px; border-radius: 10px; box-sizing: border-box; margin-bottom: 20px;"></textarea>
 
-      <label for="phone">联系电话</label>
-      <input type="tel" id="phone" placeholder="例如：0123456789">
+              <!-- 下一步：寻找解决者 -->
+              <h3 style="margin-top: 24px; margin-bottom: 16px; color: #333;">寻找解决者</h3>
 
-      <label for="mode">服务方式</label>
-      <select id="mode">
-        <option value="到店维修">到店维修</option>
-        <option value="上门维修">上门维修</option>
-      </select>
+              <label for="name">您的称呼</label>
+              <input type="text" id="name" name="name" placeholder="请输入您的姓名">
 
-      <label for="problem">车辆问题</label>
-      <textarea id="problem" rows="3" placeholder="例如：刹车异响、换机油、变速箱顿挫"></textarea>
+              <label for="phone">联系电话</label>
+              <input type="tel" id="phone" name="phone" placeholder="例如：0123456789">
 
-      <button class="primary" onclick="submitBooking()">提交预约</button>
+              <label for="mode">服务方式</label>
+              <select id="mode" name="mode">
+                <option value="到店维修">到店维修（堂食）</option>
+                <option value="上门维修">上门维修（外卖）</option>
+              </select>
 
-      <div id="result" class="result">
-        <strong>✅ 多帮已收到您的预约！</strong>
-        <p id="resultText"></p>
-      </div>
-    </div>
-  </div>
-
+              <button type="submit" class="primary" style="margin-top: 10px;">提交问题，寻找帮助</button>
+            </form>
+          </div>
+        </div>
   <!-- 社区 -->
   <div id="communityTab" class="tab">
     <!-- 登录/注册 -->
