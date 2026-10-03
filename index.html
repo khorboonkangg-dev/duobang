@@ -4,6 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>多帮 DuoBang | 发现，寻找，解决问题</title>
+    /* 问诊功能样式 */
+    .question-step { margin-bottom: 20px; }
+    .step-label { font-weight: bold; color: #333; margin-bottom: 10px; font-size: 15px; display: block; }
+    .options-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .option-btn {
+      background: #f0f0f0;
+      border: 2px solid transparent;
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option-btn:hover { background: #e0e0e0; }
+    .option-btn.selected {
+      background: #ffe3e3;
+      border-color: #e63946;
+      color: #e63946;
+      font-weight: bold;
+    }
   <style>
     * { box-sizing: border-box; }
     body {
@@ -105,34 +125,84 @@
     <button id="tabCommunity" onclick="showTab('community')">社区</button>
   </div>
 
-          <!-- 预约服务 -->
+           <!-- 预约服务（问诊模式） -->
         <div id="bookingTab" class="tab active">
           <div class="card">
-            <!-- 加入 Netlify 表单功能 -->
+            <h2 style="color: #e63946; margin-top: 0;">🔍 您的车遇到了什么情况？</h2>
+            <p style="color: #666; margin-bottom: 20px;">简单点选，帮您生成专业的问诊单，让师傅对症下药。</p>
+            
+            <!-- 这里是一个 Netlify 表单 -->
             <form name="duobang-booking" method="POST" data-netlify="true">
-              
-              <!-- 核心：发现问题 -->
-              <h2 style="color: #e63946; margin-top: 0;">🔍 您遇到了什么汽车故障？</h2>
-              <p style="color: #666; margin-bottom: 16px;">描述您的问题，我们将为您寻找最合适的解决方案。</p>
-              
-              <textarea name="problem" rows="4" placeholder="例如：刹车异响、发动机抖动、冷气不冷、变速箱顿挫..." style="font-size: 16px; border: 2px solid #e63946; width: 100%; padding: 12px; border-radius: 10px; box-sizing: border-box; margin-bottom: 20px;"></textarea>
+              <!-- 隐藏的输入框，用来装最后生成的问诊描述 -->
+              <input type="hidden" name="problem" id="finalProblemDesc">
 
-              <!-- 下一步：寻找解决者 -->
-              <h3 style="margin-top: 24px; margin-bottom: 16px; color: #333;">寻找解决者</h3>
+              <!-- 第1步 -->
+              <div class="question-step">
+                <label class="step-label">1. 什么时候出现？</label>
+                <div class="options-group" data-question="time">
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'time', '行驶中')">🛣️ 行驶中</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'time', '转弯时')">🔄 转弯时</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'time', '过减速带/坑洞')">🚧 过减速带</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'time', '刹车时')">🛑 刹车时</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'time', '启动/怠速时')">🔑 启动/怠速</button>
+                </div>
+              </div>
 
-              <label for="name">您的称呼</label>
-              <input type="text" id="name" name="name" placeholder="请输入您的姓名">
+              <!-- 第2步 -->
+              <div class="question-step">
+                <label class="step-label">2. 哪里感觉不对劲？</label>
+                <div class="options-group" data-question="feeling">
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有异响')">🔊 有异响</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有震动')">📳 有震动</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '没力/加速慢')">🐢 加速慢</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有异味')">👃 有异味</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '漏水/漏油')">💧 漏油水</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '仪表盘亮灯')">💡 亮故障灯</button>
+                </div>
+              </div>
 
-              <label for="phone">联系电话</label>
-              <input type="tel" id="phone" name="phone" placeholder="例如：0123456789">
+              <!-- 第3步 -->
+              <div class="question-step">
+                <label class="step-label">3. 声音或感觉像什么？</label>
+                <div class="options-group" data-question="sound">
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '金属摩擦声')">🔩 金属摩擦声</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '敲击声')">🔨 敲击声</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '吱吱声')">🐦 吱吱声</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '嗡嗡声')">🕳️ 嗡嗡声</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '咯噔声')">🎯 咯噔声</button>
+                </div>
+              </div>
 
-              <label for="mode">服务方式</label>
-              <select id="mode" name="mode">
-                <option value="到店维修">到店维修（堂食）</option>
-                <option value="上门维修">上门维修（外卖）</option>
-              </select>
+              <!-- 第4步 -->
+              <div class="question-step">
+                <label class="step-label">4. 严重程度？</label>
+                <div class="options-group" data-question="severity">
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '偶尔出现，不影响开')">🟢 偶尔出现</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '经常出现，有点担心')">🟡 经常出现</button>
+                  <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '一直出现，不敢开')">🔴 一直出现</button>
+                </div>
+              </div>
 
-              <button type="submit" class="primary" style="margin-top: 10px;">提交问题，寻找帮助</button>
+              <!-- 联系方式 -->
+              <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
+                <h3 style="margin-bottom: 12px; color: #333;">寻找解决者</h3>
+                <label for="name">您的称呼</label>
+                <input type="text" id="name" name="name" placeholder="请输入您的姓名" required>
+
+                <label for="phone">联系电话</label>
+                <input type="tel" id="phone" name="phone" placeholder="例如：0123456789" required>
+
+                <label for="mode">服务方式</label>
+                <select id="mode" name="mode">
+                  <option value="到店维修">到店维修（堂食）</option>
+                  <option value="上门维修">上门维修（外卖）</option>
+                </select>
+                
+                <label for="extra">补充说明（选填）</label>
+                <textarea id="extra" name="extra" rows="2" placeholder="还有其他想告诉师傅的吗？"></textarea>
+              </div>
+
+              <button type="submit" class="primary" style="margin-top: 16px;">生成问诊单并提交</button>
             </form>
           </div>
         </div>
@@ -371,6 +441,33 @@
       updateAuthUI();
       renderFeed();
     });
+        // 问诊功能逻辑
+    let formAnswers = { time: '', feeling: '', sound: '', severity: '' };
+
+    function selectOption(btn, question, value) {
+      // 1. 清除同一组其他按钮的高亮状态
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      
+      // 2. 高亮当前按钮
+      btn.classList.add('selected');
+      
+      // 3. 记录选择
+      formAnswers[question] = value;
+      
+      // 4. 自动拼接成给师傅看的话
+      updateProblemDescription();
+    }
+
+    function updateProblemDescription() {
+      const { time, feeling, sound, severity } = formAnswers;
+      
+      // 如果4步都选了，才生成完整的描述
+      if (time && feeling && sound && severity) {
+        const desc = `【车主报告】在${time}时，车辆出现${feeling}，感觉像是${sound}。严重程度：${severity}。`;
+        document.getElementById('finalProblemDesc').value = desc;
+      }
+    }
   </script>
 </body>
 </html>
