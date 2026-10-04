@@ -109,6 +109,7 @@
   <div class="tabs">
     <button id="tabBooking" class="active" onclick="showTab('booking')">预约服务</button>
     <button id="tabCommunity" onclick="showTab('community')">社区</button>
+        <button id="tabStudy" onclick="showTab('study')">学习</button>
   </div>
 
   <!-- 预约服务（问诊模式） -->
@@ -208,27 +209,47 @@
       </div>
       <div id="feed"></div>
     </div>
+      <!-- 学习 -->
+  <div id="studyTab" class="tab">
+    <div class="card">
+      <h2>📚 SPM 复习</h2>
+      <p>距离 SPM 还有 <strong id="spmCountdown" style="color:#e63946; font-size:20px;">--</strong> 天</p>
+      
+      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #eee;">
+        <h3>每日一题</h3>
+        <p id="dailyQuestion" style="font-weight: 600; margin-bottom: 14px;">加载中...</p>
+        <div id="dailyOptions" style="display: flex; flex-direction: column; gap: 8px;"></div>
+        <p id="dailyFeedback" style="margin-top: 12px; font-weight: 600;"></p>
+      </div>
+    </div>
+  </div>
   </div>
 
   <div class="footer">多帮 DuoBang · 发现，寻找，解决问题</div>
 
   <script>
-    // ===== 切换标签 =====
+       // ===== 切换标签 =====
     function showTab(tab) {
+      // 移除所有标签的 active 状态
       document.getElementById('bookingTab').classList.remove('active');
       document.getElementById('communityTab').classList.remove('active');
+      document.getElementById('studyTab').classList.remove('active');
       document.getElementById('tabBooking').classList.remove('active');
       document.getElementById('tabCommunity').classList.remove('active');
+      document.getElementById('tabStudy').classList.remove('active');
 
+      // 添加对应标签的 active 状态
       if (tab === 'booking') {
         document.getElementById('bookingTab').classList.add('active');
         document.getElementById('tabBooking').classList.add('active');
-      } else {
+      } else if (tab === 'community') {
         document.getElementById('communityTab').classList.add('active');
         document.getElementById('tabCommunity').classList.add('active');
+      } else if (tab === 'study') {
+        document.getElementById('studyTab').classList.add('active');
+        document.getElementById('tabStudy').classList.add('active');
       }
     }
-
     // ===== 本地数据（社区） =====
     let currentUser = localStorage.getItem('duobang_currentUser') || null;
 
@@ -364,6 +385,78 @@
     document.addEventListener('DOMContentLoaded', function() {
       updateAuthUI();
       renderFeed();
+    });
+        // ===== SPM 学习功能 =====
+    // 修改这里的日期为你的SPM考试日期
+    const spmDate = new Date('2026-11-15'); 
+
+    function updateCountdown() {
+      const today = new Date();
+      const diffTime = spmDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      document.getElementById('spmCountdown').textContent = diffDays > 0 ? diffDays : 0;
+    }
+
+    // 题库（你可以随时加题）
+    const questionBank = [
+      {
+        question: "下列哪个是液压煞车系统所应用的原理？",
+        options: ["牛顿定理", "阿克曼原理", "巴斯噶原理", "阿基米德定理"],
+        answer: 2, // 索引从0开始，2代表第三个选项
+        explanation: "液压煞车是利用巴斯噶原理，在密闭液体中压力会等值传递。"
+      },
+      {
+        question: "当煞车踏板放松后，煞车油能由分泵回流是靠什么？",
+        options: ["分泵内的弹簧", "惯性", "踏片间的回拉弹簧", "踏板的回拉弹簧"],
+        answer: 0,
+        explanation: "分缸内的弹簧负责将煞车油推回总泵。"
+      }
+    ];
+
+    function loadDailyQuestion() {
+      // 每天随机选一题（或者按日期固定选一题）
+      const todayIndex = new Date().getDate() % questionBank.length;
+      const q = questionBank[todayIndex];
+      
+      document.getElementById('dailyQuestion').textContent = q.question;
+      
+      const optionsDiv = document.getElementById('dailyOptions');
+      optionsDiv.innerHTML = '';
+      
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.textContent = opt;
+        btn.style.cssText = "padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff; cursor: pointer; text-align: left;";
+        btn.onclick = () => checkAnswer(index, q.answer, q.explanation);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected, correct, explanation) {
+      const feedback = document.getElementById('dailyFeedback');
+      const buttons = document.getElementById('dailyOptions').querySelectorAll('button');
+      
+      // 禁用所有按钮，防止重复作答
+      buttons.forEach(b => b.disabled = true);
+      
+      if (selected === correct) {
+        feedback.textContent = "✅ 答对了！" + explanation;
+        feedback.style.color = "#2e7d32";
+      } else {
+        feedback.textContent = "❌ 答错了。" + explanation;
+        feedback.style.color = "#e63946";
+      }
+    }
+
+    // 初始化学习标签页
+    function initStudyTab() {
+      updateCountdown();
+      loadDailyQuestion();
+    }
+    
+    // 将 initStudyTab 添加到 DOMContentLoaded 事件中
+    document.addEventListener('DOMContentLoaded', function() {
+      initStudyTab();
     });
   </script>
 </body>
