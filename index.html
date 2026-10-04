@@ -3,50 +3,141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>多帮 DuoBang | 发现，寻找，解决问题</title>
+  <title>多帮 DuoBang｜让车主更容易找到帮助</title>
+  <link rel="icon" type="image/png" href="logo.png">
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       max-width: 640px;
       margin: 0 auto;
       padding: 16px;
       background: #f5f5f5;
       color: #222;
+      line-height: 1.5;
     }
+
+    button,
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
     .card {
       background: #fff;
       padding: 20px;
       border-radius: 14px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
       margin-bottom: 16px;
     }
-    h1 { font-size: 26px; margin: 0; color: #e63946; }
-    .slogan { color: #666; margin: 4px 0 16px; font-size: 15px; }
-    .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .brand img {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin: 0;
+      color: #e63946;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #333;
+    }
+
+    .slogan {
+      color: #666;
+      margin: 0 0 0 62px;
+      font-size: 15px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
     .tabs button {
       flex: 1;
+      min-width: 100px;
       padding: 10px 6px;
       border: none;
       border-radius: 10px;
       background: #eee;
       font-size: 14px;
       font-weight: 600;
-      cursor: pointer;
+      transition: 0.2s;
     }
-    .tabs button.active { background: #e63946; color: #fff; }
-    .tab { display: none; }
-    .tab.active { display: block; }
-    label { display: block; margin-bottom: 6px; font-weight: 600; color: #444; }
-    input, select, textarea {
+
+    .tabs button:hover {
+      background: #ddd;
+    }
+
+    .tabs button.active {
+      background: #e63946;
+      color: #fff;
+    }
+
+    .tab {
+      display: none;
+    }
+
+    .tab.active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input,
+    select,
+    textarea {
       width: 100%;
-      padding: 10px;
+      padding: 11px;
       margin-bottom: 14px;
       border: 1px solid #ccc;
       border-radius: 10px;
       font-size: 16px;
+      background: #fff;
     }
-    button.primary {
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #e63946;
+      box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.08);
+    }
+
+    .primary {
       width: 100%;
       padding: 12px;
       background: #e63946;
@@ -55,779 +146,1768 @@
       border-radius: 10px;
       font-size: 17px;
       font-weight: 700;
-      cursor: pointer;
       margin-top: 8px;
+      transition: 0.2s;
     }
-    button.primary:hover { background: #c1121f; }
-    button.small {
+
+    .primary:hover {
+      background: #c1121f;
+    }
+
+    .small {
       padding: 8px 14px;
       border: none;
       border-radius: 8px;
       background: #eee;
       font-size: 14px;
-      cursor: pointer;
     }
-    .post { margin-bottom: 14px; }
-    .post-header { display: flex; justify-content: space-between; font-size: 14px; color: #666; margin-bottom: 8px; }
-    .post p { margin: 0 0 10px; line-height: 1.5; }
-    .feed-empty { color: #999; text-align: center; padding: 20px; }
-    .auth-msg { color: #e63946; font-size: 14px; min-height: 20px; }
-    .footer { text-align: center; font-size: 13px; color: #999; margin: 24px 0; }
-    
-    /* 问诊功能样式 */
-    .question-step { margin-bottom: 20px; }
-    .step-label { font-weight: bold; color: #333; margin-bottom: 10px; font-size: 15px; display: block; }
-    .options-group { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .small:hover {
+      background: #ddd;
+    }
+
+    .muted {
+      color: #666;
+    }
+
+    .hint {
+      color: #999;
+      font-size: 13px;
+    }
+
+    .divider {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #eee;
+    }
+
+    /* 维修需求 */
+    .question-step {
+      margin-bottom: 22px;
+    }
+
+    .step-label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 700;
+      color: #333;
+      font-size: 15px;
+    }
+
+    .options-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
     .option-btn {
       background: #f0f0f0;
       border: 2px solid transparent;
       border-radius: 20px;
       padding: 8px 14px;
       font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s;
+      transition: 0.2s;
     }
-    .option-btn:hover { background: #e0e0e0; }
+
+    .option-btn:hover {
+      background: #e5e5e5;
+    }
+
     .option-btn.selected {
       background: #ffe3e3;
       border-color: #e63946;
       color: #e63946;
-      font-weight: bold;
+      font-weight: 700;
     }
-        .gear-btn {
+
+    /* 社区 */
+    .post {
+      margin-bottom: 14px;
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .post p {
+      margin: 0 0 10px;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .feed-empty {
+      color: #999;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .auth-msg {
+      color: #e63946;
+      font-size: 14px;
+      min-height: 20px;
+    }
+
+    /* 学习 */
+    .answer-btn {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      text-align: left;
+      transition: 0.2s;
+    }
+
+    .answer-btn:hover {
+      background: #f7f7f7;
+      border-color: #aaa;
+    }
+
+    .answer-btn:disabled {
+      cursor: default;
+      opacity: 0.8;
+    }
+
+    /* 资讯 */
+    .result-box {
+      margin-top: 16px;
+    }
+
+    .result-item {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .success {
+      color: #2e7d32;
+    }
+
+    .error {
+      color: #e63946;
+    }
+
+    /* 游戏 */
+    .gear-btn {
       padding: 8px 14px;
       border: 2px solid #ccc;
       border-radius: 8px;
       background: #fff;
       font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s;
+      font-weight: 700;
+      transition: 0.2s;
     }
+
     .gear-btn.active {
       background: #e63946;
       color: #fff;
       border-color: #e63946;
     }
+
+    .game-container {
+      position: relative;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    #gameCanvas {
+      width: 100%;
+      border-radius: 10px;
+      background: #1a1a2e;
+      display: block;
+      touch-action: none;
+    }
+
+    #miniMap {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #gameSpeedHud {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: #0f0;
+      padding: 6px 16px;
+      border-radius: 10px;
+      font-family: monospace;
+      font-size: 18px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 13px;
+      color: #999;
+      margin: 24px 0;
+    }
   </style>
-  <link rel="icon" type="image/png" href="logo.png">
 </head>
+
 <body>
 
-  <!-- 头部 -->
+  <!-- 品牌头部 -->
   <div class="card">
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
-      <img src="logo.png" alt="多帮 Logo" style="width: 50px; height: 50px; border-radius: 12px;">
-      <h1 style="margin: 0;">多帮 DuoBang</h1>
+    <div class="brand">
+      <img src="logo.png" alt="多帮 DuoBang 标志">
+      <h1>多帮 DuoBang</h1>
     </div>
-    <p class="slogan" style="margin-left: 62px;">发现，寻找，解决问题</p>
+    <p class="slogan">车主服务、经验交流、学习工具，一站解决用车问题</p>
   </div>
 
-  <!-- 标签栏 -->
+  <!-- 主导航 -->
   <div class="tabs">
-    <button id="tabBooking" class="active" onclick="showTab('booking')">预约服务</button>
-    <button id="tabCommunity" onclick="showTab('community')">社区</button>
-    <button id="tabStudy" onclick="showTab('study')">学习</button>
-    <button id="tabNews" onclick="showTab('news')">资讯</button>
-    <button id="tabGame" onclick="showTab('game')">游戏</button>
+    <button id="tabBooking" class="active" onclick="showTab('booking')">维修预约</button>
+    <button id="tabCommunity" onclick="showTab('community')">车主社区</button>
+    <button id="tabStudy" onclick="showTab('study')">学习中心</button>
+    <button id="tabNews" onclick="showTab('news')">车主工具</button>
+    <button id="tabGame" onclick="showTab('game')">轻松一局</button>
   </div>
 
-  <!-- ================= 1. 预约服务（问诊模式） ================= -->
+  <!-- ================= 1. 维修预约 ================= -->
   <div id="bookingTab" class="tab active">
     <div class="card">
-      <h2 style="color: #e63946; margin-top: 0;">🔍 您的车遇到了什么情况？</h2>
-      <p style="color: #666; margin-bottom: 20px;">简单点选，帮您生成专业的问诊单，让师傅对症下药。</p>
-      
+      <h2 style="color:#e63946;">🔍 先描述问题，再安排维修</h2>
+      <p class="muted" style="margin-bottom:20px;">
+        只需回答几个简单问题，我们会整理成维修需求单，方便师傅快速了解车辆情况。
+      </p>
+
       <form name="duobang-booking" method="POST" data-netlify="true">
         <input type="hidden" name="problem" id="finalProblemDesc">
 
         <div class="question-step">
-          <label class="step-label">1. 什么时候出现？</label>
-          <div class="options-group" data-question="time">
-            <button type="button" class="option-btn" onclick="selectOption(this, 'time', '行驶中')">🛣️ 行驶中</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'time', '转弯时')">🔄 转弯时</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'time', '过减速带/坑洞')">🚧 过减速带</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'time', '刹车时')">🛑 刹车时</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'time', '启动/怠速时')">🔑 启动/怠速</button>
+          <label class="step-label">1. 问题通常在什么时候出现？</label>
+          <div class="options-group">
+            <button type="button" class="option-btn" onclick="selectOption(this,'time','行驶中')">🛣️ 行驶中</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'time','转弯时')">🔄 转弯时</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'time','经过减速带 / 坑洞')">🚧 减速带 / 坑洞</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'time','刹车时')">🛑 刹车时</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'time','启动 / 怠速时')">🔑 启动 / 怠速</button>
           </div>
         </div>
 
         <div class="question-step">
-          <label class="step-label">2. 哪里感觉不对劲？</label>
-          <div class="options-group" data-question="feeling">
-            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有异响')">🔊 有异响</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有震动')">📳 有震动</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '没力/加速慢')">🐢 加速慢</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '有异味')">👃 有异味</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '漏水/漏油')">💧 漏油水</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'feeling', '仪表盘亮灯')">💡 亮故障灯</button>
+          <label class="step-label">2. 主要出现什么症状？</label>
+          <div class="options-group">
+            <button type="button" class="option-btn" onclick="selectOption(this,'feeling','有异响')">🔊 有异响</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'feeling','有震动')">📳 有震动</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'feeling','动力不足 / 加速慢')">🐢 动力不足 / 加速慢</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'feeling','有异味')">👃 有异味</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'feeling','漏油 / 漏液')">💧 漏油 / 漏液</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'feeling','仪表故障灯亮起')">💡 故障灯亮起</button>
           </div>
         </div>
 
         <div class="question-step">
-          <label class="step-label">3. 声音或感觉像什么？</label>
-          <div class="options-group" data-question="sound">
-            <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '金属摩擦声')">🔩 金属摩擦声</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '敲击声')">🔨 敲击声</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '吱吱声')">🐦 吱吱声</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '嗡嗡声')">🕳️ 嗡嗡声</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'sound', '咯噔声')">🎯 咯噔声</button>
+          <label class="step-label">3. 有什么声音或明显感觉？</label>
+          <div class="options-group">
+            <button type="button" class="option-btn" onclick="selectOption(this,'sound','金属摩擦声')">🔩 金属摩擦声</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'sound','敲击 / 哒哒声')">🔨 敲击 / 哒哒声</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'sound','吱吱 / 尖叫声')">🐦 吱吱 / 尖叫声</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'sound','嗡嗡 / 共振声')">🕳️ 嗡嗡 / 共振声</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'sound','咯噔 / 松动感')">🎯 咯噔 / 松动感</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'sound','无明显异响 / 说不清')">❓ 说不清</button>
           </div>
         </div>
 
         <div class="question-step">
-          <label class="step-label">4. 严重程度？</label>
-          <div class="options-group" data-question="severity">
-            <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '偶尔出现，不影响开')">🟢 偶尔出现</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '经常出现，有点担心')">🟡 经常出现</button>
-            <button type="button" class="option-btn" onclick="selectOption(this, 'severity', '一直出现，不敢开')">🔴 一直出现</button>
+          <label class="step-label">4. 目前情况严重吗？</label>
+          <div class="options-group">
+            <button type="button" class="option-btn" onclick="selectOption(this,'severity','偶尔出现，目前仍可正常驾驶')">🟢 偶尔出现</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'severity','经常出现，驾驶时会明显感觉到')">🟡 经常出现</button>
+            <button type="button" class="option-btn" onclick="selectOption(this,'severity','持续出现，建议尽快检查')">🔴 持续出现</button>
           </div>
         </div>
 
-        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
-          <h3 style="margin-bottom: 12px; color: #333;">留下您的信息，师傅马上联系您</h3>
+        <div class="divider">
+          <h3 style="margin-bottom:12px;">留下联系方式，方便安排服务</h3>
+
           <label for="car_plate">车牌号码</label>
-          <input type="text" id="car_plate" name="car_plate" placeholder="例如：W 1234 A" required>
-          <label for="phone">电话号码</label>
-          <input type="tel" id="phone" name="phone" placeholder="例如：0123456789" required>
-          <label for="mode">服务方式</label>
+          <input
+            type="text"
+            id="car_plate"
+            name="car_plate"
+            placeholder="例如：W 1234 A"
+            required
+          >
+
+          <label for="phone">联系电话</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="例如：0123456789"
+            required
+          >
+
+          <label for="mode">维修方式</label>
           <select id="mode" name="mode">
-            <option value="到店维修">到店维修（堂食）</option>
-            <option value="上门维修">上门维修（外卖）</option>
+            <option value="到店维修">到店维修</option>
+            <option value="上门维修">上门维修</option>
           </select>
+
+          <p class="hint">
+            提交后，我们会根据你的维修需求安排后续联系。
+          </p>
+
           <label for="extra">补充说明（选填）</label>
-          <textarea id="extra" name="extra" rows="2" placeholder="还有其他想告诉师傅的吗？"></textarea>
+          <textarea
+            id="extra"
+            name="extra"
+            rows="3"
+            placeholder="例如：问题持续多久、最近是否维修过、是否刚换过零件……"
+          ></textarea>
         </div>
 
-        <button type="submit" class="primary" style="margin-top: 16px;">生成问诊单并提交</button>
+        <button type="submit" class="primary">提交维修需求</button>
       </form>
     </div>
   </div>
 
-  <!-- ================= 2. 社区 ================= -->
+  <!-- ================= 2. 车主社区 ================= -->
   <div id="communityTab" class="tab">
+
     <div id="authBox" class="card">
-      <h2 style="margin-top:0;">登录 / 注册</h2>
-      <input type="text" id="username" placeholder="用户名">
-      <input type="password" id="password" placeholder="密码">
+      <h2>👋 加入车主社区</h2>
+      <p class="muted">分享经验、互相帮忙，一起少走维修弯路。</p>
+
+      <input type="text" id="username" placeholder="输入用户名">
+      <input type="password" id="password" placeholder="输入密码">
+
       <button class="primary" onclick="login()">登录</button>
-      <button class="small" style="width:100%; margin-top:8px;" onclick="register()">注册新账号</button>
+
+      <button
+        class="small"
+        style="width:100%; margin-top:8px;"
+        onclick="register()"
+      >
+        注册账号
+      </button>
+
       <p id="authMsg" class="auth-msg"></p>
     </div>
 
     <div id="communityBox" style="display:none;">
       <div class="card">
-        <p>你好，<strong id="currentUser"></strong>
+        <p>
+          欢迎回来，<strong id="currentUser"></strong>
           <button class="small" onclick="logout()">退出</button>
         </p>
-        <textarea id="postContent" rows="3" placeholder="分享你的修车经验、求助或日常..."></textarea>
-        <button class="primary" onclick="createPost()">发布</button>
+
+        <textarea
+          id="postContent"
+          rows="3"
+          placeholder="分享维修经验、用车问题、避坑心得，或向其他车主求助……"
+        ></textarea>
+
+        <button class="primary" onclick="createPost()">发布内容</button>
       </div>
+
       <div id="feed"></div>
     </div>
+
   </div>
 
-  <!-- ================= 3. 学习 ================= -->
+  <!-- ================= 3. 学习中心 ================= -->
   <div id="studyTab" class="tab">
+
     <div class="card">
-      <h2>📚 SPM 复习</h2>
-      <p>距离 SPM 还有 <strong id="spmCountdown" style="color:#e63946; font-size:20px;">--</strong> 天</p>
-      
-      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #eee;">
-        <h3>每日一题</h3>
-        <p id="dailyQuestion" style="font-weight: 600; margin-bottom: 14px;">加载中...</p>
-        <div id="dailyOptions" style="display: flex; flex-direction: column; gap: 8px;"></div>
-               <p id="dailyFeedback" style="margin-top: 12px; font-weight: 600;"></p>    
-        <button class="small" style="margin-top: 12px; width: 100%;" onclick="loadDailyQuestion()">🔄 换一题</button>       </div>
-            <!-- 练习模式 -->
-      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
-        <h3>📝 练习模式</h3>
-        <p style="color:#666; font-size:14px;">随机出题，看看你能答对几题。</p>
-        <button class="primary" onclick="startQuiz()">开始练习</button>
-        <div id="quizArea" style="margin-top: 16px;"></div>
+      <h2>📚 SPM 汽车技术复习</h2>
+
+      <p>
+        距离 SPM 考试还有
+        <strong
+          id="spmCountdown"
+          style="color:#e63946; font-size:20px;"
+        >--</strong>
+        天
+      </p>
+
+      <div class="divider">
+        <h3>🎯 每日一题</h3>
+        <p
+          id="dailyQuestion"
+          style="font-weight:600; margin-bottom:14px;"
+        >
+          加载中……
+        </p>
+
+        <div
+          id="dailyOptions"
+          style="display:flex; flex-direction:column; gap:8px;"
+        ></div>
+
+        <p
+          id="dailyFeedback"
+          style="margin-top:12px; font-weight:600;"
+        ></p>
+
+        <button
+          class="small"
+          style="margin-top:12px; width:100%;"
+          onclick="loadDailyQuestion()"
+        >
+          🔄 换一题
+        </button>
       </div>
+
+      <div class="divider">
+        <h3>📝 专项练习</h3>
+        <p class="muted">
+          随机抽取题目，测试你的汽车技术基础。
+        </p>
+
+        <button class="primary" onclick="startQuiz()">
+          开始练习
+        </button>
+
+        <div id="quizArea" style="margin-top:16px;"></div>
       </div>
     </div>
+
   </div>
 
-  <!-- ================= 4. 资讯（自动更新） ================= -->
-  <!-- ================= 4. 资讯（自动更新） ================= -->
+  <!-- ================= 4. 车主工具 ================= -->
   <div id="newsTab" class="tab">
+
     <div class="card">
-      <h2>📰 汽车资讯</h2>
-      <p>数据来源：NHTSA 美国国家公路交通安全管理局</p>
-      
+      <h2>📰 车辆召回查询</h2>
+      <p class="muted">
+        查询车辆是否存在公开召回记录。
+      </p>
+      <p class="hint">
+        数据来源：NHTSA 美国国家公路交通安全管理局
+      </p>
+
       <label for="newsMake">品牌（英文）</label>
-      <input type="text" id="newsMake" placeholder="例如：toyota" value="toyota">
-      
+      <input
+        type="text"
+        id="newsMake"
+        placeholder="例如：Toyota"
+        value="Toyota"
+      >
+
       <label for="newsModel">车型（英文）</label>
-      <input type="text" id="newsModel" placeholder="例如：camry" value="camry">
-      
+      <input
+        type="text"
+        id="newsModel"
+        placeholder="例如：Camry"
+        value="Camry"
+      >
+
       <label for="newsYear">年份</label>
-      <input type="number" id="newsYear" placeholder="例如：2020" value="2020">
-      
-      <button class="primary" onclick="fetchRecalls()">查询召回信息</button>
-      <div id="recallResult" style="margin-top: 16px;"></div>
+      <input
+        type="number"
+        id="newsYear"
+        placeholder="例如：2020"
+        value="2020"
+      >
+
+      <button class="primary" onclick="fetchRecalls()">
+        查询召回信息
+      </button>
+
+      <div id="recallResult" class="result-box"></div>
     </div>
 
-    <!-- 自动识别位置 -->
     <div class="card">
-      <div style="padding-top: 16px; border-top: 1px solid #eee;">
-        <h3>📍 您的位置</h3>
-        <button class="primary" onclick="detectLocation()">自动识别我的位置</button>
-        <div id="locationResult" style="margin-top: 12px;"></div>
-      </div>
+      <h3>📍 我的网络位置</h3>
+      <p class="muted">
+        根据当前网络 IP 尝试识别国家与城市。
+      </p>
+
+      <button class="primary" onclick="detectLocation()">
+        自动识别位置
+      </button>
+
+      <div id="locationResult" class="result-box"></div>
     </div>
 
-    <!-- 天气提醒 -->
     <div class="card">
-      <div style="padding-top: 16px; border-top: 1px solid #eee;">
-        <h3>🌤️ 今日天气提醒</h3>
-        <button class="primary" onclick="fetchWeather()">查看天气</button>
-        <div id="weatherResult" style="margin-top: 12px;"></div>
-      </div>
+      <h3>🌤️ 今日天气提醒</h3>
+      <p class="muted">
+        查看天气，并获取简单的驾驶提醒。
+      </p>
+
+      <button class="primary" onclick="fetchWeather()">
+        查看天气
+      </button>
+
+      <div id="weatherResult" class="result-box"></div>
     </div>
 
-    <!-- 汇率查询 -->
     <div class="card">
-      <div style="padding-top: 16px; border-top: 1px solid #eee;">
-        <h3>💱 零件进口汇率</h3>
-        <button class="primary" onclick="fetchExchangeRate()">查看今日汇率</button>
-        <div id="rateResult" style="margin-top: 12px;"></div>
-      </div>
+      <h3>💱 零件进口汇率</h3>
+      <p class="muted">
+        查看主要货币与美元之间的最新汇率数据。
+      </p>
+
+      <button class="primary" onclick="fetchExchangeRate()">
+        查看今日汇率
+      </button>
+
+      <div id="rateResult" class="result-box"></div>
     </div>
-  </div> <!-- 资讯标签页正确闭合 -->
+
+  </div>
+
   <!-- ================= 5. 游戏 ================= -->
   <div id="gameTab" class="tab">
-    <div class="card">
-      <h2>🚚 多帮送货任务</h2>
-      <p style="color:#666; font-size:13px;">把货物送到目的地！↑油门　↓刹车　←→转向</p>
 
-      <!-- 进度条 -->
+    <div class="card">
+      <h2>🚚 多帮送货挑战</h2>
+
+      <p class="muted" style="font-size:13px;">
+        把汽车零件安全送到目的地。<br>
+        ↑ 油门　↓ 刹车　← → 转向　A / D / W / S 也可操作
+      </p>
+
       <div style="margin:10px 0;">
-        <div style="display:flex; justify-content:space-between; font-size:12px; color:#666;">
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            font-size:12px;
+            color:#666;
+          "
+        >
           <span>起点</span>
           <span>进度 <strong id="gameProgress">0%</strong></span>
           <span>目的地</span>
         </div>
-        <div style="background:#eee; height:8px; border-radius:4px; overflow:hidden; margin-top:4px;">
-          <div id="gameProgressBar" style="width:0%; height:100%; background:#e63946; transition:width 0.2s;"></div>
+
+        <div
+          style="
+            background:#eee;
+            height:8px;
+            border-radius:4px;
+            overflow:hidden;
+            margin-top:4px;
+          "
+        >
+          <div
+            id="gameProgressBar"
+            style="
+              width:0%;
+              height:100%;
+              background:#e63946;
+              transition:width 0.2s;
+            "
+          ></div>
         </div>
       </div>
 
-      <!-- 状态栏 -->
-      <div style="display:flex; justify-content:space-between; margin:8px 0; font-size:13px;">
+      <div
+        style="
+          display:flex;
+          justify-content:space-between;
+          margin:8px 0;
+          font-size:13px;
+        "
+      >
         <span>📦 <strong id="gameCargo">发动机零件</strong></span>
         <span>💰 <strong id="gameScore" style="color:#e63946;">0</strong></span>
         <span>❤️ <strong id="gameLives">3</strong></span>
       </div>
 
-      <!-- 画布 + 小地图 -->
-      <div style="position:relative; max-width:320px; margin:0 auto;">
-        <canvas id="gameCanvas" width="320" height="480"
-          style="width:100%; border-radius:10px; background:#1a1a2e; display:block; touch-action:none;"></canvas>
-        <canvas id="miniMap" width="80" height="100"
-          style="position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.6); border-radius:6px; border:1px solid rgba(255,255,255,0.2);"></canvas>
-        <div id="gameSpeedHud" style="position:absolute; bottom:8px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.7); color:#0f0; padding:6px 16px; border-radius:10px; font-family:monospace; font-size:18px; font-weight:bold;">
-          <span id="gameSpeed">0</span> <span style="font-size:10px; color:#888;">km/h</span>
+      <div class="game-container">
+        <canvas
+          id="gameCanvas"
+          width="320"
+          height="480"
+        ></canvas>
+
+        <canvas
+          id="miniMap"
+          width="80"
+          height="100"
+        ></canvas>
+
+        <div id="gameSpeedHud">
+          <span id="gameSpeed">0</span>
+          <span style="font-size:10px; color:#888;">km/h</span>
         </div>
       </div>
 
-      <!-- 档位 -->
       <div style="margin-top:12px; text-align:center;">
-        <div id="gearSelector" style="display:flex; justify-content:center; gap:6px;">
+        <div
+          id="gearSelector"
+          style="
+            display:flex;
+            justify-content:center;
+            gap:6px;
+          "
+        >
           <button class="gear-btn" onclick="setGear(1)">1</button>
           <button class="gear-btn" onclick="setGear(2)">2</button>
           <button class="gear-btn active" onclick="setGear(3)">3</button>
           <button class="gear-btn" onclick="setGear(4)">4</button>
         </div>
-        <p style="font-size:12px; color:#999; margin-top:6px;">档位越高，速度越快</p>
+
+        <p class="hint">
+          档位越高，速度上限越高
+        </p>
       </div>
 
-      <!-- 按钮 -->
       <div style="display:flex; gap:8px; margin-top:12px;">
-        <button class="primary" style="flex:1;" onclick="startDelivery()">🚚 开始送货</button>
-        <button class="small" style="flex:1; background:#333; color:#fff; padding:12px;" onclick="stopGame()">⏸ 停止</button>
-      </div>
+        <button
+          class="primary"
+          style="flex:1;"
+          onclick="startDelivery(); this.textContent='🎮 游戏中';"
+        >
+          🚚 开始任务
+        </button>
 
-      <!-- 撞车答题 -->
-      <div id="quizModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.75); z-index:100; align-items:center; justify-content:center; padding:20px;">
-        <div style="background:#fff; border-radius:14px; padding:20px; max-width:400px; width:100%;">
-          <h3 style="margin-top:0; color:#e63946;">⚠️ 撞车了！答对继续</h3>
-          <p id="quizModalQuestion" style="font-weight:600; margin:12px 0;"></p>
-          <div id="quizModalOptions" style="display:flex; flex-direction:column; gap:8px;"></div>
-          <p id="quizModalFeedback" style="margin-top:12px; font-weight:600;"></p>
-        </div>
-      </div>
-
-      <!-- 通关 -->
-      <div id="winModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); z-index:101; align-items:center; justify-content:center; padding:20px;">
-        <div style="background:#fff; border-radius:14px; padding:24px; max-width:400px; width:100%; text-align:center;">
-          <h2 style="color:#2e7d32;">🎉 送货成功！</h2>
-          <p id="winStats"></p>
-          <button class="primary" onclick="startDelivery()">再来一单</button>
-        </div>
+        <button
+          class="small"
+          style="
+            flex:1;
+            background:#333;
+            color:#fff;
+            padding:12px;
+          "
+          onclick="stopGame()"
+        >
+          ⏸ 停止
+        </button>
       </div>
     </div>
   </div>
-  <script>
-    // ===== 切换标签 =====
-    function showTab(tab) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
 
-      document.getElementById(tab + 'Tab').classList.add('active');
-      document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+  <!-- 撞车问答 -->
+  <div id="quizModal" class="modal">
+    <div class="modal-content">
+      <h3 style="margin-top:0; color:#e63946;">
+        ⚠️ 车辆偏离路线
+      </h3>
+
+      <p>
+        回答一道汽车知识题，继续完成送货任务。
+      </p>
+
+      <p
+        id="quizModalQuestion"
+        style="font-weight:600; margin:12px 0;"
+      ></p>
+
+      <div
+        id="quizModalOptions"
+        style="
+          display:flex;
+          flex-direction:column;
+          gap:8px;
+        "
+      ></div>
+
+      <p
+        id="quizModalFeedback"
+        style="margin-top:12px; font-weight:600;"
+      ></p>
+    </div>
+  </div>
+
+  <!-- 通关 -->
+  <div id="winModal" class="modal" style="background:rgba(0,0,0,0.8);">
+    <div
+      class="modal-content"
+      style="text-align:center;"
+    >
+      <h2 style="color:#2e7d32;">
+        🎉 任务完成
+      </h2>
+
+      <p id="winStats"></p>
+
+      <button
+        class="primary"
+        onclick="startDelivery()"
+      >
+        再来一单
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">
+    多帮 DuoBang · 让车主更容易找到帮助
+  </div>
+
+  <script>
+    /* ================= 标签切换 ================= */
+
+    function showTab(tab) {
+      document.querySelectorAll(".tab").forEach(element => {
+        element.classList.remove("active");
+      });
+
+      document.querySelectorAll(".tabs button").forEach(button => {
+        button.classList.remove("active");
+      });
+
+      document.getElementById(tab + "Tab").classList.add("active");
+
+      const buttonId =
+        "tab" +
+        tab.charAt(0).toUpperCase() +
+        tab.slice(1);
+
+      document.getElementById(buttonId).classList.add("active");
     }
 
-    // ===== 本地数据（社区） =====
-    let currentUser = localStorage.getItem('duobang_currentUser') || null;
+    /* ================= 社区功能 ================= */
 
-    function getUsers() { return JSON.parse(localStorage.getItem('duobang_users') || '[]'); }
-    function saveUsers(users) { localStorage.setItem('duobang_users', JSON.stringify(users)); }
-    function getPosts() { return JSON.parse(localStorage.getItem('duobang_posts') || '[]'); }
-    function savePosts(posts) { localStorage.setItem('duobang_posts', JSON.stringify(posts)); }
+    let currentUser =
+      localStorage.getItem("duobang_currentUser") || null;
+
+    function getUsers() {
+      return JSON.parse(
+        localStorage.getItem("duobang_users") || "[]"
+      );
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem(
+        "duobang_users",
+        JSON.stringify(users)
+      );
+    }
+
+    function getPosts() {
+      return JSON.parse(
+        localStorage.getItem("duobang_posts") || "[]"
+      );
+    }
+
+    function savePosts(posts) {
+      localStorage.setItem(
+        "duobang_posts",
+        JSON.stringify(posts)
+      );
+    }
 
     function register() {
-      const u = document.getElementById('username').value.trim();
-      const p = document.getElementById('password').value.trim();
-      const msg = document.getElementById('authMsg');
-      if (!u || !p) { msg.textContent = '请填写用户名和密码'; return; }
+      const username =
+        document.getElementById("username").value.trim();
+
+      const password =
+        document.getElementById("password").value.trim();
+
+      const message =
+        document.getElementById("authMsg");
+
+      if (!username || !password) {
+        message.textContent =
+          "请填写用户名和密码。";
+        return;
+      }
+
       const users = getUsers();
-      if (users.find(x => x.username === u)) { msg.textContent = '用户名已存在'; return; }
-      users.push({ username: u, password: p });
+
+      if (
+        users.some(user => user.username === username)
+      ) {
+        message.textContent =
+          "这个用户名已经被注册。";
+        return;
+      }
+
+      users.push({
+        username,
+        password
+      });
+
       saveUsers(users);
-      msg.textContent = '注册成功，请点登录';
+
+      message.style.color = "#2e7d32";
+      message.textContent =
+        "注册成功，请使用新账号登录。";
     }
 
     function login() {
-      const u = document.getElementById('username').value.trim();
-      const p = document.getElementById('password').value.trim();
-      const msg = document.getElementById('authMsg');
+      const username =
+        document.getElementById("username").value.trim();
+
+      const password =
+        document.getElementById("password").value.trim();
+
+      const message =
+        document.getElementById("authMsg");
+
       const users = getUsers();
-      const user = users.find(x => x.username === u && x.password === p);
-      if (!user) { msg.textContent = '用户名或密码错误'; return; }
-      currentUser = u;
-      localStorage.setItem('duobang_currentUser', u);
-      msg.textContent = '';
+
+      const user = users.find(
+        item =>
+          item.username === username &&
+          item.password === password
+      );
+
+      if (!user) {
+        message.style.color = "#e63946";
+        message.textContent =
+          "用户名或密码错误，请重新输入。";
+        return;
+      }
+
+      currentUser = username;
+
+      localStorage.setItem(
+        "duobang_currentUser",
+        username
+      );
+
+      message.textContent = "";
+
       updateAuthUI();
       renderFeed();
     }
 
     function logout() {
       currentUser = null;
-      localStorage.removeItem('duobang_currentUser');
+
+      localStorage.removeItem(
+        "duobang_currentUser"
+      );
+
       updateAuthUI();
       renderFeed();
     }
 
     function updateAuthUI() {
-      const authBox = document.getElementById('authBox');
-      const communityBox = document.getElementById('communityBox');
+      const authBox =
+        document.getElementById("authBox");
+
+      const communityBox =
+        document.getElementById("communityBox");
+
       if (currentUser) {
-        authBox.style.display = 'none';
-        communityBox.style.display = 'block';
-        document.getElementById('currentUser').textContent = currentUser;
+        authBox.style.display = "none";
+        communityBox.style.display = "block";
+
+        document.getElementById(
+          "currentUser"
+        ).textContent = currentUser;
       } else {
-        authBox.style.display = 'block';
-        communityBox.style.display = 'none';
+        authBox.style.display = "block";
+        communityBox.style.display = "none";
       }
     }
 
     function createPost() {
-      if (!currentUser) { alert('请先登录'); return; }
-      const content = document.getElementById('postContent').value.trim();
-      if (!content) { alert('请输入内容'); return; }
+      if (!currentUser) {
+        alert("请先登录。");
+        return;
+      }
+
+      const content =
+        document.getElementById("postContent")
+          .value
+          .trim();
+
+      if (!content) {
+        alert("请输入要发布的内容。");
+        return;
+      }
+
       const posts = getPosts();
-      posts.unshift({ id: Date.now(), user: currentUser, content: content, time: new Date().toLocaleString(), likes: 0, likedBy: [] });
+
+      posts.unshift({
+        id: Date.now(),
+        user: currentUser,
+        content,
+        time: new Date().toLocaleString(),
+        likes: 0,
+        likedBy: []
+      });
+
       savePosts(posts);
-      document.getElementById('postContent').value = '';
+
+      document.getElementById(
+        "postContent"
+      ).value = "";
+
       renderFeed();
     }
 
     function toggleLike(postId) {
-      if (!currentUser) { alert('请先登录'); return; }
+      if (!currentUser) {
+        alert("请先登录。");
+        return;
+      }
+
       const posts = getPosts();
-      const post = posts.find(p => p.id === postId);
+
+      const post = posts.find(
+        item => item.id === postId
+      );
+
       if (!post) return;
+
       post.likedBy = post.likedBy || [];
-      const idx = post.likedBy.indexOf(currentUser);
-      if (idx >= 0) {
-        post.likedBy.splice(idx, 1);
-        post.likes = Math.max(0, (post.likes || 0) - 1);
+
+      const index =
+        post.likedBy.indexOf(currentUser);
+
+      if (index >= 0) {
+        post.likedBy.splice(index, 1);
+        post.likes = Math.max(
+          0,
+          (post.likes || 0) - 1
+        );
       } else {
         post.likedBy.push(currentUser);
         post.likes = (post.likes || 0) + 1;
       }
+
       savePosts(posts);
       renderFeed();
     }
 
     function renderFeed() {
-      const feed = document.getElementById('feed');
+      const feed =
+        document.getElementById("feed");
+
       const posts = getPosts();
+
       if (posts.length === 0) {
-        feed.innerHTML = '<div class="card feed-empty">还没有帖子，快来发布第一条吧！</div>';
-        return;
-      }
-      feed.innerHTML = posts.map(p => {
-        const liked = currentUser && p.likedBy && p.likedBy.includes(currentUser);
-        return `
-          <div class="card post">
-            <div class="post-header">
-              <strong>${escapeHtml(p.user)}</strong>
-              <span>${p.time}</span>
-            </div>
-            <p>${escapeHtml(p.content).replace(/\n/g, '<br>')}</p>
-            <button class="small" onclick="toggleLike(${p.id})">
-              ${liked ? '❤️' : '🤍'} ${p.likes || 0}
-            </button>
+        feed.innerHTML = `
+          <div class="card feed-empty">
+            还没有内容，来分享第一条车主经验吧！
           </div>
         `;
-      }).join('');
+        return;
+      }
+
+      feed.innerHTML = posts
+        .map(post => {
+          const liked =
+            currentUser &&
+            post.likedBy &&
+            post.likedBy.includes(currentUser);
+
+          return `
+            <div class="card post">
+              <div class="post-header">
+                <strong>${escapeHtml(post.user)}</strong>
+                <span>${escapeHtml(post.time)}</span>
+              </div>
+
+              <p>
+                ${escapeHtml(post.content).replace(
+                  /\n/g,
+                  "<br>"
+                )}
+              </p>
+
+              <button
+                class="small"
+                onclick="toggleLike(${post.id})"
+              >
+                ${liked ? "❤️" : "🤍"} ${post.likes || 0}
+              </button>
+            </div>
+          `;
+        })
+        .join("");
     }
 
     function escapeHtml(text) {
-      const div = document.createElement('div');
+      const div =
+        document.createElement("div");
+
       div.textContent = text;
+
       return div.innerHTML;
     }
 
-    // ===== 问诊功能逻辑 =====
-    let formAnswers = { time: '', feeling: '', sound: '', severity: '' };
+    /* ================= 维修需求 ================= */
 
-    function selectOption(btn, question, value) {
-      const parent = btn.parentElement;
-      parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
+    const formAnswers = {
+      time: "",
+      feeling: "",
+      sound: "",
+      severity: ""
+    };
+
+    function selectOption(
+      button,
+      question,
+      value
+    ) {
+      button.parentElement
+        .querySelectorAll(".option-btn")
+        .forEach(element => {
+          element.classList.remove("selected");
+        });
+
+      button.classList.add("selected");
+
       formAnswers[question] = value;
+
       updateProblemDescription();
     }
 
     function updateProblemDescription() {
-      const { time, feeling, sound, severity } = formAnswers;
-      if (time && feeling && sound && severity) {
-        const desc = `【车主报告】在${time}时，车辆出现${feeling}，感觉像是${sound}。严重程度：${severity}。`;
-        document.getElementById('finalProblemDesc').value = desc;
+      const {
+        time,
+        feeling,
+        sound,
+        severity
+      } = formAnswers;
+
+      const hiddenInput =
+        document.getElementById(
+          "finalProblemDesc"
+        );
+
+      if (
+        time &&
+        feeling &&
+        sound &&
+        severity
+      ) {
+        hiddenInput.value =
+          `【车辆情况】问题通常在${time}出现；` +
+          `主要症状为${feeling}；` +
+          `声音或感觉为${sound}；` +
+          `目前情况：${severity}。`;
+      } else {
+        hiddenInput.value = "";
       }
     }
 
-    // ===== SPM 学习功能 =====
-    // 🚨 注意：请把下面的日期改成你真实的 SPM 考试日期！
-    const spmDate = new Date('2026-11-15'); 
+    /* ================= SPM 学习 ================= */
+
+    const spmDate =
+      new Date("2026-11-15T00:00:00");
 
     function updateCountdown() {
       const today = new Date();
-      const diffTime = spmDate - today;
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      document.getElementById('spmCountdown').textContent = diffDays > 0 ? diffDays : 0;
+
+      const diffTime =
+        spmDate.getTime() - today.getTime();
+
+      const diffDays =
+        Math.ceil(
+          diffTime /
+          (1000 * 60 * 60 * 24)
+        );
+
+      document.getElementById(
+        "spmCountdown"
+      ).textContent =
+        diffDays > 0 ? diffDays : 0;
     }
 
     const questionBank = [
       {
-        question: "下列哪个是液压煞车系统所应用的原理？",
-        options: ["牛顿定理", "阿克曼原理", "巴斯噶原理", "阿基米德定理"],
+        question:
+          "下列哪个是液压煞车系统所应用的原理？",
+        options: [
+          "牛顿定理",
+          "阿克曼原理",
+          "巴斯噶原理",
+          "阿基米德定理"
+        ],
         answer: 2,
-        explanation: "液压煞车是利用巴斯噶原理，在密闭液体中压力会等值传递。"
+        explanation:
+          "液压煞车利用巴斯噶原理，在密闭液体中压力能够传递。"
       },
       {
-        question: "当煞车踏板放松后，煞车油能由分泵回流是靠什么？",
-        options: ["分泵内的弹簧", "惯性", "踏片间的回拉弹簧", "踏板的回拉弹簧"],
+        question:
+          "当煞车踏板放松后，煞车油能由分泵回流主要靠什么？",
+        options: [
+          "分泵内的弹簧",
+          "惯性",
+          "踏片间的回拉弹簧",
+          "踏板的回拉弹簧"
+        ],
         answer: 0,
-        explanation: "分缸内的弹簧负责将煞车油推回总泵。"
+        explanation:
+          "分泵内的弹簧会帮助活塞回位，使煞车油回流。"
       }
     ];
 
-  // 打乱数组顺序（Fisher-Yates）
-function shuffle(array) {
-  const arr = [...array];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
+    function shuffle(array) {
+      const result = [...array];
 
-function loadDailyQuestion() {
-  // 每次进入都随机打乱题库
-  const shuffled = shuffle(questionBank);
-  const q = shuffled[0];
-  
-  document.getElementById('dailyQuestion').textContent = q.question;
-  
-  // 记录当前正确答案（因为选项也会打乱）
-  const shuffledOptions = shuffle(q.options.map((opt, i) => ({ opt, isCorrect: i === q.answer })));
-  
-  const optionsDiv = document.getElementById('dailyOptions');
-  optionsDiv.innerHTML = '';
-  
-  shuffledOptions.forEach((item) => {
-    const btn = document.createElement('button');
-    btn.textContent = item.opt;
-    btn.style.cssText = "padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff; cursor: pointer; text-align: left;";
-    btn.onclick = () => {
-      const isCorrect = item.isCorrect;
-      const buttons = optionsDiv.querySelectorAll('button');
-      buttons.forEach(b => b.disabled = true);
-      
-      const feedback = document.getElementById('dailyFeedback');
-      if (isCorrect) {
-        feedback.textContent = "✅ 答对了！" + q.explanation;
-        feedback.style.color = "#2e7d32";
-      } else {
-        feedback.textContent = "❌ 答错了。" + q.explanation;
-        feedback.style.color = "#e63946";
+      for (
+        let i = result.length - 1;
+        i > 0;
+        i--
+      ) {
+        const j =
+          Math.floor(
+            Math.random() * (i + 1)
+          );
+
+        [
+          result[i],
+          result[j]
+        ] = [
+          result[j],
+          result[i]
+        ];
       }
+
+      return result;
+    }
+
+    function loadDailyQuestion() {
+      const question =
+        shuffle(questionBank)[0];
+
+      const questionElement =
+        document.getElementById(
+          "dailyQuestion"
+        );
+
+      const optionsElement =
+        document.getElementById(
+          "dailyOptions"
+        );
+
+      const feedbackElement =
+        document.getElementById(
+          "dailyFeedback"
+        );
+
+      questionElement.textContent =
+        question.question;
+
+      feedbackElement.textContent = "";
+      optionsElement.innerHTML = "";
+
+      const shuffledOptions =
+        shuffle(
+          question.options.map(
+            (option, index) => ({
+              option,
+              isCorrect:
+                index === question.answer
+            })
+          )
+        );
+
+      shuffledOptions.forEach(item => {
+        const button =
+          document.createElement("button");
+
+        button.className = "answer-btn";
+        button.textContent = item.option;
+
+        button.onclick = () => {
+          optionsElement
+            .querySelectorAll("button")
+            .forEach(element => {
+              element.disabled = true;
+            });
+
+          if (item.isCorrect) {
+            feedbackElement.textContent =
+              "✅ 答对了！" +
+              question.explanation;
+
+            feedbackElement.className =
+              "success";
+          } else {
+            feedbackElement.textContent =
+              "❌ 答错了。" +
+              question.explanation;
+
+            feedbackElement.className =
+              "error";
+          }
+        };
+
+        optionsElement.appendChild(button);
+      });
+    }
+
+    let quizState = {
+      questions: [],
+      current: 0,
+      score: 0
     };
-    optionsDiv.appendChild(btn);
-  });
-}
-
-    function checkAnswer(selected, correct, explanation) {
-      const feedback = document.getElementById('dailyFeedback');
-      const buttons = document.getElementById('dailyOptions').querySelectorAll('button');
-      
-      buttons.forEach(b => b.disabled = true);
-      
-      if (selected === correct) {
-        feedback.textContent = "✅ 答对了！" + explanation;
-        feedback.style.color = "#2e7d32";
-      } else {
-        feedback.textContent = "❌ 答错了。" + explanation;
-        feedback.style.color = "#e63946";
-      }
-    }
-
-    // ===== 连接外部网站（NHTSA 召回） =====
-    async function fetchRecalls() {
-      const make = document.getElementById('newsMake').value.trim();
-      const model = document.getElementById('newsModel').value.trim();
-      const year = document.getElementById('newsYear').value.trim();
-      const resultDiv = document.getElementById('recallResult');
-
-      if (!make || !model || !year) {
-        resultDiv.innerHTML = '<p style="color:#e63946;">请填写品牌、车型和年份</p>';
-        return;
-      }
-      resultDiv.innerHTML = '<p>正在从NHTSA获取数据...</p>';
-
-      const url = `https://api.nhtsa.gov/recalls/recallsByVehicle?make=${make}&model=${model}&modelYear=${year}`;
-
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.Count === 0) {
-          resultDiv.innerHTML = `<p style="color:#2e7d32;">✅ 没有找到 ${year} ${make} ${model} 的召回记录。</p>`;
-          return;
-        }
-        let html = `<h3>找到 ${data.Count} 条召回记录：</h3>`;
-        data.results.slice(0, 5).forEach(r => {
-          html += `
-            <div style="border:1px solid #eee; border-radius:8px; padding:12px; margin-bottom:10px;">
-              <strong>${r.Component || '未知部件'}</strong>
-              <p style="margin:8px 0; font-size:14px; color:#555;">${r.Summary || ''}</p>
-              <p style="font-size:13px; color:#999;">补救措施：${r.Remedy || '暂无'}</p>
-            </div>
-          `;
-        });
-        resultDiv.innerHTML = html;
-      } catch (error) {
-        resultDiv.innerHTML = '<p style="color:#e63946;">获取失败，请稍后再试。</p>';
-        console.error(error);
-      }
-    }
-
-    // ===== 连接 IP-API：自动识别用户位置 =====
-    async function detectLocation() {
-      const resultDiv = document.getElementById('locationResult');
-      resultDiv.innerHTML = '<p>正在识别...</p>';
-      try {
-        const response = await fetch('http://ip-api.com/json/');
-        const data = await response.json();
-        if (data.status === 'success') {
-          resultDiv.innerHTML = `
-            <p>🌍 国家：<strong>${data.country}</strong></p>
-            <p>🏙️ 城市：<strong>${data.city}</strong></p>
-            <p>📡 网络服务商：${data.isp}</p>
-            <p style="font-size:13px; color:#999;">（基于您的网络IP地址）</p>
-          `;
-        } else {
-          resultDiv.innerHTML = '<p style="color:#e63946;">识别失败</p>';
-        }
-      } catch (error) {
-        resultDiv.innerHTML = '<p style="color:#e63946;">网络错误，请稍后再试</p>';
-        console.error(error);
-      }
-    }
-
-    // ===== 连接 Open-Meteo：天气提醒 =====
-    async function fetchWeather() {
-      const resultDiv = document.getElementById('weatherResult');
-      resultDiv.innerHTML = '<p>正在获取天气...</p>';
-      try {
-        let lat = 3.1390;
-        let lon = 101.6869;
-        let city = '吉隆坡';
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
-        const response = await fetch(url);
-        const data = await response.json();
-
-        const temp = data.current_weather.temperature;
-        const wind = data.current_weather.windspeed;
-        const weatherCode = data.current_weather.weathercode;
-
-        let weatherText = '未知';
-        if (weatherCode === 0) weatherText = '☀️ 晴天';
-        else if (weatherCode <= 3) weatherText = '⛅ 多云';
-        else if (weatherCode <= 67) weatherText = '🌧️ 下雨';
-        else if (weatherCode <= 77) weatherText = '❄️ 下雪';
-        else if (weatherCode <= 82) weatherText = '🌦️ 阵雨';
-        else weatherText = '⛈️ 雷暴';
-
-        let advice = '';
-        if (weatherCode >= 51) {
-          advice = '⚠️ 雨天路滑，刹车距离变长，请减速慢行。';
-        } else if (temp > 35) {
-          advice = '🔥 高温天气，注意引擎散热和轮胎气压。';
-        } else {
-          advice = '✅ 天气正常，适合出行。';
-        }
-        resultDiv.innerHTML = `
-          <p>${weatherText}　温度：<strong>${temp}°C</strong>　风速：${wind} km/h</p>
-          <p style="margin-top: 8px; color:#e63946; font-weight:600;">${advice}</p>
-          <p style="font-size:13px; color:#999;">数据来源：Open-Meteo（${city}）</p>
-        `;
-      } catch (error) {
-        resultDiv.innerHTML = '<p style="color:#e63946;">获取天气失败</p>';
-        console.error(error);
-      }
-    }
-
-    // ===== 连接 Frankfurter：汇率查询 =====
-    async function fetchExchangeRate() {
-      const resultDiv = document.getElementById('rateResult');
-      resultDiv.innerHTML = '<p>正在获取汇率...</p>';
-      try {
-        const url = 'https://api.frankfurter.app/latest?from=USD&to=MYR,SGD,JPY,CNY';
-        const response = await fetch(url);
-        const data = await response.json();
-        const rates = data.rates;
-        const date = data.date;
-        resultDiv.innerHTML = `
-          <p style="font-size:13px; color:#999;">日期：${date}</p>
-          <p>1 美元 = <strong>${rates.MYR} 令吉</strong></p>
-          <p>1 美元 = <strong>${rates.SGD} 新币</strong></p>
-          <p>1 美元 = <strong>${rates.JPY} 日元</strong></p>
-          <p>1 美元 = <strong>${rates.CNY} 人民币</strong></p>
-        `;
-      } catch (error) {
-        resultDiv.innerHTML = '<p style="color:#e63946;">获取汇率失败</p>';
-        console.error(error);
-      }
-    }
-
-    // ===== 初始化所有功能 =====
-    document.addEventListener('DOMContentLoaded', function() {
-      // 初始化社区
-      updateAuthUI();
-      renderFeed();
-      // 初始化学习
-      updateCountdown();
-      loadDailyQuestion();
-    });
-        // ===== 练习模式 =====
-    let quizState = { questions: [], current: 0, score: 0 };
 
     function startQuiz() {
       quizState = {
-        questions: shuffle(questionBank).slice(0, 5), // 每次抽5题
+        questions: shuffle(questionBank),
         current: 0,
         score: 0
       };
+
       renderQuizQuestion();
     }
 
     function renderQuizQuestion() {
-      const area = document.getElementById('quizArea');
-      const q = quizState.questions[quizState.current];
-      
-      if (!q) {
-        // 全部答完
+      const area =
+        document.getElementById(
+          "quizArea"
+        );
+
+      const question =
+        quizState.questions[
+          quizState.current
+        ];
+
+      if (!question) {
         area.innerHTML = `
-          <div style="padding:16px; background:#e8f5e9; border-radius:10px;">
-            <h3>🎉 练习结束！</h3>
-            <p>你答对了 <strong>${quizState.score} / ${quizState.questions.length}</strong> 题。</p>
-            <button class="small" onclick="startQuiz()">再来一次</button>
+          <div
+            style="
+              padding:16px;
+              background:#e8f5e9;
+              border-radius:10px;
+            "
+          >
+            <h3>🎉 练习完成</h3>
+            <p>
+              你答对了
+              <strong>
+                ${quizState.score} /
+                ${quizState.questions.length}
+              </strong>
+              题。
+            </p>
+            <button
+              class="small"
+              onclick="startQuiz()"
+            >
+              再来一次
+            </button>
           </div>
         `;
         return;
       }
 
-      const shuffledOptions = shuffle(q.options.map((opt, i) => ({ opt, isCorrect: i === q.answer })));
-      
       area.innerHTML = `
-        <p style="font-size:13px; color:#999;">第 ${quizState.current + 1} / ${quizState.questions.length} 题　得分：${quizState.score}</p>
-        <p style="font-weight:600; margin:12px 0;">${q.question}</p>
-        <div id="quizOptions" style="display:flex; flex-direction:column; gap:8px;"></div>
-        <p id="quizFeedback" style="margin-top:12px; font-weight:600;"></p>
+        <p class="hint">
+          第 ${quizState.current + 1}
+          /
+          ${quizState.questions.length}
+          题　得分：${quizState.score}
+        </p>
+
+        <p style="font-weight:600; margin:12px 0;">
+          ${escapeHtml(question.question)}
+        </p>
+
+        <div
+          id="quizOptions"
+          style="
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+          "
+        ></div>
+
+        <p
+          id="quizFeedback"
+          style="margin-top:12px; font-weight:600;"
+        ></p>
       `;
 
-      const optionsDiv = document.getElementById('quizOptions');
+      const optionsElement =
+        document.getElementById(
+          "quizOptions"
+        );
+
+      const feedbackElement =
+        document.getElementById(
+          "quizFeedback"
+        );
+
+      const shuffledOptions =
+        shuffle(
+          question.options.map(
+            (option, index) => ({
+              option,
+              isCorrect:
+                index === question.answer
+            })
+          )
+        );
+
       shuffledOptions.forEach(item => {
-        const btn = document.createElement('button');
-        btn.textContent = item.opt;
-        btn.style.cssText = "padding:10px; border:1px solid #ccc; border-radius:8px; background:#fff; cursor:pointer; text-align:left;";
-        btn.onclick = () => {
-          const buttons = optionsDiv.querySelectorAll('button');
-          buttons.forEach(b => b.disabled = true);
-          
-          const feedback = document.getElementById('quizFeedback');
+        const button =
+          document.createElement("button");
+
+        button.className = "answer-btn";
+        button.textContent = item.option;
+
+        button.onclick = () => {
+          optionsElement
+            .querySelectorAll("button")
+            .forEach(element => {
+              element.disabled = true;
+            });
+
           if (item.isCorrect) {
             quizState.score++;
-            feedback.textContent = "✅ 答对了！" + q.explanation;
-            feedback.style.color = "#2e7d32";
+
+            feedbackElement.textContent =
+              "✅ 答对了！" +
+              question.explanation;
+
+            feedbackElement.className =
+              "success";
           } else {
-            feedback.textContent = "❌ 答错了。" + q.explanation;
-            feedback.style.color = "#e63946";
+            feedbackElement.textContent =
+              "❌ 答错了。" +
+              question.explanation;
+
+            feedbackElement.className =
+              "error";
           }
-          
-          // 2秒后自动下一题
+
           setTimeout(() => {
             quizState.current++;
             renderQuizQuestion();
-          }, 2000);
+          }, 1800);
         };
-        optionsDiv.appendChild(btn);
+
+        optionsElement.appendChild(button);
       });
     }
-        // ===== 送货驾驶游戏（伪3D） =====
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    const miniMapCanvas = document.getElementById('miniMap');
-    const mmCtx = miniMapCanvas.getContext('2d');
-    const W = 320, H = 480;
 
-    // 游戏常量
+    /* ================= NHTSA 召回 ================= */
+
+    async function fetchRecalls() {
+      const make =
+        document.getElementById(
+          "newsMake"
+        ).value.trim();
+
+      const model =
+        document.getElementById(
+          "newsModel"
+        ).value.trim();
+
+      const year =
+        document.getElementById(
+          "newsYear"
+        ).value.trim();
+
+      const result =
+        document.getElementById(
+          "recallResult"
+        );
+
+      if (!make || !model || !year) {
+        result.innerHTML =
+          '<p class="error">请填写品牌、车型和年份。</p>';
+        return;
+      }
+
+      result.innerHTML =
+        "<p>正在查询召回数据……</p>";
+
+      try {
+        const url =
+          "https://api.nhtsa.gov/recalls/recallsByVehicle" +
+          `?make=${encodeURIComponent(make)}` +
+          `&model=${encodeURIComponent(model)}` +
+          `&modelYear=${encodeURIComponent(year)}`;
+
+        const response =
+          await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(
+            "NHTSA 请求失败"
+          );
+        }
+
+        const data =
+          await response.json();
+
+        if (!data.Count) {
+          result.innerHTML = `
+            <p class="success">
+              ✅ 没有找到 ${escapeHtml(year)}
+              ${escapeHtml(make)}
+              ${escapeHtml(model)}
+              的召回记录。
+            </p>
+          `;
+          return;
+        }
+
+        let html = `
+          <h3>
+            找到 ${data.Count} 条召回记录
+          </h3>
+        `;
+
+        data.results
+          .slice(0, 5)
+          .forEach(item => {
+            html += `
+              <div class="result-item">
+                <strong>
+                  ${escapeHtml(
+                    item.Component ||
+                    "未知部件"
+                  )}
+                </strong>
+
+                <p>
+                  ${escapeHtml(
+                    item.Summary || ""
+                  )}
+                </p>
+
+                <p class="hint">
+                  补救措施：
+                  ${escapeHtml(
+                    item.Remedy ||
+                    "暂无资料"
+                  )}
+                </p>
+              </div>
+            `;
+          });
+
+        result.innerHTML = html;
+
+      } catch (error) {
+        console.error(error);
+
+        result.innerHTML =
+          '<p class="error">获取召回信息失败，请稍后再试。</p>';
+      }
+    }
+
+    /* ================= IP 位置 ================= */
+
+    async function detectLocation() {
+      const result =
+        document.getElementById(
+          "locationResult"
+        );
+
+      result.innerHTML =
+        "<p>正在识别网络位置……</p>";
+
+      try {
+        const response =
+          await fetch(
+            "https://ip-api.com/json/"
+          );
+
+        const data =
+          await response.json();
+
+        if (data.status !== "success") {
+          throw new Error(
+            "位置识别失败"
+          );
+        }
+
+        result.innerHTML = `
+          <p>
+            🌍 国家：
+            <strong>
+              ${escapeHtml(data.country)}
+            </strong>
+          </p>
+
+          <p>
+            🏙️ 城市：
+            <strong>
+              ${escapeHtml(data.city)}
+            </strong>
+          </p>
+
+          <p>
+            📡 网络服务商：
+            ${escapeHtml(data.isp || "未知")}
+          </p>
+
+          <p class="hint">
+            位置根据网络 IP 推测，并不代表设备的精确位置。
+          </p>
+        `;
+
+      } catch (error) {
+        console.error(error);
+
+        result.innerHTML =
+          '<p class="error">位置识别失败，请检查网络连接。</p>';
+      }
+    }
+
+    /* ================= 天气 ================= */
+
+    async function fetchWeather() {
+      const result =
+        document.getElementById(
+          "weatherResult"
+        );
+
+      result.innerHTML =
+        "<p>正在获取天气数据……</p>";
+
+      try {
+        const latitude = 3.1390;
+        const longitude = 101.6869;
+        const city = "吉隆坡";
+
+        const url =
+          "https://api.open-meteo.com/v1/forecast" +
+          `?latitude=${latitude}` +
+          `&longitude=${longitude}` +
+          "&current_weather=true";
+
+        const response =
+          await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(
+            "天气请求失败"
+          );
+        }
+
+        const data =
+          await response.json();
+
+        const weather =
+          data.current_weather;
+
+        const temperature =
+          weather.temperature;
+
+        const windSpeed =
+          weather.windspeed;
+
+        const code =
+          weather.weathercode;
+
+        let weatherText =
+          "未知天气";
+
+        if (code === 0) {
+          weatherText = "☀️ 晴天";
+        } else if (code <= 3) {
+          weatherText = "⛅ 多云";
+        } else if (code <= 67) {
+          weatherText = "🌧️ 降雨";
+        } else if (code <= 77) {
+          weatherText = "❄️ 降雪";
+        } else if (code <= 82) {
+          weatherText = "🌦️ 阵雨";
+        } else {
+          weatherText = "⛈️ 雷暴";
+        }
+
+        let advice =
+          "✅ 天气状况正常，出行前仍建议留意实时路况。";
+
+        if (code >= 51) {
+          advice =
+            "⚠️ 当前存在降雨情况，请降低车速并保持安全车距。";
+        } else if (temperature > 35) {
+          advice =
+            "🔥 当前气温较高，长途驾驶前建议检查冷却液与轮胎状况。";
+        }
+
+        result.innerHTML = `
+          <p>
+            ${weatherText}
+            温度：
+            <strong>${temperature}°C</strong>
+            风速：
+            ${windSpeed} km/h
+          </p>
+
+          <p
+            style="
+              margin-top:8px;
+              color:#e63946;
+              font-weight:600;
+            "
+          >
+            ${advice}
+          </p>
+
+          <p class="hint">
+            数据来源：Open-Meteo（${city}）
+          </p>
+        `;
+
+      } catch (error) {
+        console.error(error);
+
+        result.innerHTML =
+          '<p class="error">天气获取失败，请稍后再试。</p>';
+      }
+    }
+
+    /* ================= 汇率 ================= */
+
+    async function fetchExchangeRate() {
+      const result =
+        document.getElementById(
+          "rateResult"
+        );
+
+      result.innerHTML =
+        "<p>正在获取汇率数据……</p>";
+
+      try {
+        const response =
+          await fetch(
+            "https://api.frankfurter.app/latest?from=USD&to=MYR,SGD,JPY,CNY"
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            "汇率请求失败"
+          );
+        }
+
+        const data =
+          await response.json();
+
+        const rates = data.rates;
+
+        result.innerHTML = `
+          <p class="hint">
+            数据日期：${escapeHtml(data.date || "未知")}
+          </p>
+
+          <p>
+            1 美元 =
+            <strong>
+              ${rates.MYR ?? "-"} 令吉
+            </strong>
+          </p>
+
+          <p>
+            1 美元 =
+            <strong>
+              ${rates.SGD ?? "-"} 新币
+            </strong>
+          </p>
+
+          <p>
+            1 美元 =
+            <strong>
+              ${rates.JPY ?? "-"} 日元
+            </strong>
+          </p>
+
+          <p>
+            1 美元 =
+            <strong>
+              ${rates.CNY ?? "-"} 人民币
+            </strong>
+          </p>
+        `;
+
+      } catch (error) {
+        console.error(error);
+
+        result.innerHTML =
+          '<p class="error">汇率获取失败，请稍后再试。</p>';
+      }
+    }
+
+    /* ================= 游戏 ================= */
+
+    const canvas =
+      document.getElementById(
+        "gameCanvas"
+      );
+
+    const ctx =
+      canvas.getContext("2d");
+
+    const miniMapCanvas =
+      document.getElementById(
+        "miniMap"
+      );
+
+    const mmCtx =
+      miniMapCanvas.getContext("2d");
+
+    const W = 320;
+    const H = 480;
+
     const SEG_LEN = 200;
     const ROAD_WIDTH = 2000;
     const CAMERA_HEIGHT = 1000;
     const FIELD_OF_VIEW = 100;
-    const CAMERA_DEPTH = 1 / Math.tan((FIELD_OF_VIEW / 2) * Math.PI / 180);
-    const DRAW_DISTANCE = 150;
-    const PLAYER_Z = CAMERA_HEIGHT * CAMERA_DEPTH;
-    const FOG_DENSITY = 5;
-    const MAX_SPEED = SEG_LEN * 60;
 
-    // 各档位：速度上限 + 加速
+    const CAMERA_DEPTH =
+      1 /
+      Math.tan(
+        (FIELD_OF_VIEW / 2) *
+        Math.PI /
+        180
+      );
+
+    const DRAW_DISTANCE = 150;
+
+    const PLAYER_Z =
+      CAMERA_HEIGHT *
+      CAMERA_DEPTH;
+
+    const FOG_DENSITY = 5;
+
+    const MAX_SPEED =
+      SEG_LEN * 60;
+
     const GEAR_CONFIG = {
-      1: { max: MAX_SPEED * 0.3, accel: MAX_SPEED / 4 },
-      2: { max: MAX_SPEED * 0.55, accel: MAX_SPEED / 3.5 },
-      3: { max: MAX_SPEED * 0.8, accel: MAX_SPEED / 3 },
-      4: { max: MAX_SPEED, accel: MAX_SPEED / 2.5 }
+      1: {
+        max: MAX_SPEED * 0.3,
+        accel: MAX_SPEED / 4
+      },
+      2: {
+        max: MAX_SPEED * 0.55,
+        accel: MAX_SPEED / 3.5
+      },
+      3: {
+        max: MAX_SPEED * 0.8,
+        accel: MAX_SPEED / 3
+      },
+      4: {
+        max: MAX_SPEED,
+        accel: MAX_SPEED / 2.5
+      }
     };
 
-    // 游戏状态
     let game = {
       running: false,
       ready: false,
@@ -839,104 +1919,350 @@ function loadDailyQuestion() {
       speed: 0,
       segments: [],
       trackLength: 0,
-      cargo: '发动机零件',
-      destination: '吉隆坡修理厂',
-      keys: { left: false, right: false, gas: false, brake: false },
+      cargo: "发动机零件",
+      destination: "吉隆坡维修中心",
+      keys: {
+        left: false,
+        right: false,
+        gas: false,
+        brake: false
+      },
       frameId: null,
       lastTime: 0,
       winShown: false
     };
 
-    // ===== 赛道生成 =====
     function lastY() {
-      return game.segments.length === 0 ? 0 : game.segments[game.segments.length - 1].p2.world.y;
+      if (
+        game.segments.length === 0
+      ) {
+        return 0;
+      }
+
+      return game.segments[
+        game.segments.length - 1
+      ].p2.world.y;
     }
 
     function addSegment(curve, y) {
-      const n = game.segments.length;
+      const index =
+        game.segments.length;
+
       game.segments.push({
-        index: n,
-        p1: { world: { y: lastY(), z: n * SEG_LEN }, camera: {}, screen: {} },
-        p2: { world: { y: y, z: (n + 1) * SEG_LEN }, camera: {}, screen: {} },
-        curve: curve,
-        color: Math.floor(n / 3) % 2 ? { road: '#4a4a4a', grass: '#2a4d2a', rumble: '#e63946' }
-                                     : { road: '#444', grass: '#2d5a2d', rumble: '#fff' }
+        index,
+
+        p1: {
+          world: {
+            y: lastY(),
+            z: index * SEG_LEN
+          },
+          camera: {},
+          screen: {}
+        },
+
+        p2: {
+          world: {
+            y,
+            z: (index + 1) * SEG_LEN
+          },
+          camera: {},
+          screen: {}
+        },
+
+        curve,
+
+        color:
+          Math.floor(index / 3) % 2
+            ? {
+                road: "#4a4a4a",
+                grass: "#2a4d2a",
+                rumble: "#e63946"
+              }
+            : {
+                road: "#444",
+                grass: "#2d5a2d",
+                rumble: "#fff"
+              }
       });
     }
 
-    function addRoad(enter, hold, leave, curve, y) {
-      const startY = lastY();
-      const endY = startY + y * SEG_LEN;
-      const total = enter + hold + leave;
-      for (let n = 0; n < enter; n++) addSegment(easeIn(0, curve, n / enter), easeInOut(startY, endY, n / total));
-      for (let n = 0; n < hold; n++) addSegment(curve, easeInOut(startY, endY, (enter + n) / total));
-      for (let n = 0; n < leave; n++) addSegment(easeInOut(curve, 0, n / leave), easeInOut(startY, endY, (enter + hold + n) / total));
+    function addRoad(
+      enter,
+      hold,
+      leave,
+      curve,
+      y
+    ) {
+      const startY =
+        lastY();
+
+      const endY =
+        startY +
+        y * SEG_LEN;
+
+      const total =
+        enter +
+        hold +
+        leave;
+
+      for (
+        let n = 0;
+        n < enter;
+        n++
+      ) {
+        addSegment(
+          easeIn(
+            0,
+            curve,
+            n / enter
+          ),
+          easeInOut(
+            startY,
+            endY,
+            n / total
+          )
+        );
+      }
+
+      for (
+        let n = 0;
+        n < hold;
+        n++
+      ) {
+        addSegment(
+          curve,
+          easeInOut(
+            startY,
+            endY,
+            (enter + n) /
+            total
+          )
+        );
+      }
+
+      for (
+        let n = 0;
+        n < leave;
+        n++
+      ) {
+        addSegment(
+          easeInOut(
+            curve,
+            0,
+            n / leave
+          ),
+          easeInOut(
+            startY,
+            endY,
+            (enter +
+              hold +
+              n) /
+            total
+          )
+        );
+      }
     }
 
-    function easeIn(a, b, p) { return a + (b - a) * Math.pow(p, 2); }
-    function easeInOut(a, b, p) { return a + (b - a) * (-Math.cos(p * Math.PI) / 2 + 0.5); }
+    function easeIn(a, b, p) {
+      return (
+        a +
+        (b - a) *
+        Math.pow(p, 2)
+      );
+    }
+
+    function easeInOut(a, b, p) {
+      return (
+        a +
+        (b - a) *
+        (
+          -Math.cos(
+            p * Math.PI
+          ) /
+          2 +
+          0.5
+        )
+      );
+    }
 
     function buildTrack() {
       game.segments = [];
-      // 起点直道
-      addRoad(20, 40, 20, 0, 0);
-      // 右弯
-      addRoad(25, 50, 25, 4, 0);
-      // 上坡
-      addRoad(20, 40, 20, 0, 40);
-      // 左弯（S弯）
-      addRoad(25, 40, 25, -3, 0);
-      addRoad(25, 40, 25, 3, 0);
-      // 下坡
-      addRoad(20, 40, 20, 0, -60);
-      // 大直道
-      addRoad(20, 80, 20, 0, 0);
-      // 急右弯
-      addRoad(30, 40, 30, 5, 0);
-      // 上坡
-      addRoad(20, 40, 20, 0, 50);
-      // 缓左弯
-      addRoad(25, 50, 25, -2, 0);
-      // 下坡
-      addRoad(20, 40, 20, 0, -50);
-      // S弯
-      addRoad(20, 40, 20, 3, 0);
-      addRoad(20, 40, 20, -3, 0);
-      // 终点大直道
-      addRoad(30, 80, 30, 0, 0);
-      game.trackLength = game.segments.length * SEG_LEN;
+
+      addRoad(
+        20, 40, 20,
+        0, 0
+      );
+
+      addRoad(
+        25, 50, 25,
+        4, 0
+      );
+
+      addRoad(
+        20, 40, 20,
+        0, 40
+      );
+
+      addRoad(
+        25, 40, 25,
+        -3, 0
+      );
+
+      addRoad(
+        25, 40, 25,
+        3, 0
+      );
+
+      addRoad(
+        20, 40, 20,
+        0, -60
+      );
+
+      addRoad(
+        20, 80, 20,
+        0, 0
+      );
+
+      addRoad(
+        30, 40, 30,
+        5, 0
+      );
+
+      addRoad(
+        20, 40, 20,
+        0, 50
+      );
+
+      addRoad(
+        25, 50, 25,
+        -2, 0
+      );
+
+      addRoad(
+        20, 40, 20,
+        0, -50
+      );
+
+      addRoad(
+        20, 40, 20,
+        3, 0
+      );
+
+      addRoad(
+        20, 40, 20,
+        -3, 0
+      );
+
+      addRoad(
+        30, 80, 30,
+        0, 0
+      );
+
+      game.trackLength =
+        game.segments.length *
+        SEG_LEN;
     }
 
     function findSegment(z) {
-      return game.segments[Math.floor(z / SEG_LEN) % game.segments.length];
+      return game.segments[
+        Math.floor(
+          z / SEG_LEN
+        ) %
+        game.segments.length
+      ];
     }
 
-    // ===== 投影 =====
-    function project(p, cameraX, cameraY, cameraZ, cameraDepth, width, height, roadWidth) {
-      p.camera.x = (p.world.x || 0) - cameraX;
-      p.camera.y = (p.world.y || 0) - cameraY;
-      p.camera.z = (p.world.z || 0) - cameraZ;
-      if (p.camera.z < 0.01) p.camera.z = 0.01; 
-      p.screen.scale = cameraDepth / p.camera.z;
-      p.screen.x = Math.round((width / 2) + (p.screen.scale * p.camera.x * width / 2));
-      p.screen.y = Math.round((height / 2) - (p.screen.scale * p.camera.y * height / 2));
-      p.screen.w = Math.round(p.screen.scale * roadWidth * width / 2);
+    function project(
+      point,
+      cameraX,
+      cameraY,
+      cameraZ,
+      cameraDepth,
+      width,
+      height,
+      roadWidth
+    ) {
+      point.camera.x =
+        (point.world.x || 0) -
+        cameraX;
+
+      point.camera.y =
+        (point.world.y || 0) -
+        cameraY;
+
+      point.camera.z =
+        (point.world.z || 0) -
+        cameraZ;
+
+      if (
+        point.camera.z < 0.01
+      ) {
+        point.camera.z = 0.01;
+      }
+
+      point.screen.scale =
+        cameraDepth /
+        point.camera.z;
+
+      point.screen.x =
+        Math.round(
+          width / 2 +
+          point.screen.scale *
+          point.camera.x *
+          width / 2
+        );
+
+      point.screen.y =
+        Math.round(
+          height / 2 -
+          point.screen.scale *
+          point.camera.y *
+          height / 2
+        );
+
+      point.screen.w =
+        Math.round(
+          point.screen.scale *
+          roadWidth *
+          width / 2
+        );
     }
 
-    function exponentialFog(distance, density) {
-      return 1 / Math.pow(Math.E, (distance * distance * density));
+    function exponentialFog(
+      distance,
+      density
+    ) {
+      return (
+        1 /
+        Math.pow(
+          Math.E,
+          distance *
+          distance *
+          density
+        )
+      );
     }
 
-    // ===== 游戏控制 =====
     function setGear(gear) {
       game.gear = gear;
-      document.querySelectorAll('.gear-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', (i + 1) === gear);
-      });
+
+      document
+        .querySelectorAll(
+          ".gear-btn"
+        )
+        .forEach(
+          (button, index) => {
+            button.classList.toggle(
+              "active",
+              index + 1 === gear
+            );
+          }
+        );
     }
 
     function startDelivery() {
       buildTrack();
+
       game.running = true;
       game.ready = true;
       game.winShown = false;
@@ -945,351 +2271,1078 @@ function loadDailyQuestion() {
       game.speed = 0;
       game.lives = 3;
       game.score = 0;
-      game.cargo = ['发动机零件', '刹车片', '变速箱油', '轮胎'][Math.floor(Math.random() * 4)];
-      document.getElementById('gameCargo').textContent = game.cargo;
-      document.getElementById('quizModal').style.display = 'none';
-      document.getElementById('winModal').style.display = 'none';
-      game.lastTime = performance.now();
-      if (game.frameId) cancelAnimationFrame(game.frameId);
-      game.frameId = requestAnimationFrame(gameLoop);
+
+      const cargos = [
+        "发动机零件",
+        "刹车片",
+        "变速箱油",
+        "轮胎"
+      ];
+
+      game.cargo =
+        cargos[
+          Math.floor(
+            Math.random() *
+            cargos.length
+          )
+        ];
+
+      document.getElementById(
+        "gameCargo"
+      ).textContent =
+        game.cargo;
+
+      document.getElementById(
+        "quizModal"
+      ).style.display =
+        "none";
+
+      document.getElementById(
+        "winModal"
+      ).style.display =
+        "none";
+
+      game.lastTime =
+        performance.now();
+
+      if (game.frameId) {
+        cancelAnimationFrame(
+          game.frameId
+        );
+      }
+
+      game.frameId =
+        requestAnimationFrame(
+          gameLoop
+        );
     }
 
     function stopGame() {
       game.running = false;
-      if (game.frameId) cancelAnimationFrame(game.frameId);
+
+      if (game.frameId) {
+        cancelAnimationFrame(
+          game.frameId
+        );
+      }
+
+      game.frameId = null;
     }
 
-    // ===== 主循环 =====
     function gameLoop(now) {
-      if (!game.running) return;
-      const dt = Math.min(1, (now - game.lastTime) / 1000);
+      if (!game.running) {
+        return;
+      }
+
+      const dt =
+        Math.min(
+          1,
+          (now - game.lastTime) /
+          1000
+        );
+
       game.lastTime = now;
-      update(dt);
-      render();
+
+      updateGame(dt);
+      renderGame();
       drawMiniMap();
-      game.frameId = requestAnimationFrame(gameLoop);
+
+      game.frameId =
+        requestAnimationFrame(
+          gameLoop
+        );
     }
 
-    function update(dt) {
-      const playerSegment = findSegment(game.position + PLAYER_Z);
-      const speedPercent = game.speed / MAX_SPEED;
-      const gearConf = GEAR_CONFIG[game.gear];
-      const dx = dt * 2 * speedPercent;
+    function updateGame(dt) {
+      const playerSegment =
+        findSegment(
+          game.position +
+          PLAYER_Z
+        );
 
-      // 转向 + 离心力
-      if (game.keys.left) game.playerX -= dx;
-      else if (game.keys.right) game.playerX += dx;
-      game.playerX -= dx * speedPercent * playerSegment.curve * 0.3;
+      const speedPercent =
+        game.speed /
+        MAX_SPEED;
 
-      // 油门 / 刹车
-      if (game.keys.gas) {
-        game.speed = Math.min(gearConf.max, game.speed + gearConf.accel * dt);
+      const gearConfig =
+        GEAR_CONFIG[
+          game.gear
+        ];
+
+      const dx =
+        dt *
+        2 *
+        speedPercent;
+
+      if (game.keys.left) {
+        game.playerX -= dx;
+      } else if (game.keys.right) {
+        game.playerX += dx;
+      }
+
+      game.playerX -=
+        dx *
+        speedPercent *
+        playerSegment.curve *
+        0.3;
+      // 默认缓慢加速（自动挡），按刹车才减速
+      const autoGas = !game.keys.brake;
+      
+      if (game.keys.gas || autoGas) {
+        game.speed = Math.min(gearConfig.max, game.speed + gearConfig.accel * dt);
       } else if (game.keys.brake) {
-        game.speed = Math.max(0, game.speed - MAX_SPEED * 0.8 * dt);
+      if (game.keys.gas) {
+        game.speed =
+          Math.min(
+            gearConfig.max,
+            game.speed +
+            gearConfig.accel *
+            dt
+          );
+      } else if (game.keys.brake) {
+        game.speed =
+          Math.max(
+            0,
+            game.speed -
+            MAX_SPEED *
+            0.8 *
+            dt
+          );
       } else {
-        game.speed = Math.max(0, game.speed - MAX_SPEED * 0.15 * dt);
+        game.speed =
+          Math.max(
+            0,
+            game.speed -
+            MAX_SPEED *
+            0.15 *
+            dt
+          );
       }
 
-      // 离路减速
-      if ((game.playerX < -1 || game.playerX > 1) && game.speed > MAX_SPEED * 0.25) {
-        game.speed = Math.max(0, game.speed - MAX_SPEED * 0.5 * dt);
+      if (
+        (
+          game.playerX < -1 ||
+          game.playerX > 1
+        ) &&
+        game.speed >
+        MAX_SPEED * 0.25
+      ) {
+        game.speed =
+          Math.max(
+            0,
+            game.speed -
+            MAX_SPEED *
+            0.5 *
+            dt
+          );
       }
 
-      // 撞到路边
-      if (Math.abs(game.playerX) > 1.4) {
-        game.playerX = Math.sign(game.playerX) * 1.4;
+      if (
+        Math.abs(
+          game.playerX
+        ) > 1.4
+      ) {
+        game.playerX =
+          Math.sign(
+            game.playerX
+          ) * 1.4;
+
         onCrash();
         return;
       }
 
-      // 前进
-      game.position += game.speed * dt;
-      game.score = Math.floor(game.position / 100);
+      game.position +=
+        game.speed * dt;
 
-      // 仪表盘
-      document.getElementById('gameSpeed').textContent = Math.round(game.speed / MAX_SPEED * 150);
+      game.score =
+        Math.floor(
+          game.position /
+          100
+        );
 
-      // 进度
-      const progress = Math.min(100, (game.position / game.trackLength) * 100);
-      document.getElementById('gameProgress').textContent = Math.round(progress) + '%';
-      document.getElementById('gameProgressBar').style.width = progress + '%';
-      document.getElementById('gameScore').textContent = game.score;
+      document.getElementById(
+        "gameSpeed"
+      ).textContent =
+        Math.round(
+          game.speed /
+          MAX_SPEED *
+          150
+        );
 
-      // 到达目的地
-      if (game.position >= game.trackLength - SEG_LEN * 10 && !game.winShown) {
+      const progress =
+        Math.min(
+          100,
+          (
+            game.position /
+            game.trackLength
+          ) * 100
+        );
+
+      document.getElementById(
+        "gameProgress"
+      ).textContent =
+        Math.round(progress) +
+        "%";
+
+      document.getElementById(
+        "gameProgressBar"
+      ).style.width =
+        progress + "%";
+
+      document.getElementById(
+        "gameScore"
+      ).textContent =
+        game.score;
+
+      if (
+        game.position >=
+        game.trackLength -
+        SEG_LEN * 10
+        &&
+        !game.winShown
+      ) {
         game.winShown = true;
+
         stopGame();
-        document.getElementById('winStats').innerHTML = `
-          你成功把 <strong>${game.cargo}</strong> 送到 <strong>${game.destination}</strong>！<br>
-          剩余生命：❤️ x ${game.lives}<br>
-          总得分：<strong>${game.score}</strong>
+
+        document.getElementById(
+          "winStats"
+        ).innerHTML = `
+          你已成功将
+          <strong>${escapeHtml(game.cargo)}</strong>
+          安全送达
+          <strong>${escapeHtml(game.destination)}</strong>！
+          <br><br>
+          剩余生命：❤️ × ${game.lives}
+          <br>
+          任务得分：
+          <strong>${game.score}</strong>
         `;
-        document.getElementById('winModal').style.display = 'flex';
+
+        document.getElementById(
+          "winModal"
+        ).style.display =
+          "flex";
       }
     }
 
-    // ===== 渲染 =====
-    function render() {
-      const baseSegment = findSegment(game.position);
-      const basePercent = (game.position % SEG_LEN) / SEG_LEN;
-      const playerSegment = findSegment(game.position + PLAYER_Z);
-      const playerPercent = ((game.position + PLAYER_Z) % SEG_LEN) / SEG_LEN;
-      const playerY = playerSegment.p1.world.y + (playerSegment.p2.world.y - playerSegment.p1.world.y) * playerPercent;
+    function renderGame() {
+      const baseSegment =
+        findSegment(
+          game.position
+        );
 
-      // 天空渐变
-      const skyGrad = ctx.createLinearGradient(0, 0, 0, H / 2);
-      skyGrad.addColorStop(0, '#0a0a1e');
-      skyGrad.addColorStop(1, '#1a2a4e');
-      ctx.fillStyle = skyGrad;
-      ctx.fillRect(0, 0, W, H);
+      const basePercent =
+        (
+          game.position %
+          SEG_LEN
+        ) / SEG_LEN;
 
-      // 远山
-      ctx.fillStyle = '#0d1f33';
+      const playerSegment =
+        findSegment(
+          game.position +
+          PLAYER_Z
+        );
+
+      const playerPercent =
+        (
+          (
+            game.position +
+            PLAYER_Z
+          ) %
+          SEG_LEN
+        ) / SEG_LEN;
+
+      const playerY =
+        playerSegment.p1.world.y +
+        (
+          playerSegment.p2.world.y -
+          playerSegment.p1.world.y
+        ) *
+        playerPercent;
+
+      const skyGradient =
+        ctx.createLinearGradient(
+          0,
+          0,
+          0,
+          H / 2
+        );
+
+      skyGradient.addColorStop(
+        0,
+        "#0a0a1e"
+      );
+
+      skyGradient.addColorStop(
+        1,
+        "#1a2a4e"
+      );
+
+      ctx.fillStyle =
+        skyGradient;
+
+      ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+      );
+
+      ctx.fillStyle =
+        "#0d1f33";
+
       ctx.beginPath();
-      ctx.moveTo(0, H / 2);
-      for (let i = 0; i <= 10; i++) {
-        ctx.lineTo(i * 32, H / 2 - Math.sin(i * 0.8 + game.position * 0.0005) * 30);
+
+      ctx.moveTo(
+        0,
+        H / 2
+      );
+
+      for (
+        let i = 0;
+        i <= 10;
+        i++
+      ) {
+        ctx.lineTo(
+          i * 32,
+          H / 2 -
+          Math.sin(
+            i * 0.8 +
+            game.position *
+            0.0005
+          ) *
+          30
+        );
       }
-      ctx.lineTo(W, H / 2);
-      ctx.lineTo(W, H);
-      ctx.lineTo(0, H);
+
+      ctx.lineTo(
+        W,
+        H / 2
+      );
+
+      ctx.lineTo(
+        W,
+        H
+      );
+
+      ctx.lineTo(
+        0,
+        H
+      );
+
       ctx.fill();
 
-      let maxy = H;
+      let maxY = H;
       let x = 0;
-      let dx = -(baseSegment.curve * basePercent);
 
-      for (let n = 0; n < DRAW_DISTANCE; n++) {
-        const segment = game.segments[(baseSegment.index + n) % game.segments.length];
-        segment.looped = segment.index < baseSegment.index;
-        segment.fog = exponentialFog(n / DRAW_DISTANCE, FOG_DENSITY);
-        segment.clip = maxy;
+      let dx =
+        -(
+          baseSegment.curve *
+          basePercent
+        );
 
-        const camZ = game.position - (segment.looped ? game.trackLength : 0);
+      for (
+        let n = 0;
+        n < DRAW_DISTANCE;
+        n++
+      ) {
+        const segment =
+          game.segments[
+            (
+              baseSegment.index +
+              n
+            ) %
+            game.segments.length
+          ];
 
-        project(segment.p1, (game.playerX * ROAD_WIDTH) - x, playerY + CAMERA_HEIGHT, camZ, CAMERA_DEPTH, W, H, ROAD_WIDTH);
-        project(segment.p2, (game.playerX * ROAD_WIDTH) - x - dx, playerY + CAMERA_HEIGHT, camZ, CAMERA_DEPTH, W, H, ROAD_WIDTH);
+        segment.looped =
+          segment.index <
+          baseSegment.index;
+
+        segment.fog =
+          exponentialFog(
+            n /
+            DRAW_DISTANCE,
+            FOG_DENSITY
+          );
+
+        const cameraZ =
+          game.position -
+          (
+            segment.looped
+              ? game.trackLength
+              : 0
+          );
+
+        project(
+          segment.p1,
+          game.playerX *
+            ROAD_WIDTH -
+            x,
+          playerY +
+            CAMERA_HEIGHT,
+          cameraZ,
+          CAMERA_DEPTH,
+          W,
+          H,
+          ROAD_WIDTH
+        );
+
+        project(
+          segment.p2,
+          game.playerX *
+            ROAD_WIDTH -
+            x -
+            dx,
+          playerY +
+            CAMERA_HEIGHT,
+          cameraZ,
+          CAMERA_DEPTH,
+          W,
+          H,
+          ROAD_WIDTH
+        );
 
         x += dx;
         dx += segment.curve;
 
-        if (segment.p1.camera.z <= CAMERA_DEPTH ||
-            segment.p2.screen.y >= segment.p1.screen.y ||
-            segment.p2.screen.y >= maxy) continue;
+        if (
+          segment.p1.camera.z <=
+            CAMERA_DEPTH ||
+          segment.p2.screen.y >=
+            segment.p1.screen.y ||
+          segment.p2.screen.y >=
+            maxY
+        ) {
+          continue;
+        }
 
-        renderSegment(segment);
-        maxy = segment.p1.screen.y;
+        renderSegment(
+          segment
+        );
+
+        maxY =
+          segment.p1.screen.y;
       }
 
-      // 渲染玩家车
-      renderPlayerCar(playerSegment, playerPercent);
+      renderPlayerCar();
     }
 
-    function renderSegment(segment) {
-      const p1 = segment.p1.screen;
-      const p2 = segment.p2.screen;
-      const fog = segment.fog;
-      const color = segment.color;
+    function renderSegment(
+      segment
+    ) {
+      const p1 =
+        segment.p1.screen;
 
-      // 草地
-      ctx.fillStyle = color.grass;
-      ctx.fillRect(0, p2.y, W, p1.y - p2.y);
+      const p2 =
+        segment.p2.screen;
 
-      // 路面
-      const r1 = rumbleWidth(p1.w), r2 = rumbleWidth(p2.w);
-      const l1 = laneMarkerWidth(p1.w), l2 = laneMarkerWidth(p2.w);
+      const fog =
+        segment.fog;
 
-      polygon(p1.x - p1.w - r1, p1.y, p1.x - p1.w, p1.y, p2.x - p2.w, p2.y, p2.x - p2.w - r2, p2.y, color.rumble);
-      polygon(p1.x + p1.w + r1, p1.y, p1.x + p1.w, p1.y, p2.x + p2.w, p2.y, p2.x + p2.w + r2, p2.y, color.rumble);
-      polygon(p1.x - p1.w, p1.y, p1.x + p1.w, p1.y, p2.x + p2.w, p2.y, p2.x - p2.w, p2.y, color.road);
+      const color =
+        segment.color;
 
-      // 车道线（中间虚线）
-      if (segment.index % 2 === 0) {
-        polygon(p1.x - l1 / 2, p1.y, p1.x + l1 / 2, p1.y, p2.x + l2 / 2, p2.y, p2.x - l2 / 2, p2.y, '#ffeb3b');
+      ctx.fillStyle =
+        color.grass;
+
+      ctx.fillRect(
+        0,
+        p2.y,
+        W,
+        p1.y -
+        p2.y
+      );
+
+      const r1 =
+        p1.w / 6;
+
+      const r2 =
+        p2.w / 6;
+
+      const l1 =
+        p1.w / 32;
+
+      const l2 =
+        p2.w / 32;
+
+      polygon(
+        p1.x - p1.w - r1,
+        p1.y,
+        p1.x - p1.w,
+        p1.y,
+        p2.x - p2.w,
+        p2.y,
+        p2.x - p2.w - r2,
+        p2.y,
+        color.rumble
+      );
+
+      polygon(
+        p1.x + p1.w + r1,
+        p1.y,
+        p1.x + p1.w,
+        p1.y,
+        p2.x + p2.w,
+        p2.y,
+        p2.x + p2.w + r2,
+        p2.y,
+        color.rumble
+      );
+
+      polygon(
+        p1.x - p1.w,
+        p1.y,
+        p1.x + p1.w,
+        p1.y,
+        p2.x + p2.w,
+        p2.y,
+        p2.x - p2.w,
+        p2.y,
+        color.road
+      );
+
+      if (
+        segment.index % 2 === 0
+      ) {
+        polygon(
+          p1.x - l1 / 2,
+          p1.y,
+          p1.x + l1 / 2,
+          p1.y,
+          p2.x + l2 / 2,
+          p2.y,
+          p2.x - l2 / 2,
+          p2.y,
+          "#ffeb3b"
+        );
       }
 
-      // 雾
       if (fog < 1) {
-        ctx.globalAlpha = 1 - fog;
-        ctx.fillStyle = '#1a1a2e';
-        ctx.fillRect(0, p2.y, W, p1.y - p2.y);
+        ctx.globalAlpha =
+          1 - fog;
+
+        ctx.fillStyle =
+          "#1a1a2e";
+
+        ctx.fillRect(
+          0,
+          p2.y,
+          W,
+          p1.y -
+          p2.y
+        );
+
         ctx.globalAlpha = 1;
       }
     }
 
-    function rumbleWidth(projectedRoadWidth) { return projectedRoadWidth / 6; }
-    function laneMarkerWidth(projectedRoadWidth) { return projectedRoadWidth / 32; }
+    function polygon(
+      x1,
+      y1,
+      x2,
+      y2,
+      x3,
+      y3,
+      x4,
+      y4,
+      color
+    ) {
+      ctx.fillStyle =
+        color;
 
-    function polygon(x1, y1, x2, y2, x3, y3, x4, y4, color) {
-      ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
-      ctx.lineTo(x3, y3);
-      ctx.lineTo(x4, y4);
+
+      ctx.moveTo(
+        x1,
+        y1
+      );
+
+      ctx.lineTo(
+        x2,
+        y2
+      );
+
+      ctx.lineTo(
+        x3,
+        y3
+      );
+
+      ctx.lineTo(
+        x4,
+        y4
+      );
+
       ctx.closePath();
+
       ctx.fill();
     }
 
-    function renderPlayerCar(playerSegment, playerPercent) {
-      const spriteY = H / 2 + 60;
-      const spriteX = W / 2 + (game.playerX * 60);
-      const carW = 60, carH = 45;
+    function renderPlayerCar() {
+      const spriteY =
+        H / 2 + 60;
 
-      // 阴影
-      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+      const spriteX =
+        W / 2 +
+        game.playerX *
+        60;
+
+      const carW = 60;
+      const carH = 45;
+
+      ctx.fillStyle =
+        "rgba(0,0,0,0.4)";
+
       ctx.beginPath();
-      ctx.ellipse(spriteX, spriteY + carH - 5, carW / 2, 6, 0, 0, Math.PI * 2);
+
+      ctx.ellipse(
+        spriteX,
+        spriteY +
+          carH -
+          5,
+        carW / 2,
+        6,
+        0,
+        0,
+        Math.PI * 2
+      );
+
       ctx.fill();
 
-      // 车身
-      ctx.fillStyle = '#2ecc71';
-      ctx.fillRect(spriteX - carW / 2, spriteY - carH / 2, carW, carH);
-      // 车窗
-      ctx.fillStyle = '#222';
-      ctx.fillRect(spriteX - carW / 2 + 8, spriteY - carH / 2 + 6, carW - 16, 12);
-      // 后窗
-      ctx.fillRect(spriteX - carW / 2 + 10, spriteY + 6, carW - 20, 8);
-      // 尾灯
-      ctx.fillStyle = '#e63946';
-      ctx.fillRect(spriteX - carW / 2 + 4, spriteY + carH / 2 - 6, 8, 4);
-      ctx.fillRect(spriteX + carW / 2 - 12, spriteY + carH / 2 - 6, 8, 4);
-      // 货物标志
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 10px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('📦', spriteX, spriteY + 2);
+      ctx.fillStyle =
+        "#2ecc71";
+
+      ctx.fillRect(
+        spriteX -
+          carW / 2,
+        spriteY -
+          carH / 2,
+        carW,
+        carH
+      );
+
+      ctx.fillStyle =
+        "#222";
+
+      ctx.fillRect(
+        spriteX -
+          carW / 2 +
+          8,
+        spriteY -
+          carH / 2 +
+          6,
+        carW - 16,
+        12
+      );
+
+      ctx.fillRect(
+        spriteX -
+          carW / 2 +
+          10,
+        spriteY + 6,
+        carW - 20,
+        8
+      );
+
+      ctx.fillStyle =
+        "#e63946";
+
+      ctx.fillRect(
+        spriteX -
+          carW / 2 +
+          4,
+        spriteY +
+          carH / 2 -
+          6,
+        8,
+        4
+      );
+
+      ctx.fillRect(
+        spriteX +
+          carW / 2 -
+          12,
+        spriteY +
+          carH / 2 -
+          6,
+        8,
+        4
+      );
+
+      ctx.fillStyle =
+        "#fff";
+
+      ctx.font =
+        "bold 10px sans-serif";
+
+      ctx.textAlign =
+        "center";
+
+      ctx.fillText(
+        "📦",
+        spriteX,
+        spriteY + 2
+      );
     }
 
-    // ===== 小地图 =====
     function drawMiniMap() {
-      mmCtx.clearRect(0, 0, 80, 100);
-      mmCtx.fillStyle = 'rgba(0,0,0,0.5)';
-      mmCtx.fillRect(0, 0, 80, 100);
+      mmCtx.clearRect(
+        0,
+        0,
+        80,
+        100
+      );
 
-      // 计算赛道 X 累积（用来画地图轮廓）
+      mmCtx.fillStyle =
+        "rgba(0,0,0,0.5)";
+
+      mmCtx.fillRect(
+        0,
+        0,
+        80,
+        100
+      );
+
+      if (
+        !game.segments.length
+      ) {
+        return;
+      }
+
       let xs = [0];
       let x = 0;
-      for (let i = 1; i < game.segments.length; i++) {
-        x += game.segments[i].curve * 0.1;
+
+      for (
+        let i = 1;
+        i < game.segments.length;
+        i++
+      ) {
+        x +=
+          game.segments[i].curve *
+          0.1;
+
         xs.push(x);
       }
-      const maxX = Math.max(...xs.map(Math.abs)) || 1;
 
-      // 画赛道
-      mmCtx.strokeStyle = '#fff';
+      const maxX =
+        Math.max(
+          ...xs.map(
+            Math.abs
+          )
+        ) || 1;
+
+      mmCtx.strokeStyle =
+        "#fff";
+
       mmCtx.lineWidth = 2;
+
       mmCtx.beginPath();
-      for (let i = 0; i < xs.length; i += 5) {
-        const px = 40 + (xs[i] / maxX) * 30;
-        const py = 90 - (i / xs.length) * 80;
-        if (i === 0) mmCtx.moveTo(px, py);
-        else mmCtx.lineTo(px, py);
+
+      for (
+        let i = 0;
+        i < xs.length;
+        i += 5
+      ) {
+        const px =
+          40 +
+          (
+            xs[i] /
+            maxX
+          ) *
+          30;
+
+        const py =
+          90 -
+          (
+            i /
+            xs.length
+          ) *
+          80;
+
+        if (i === 0) {
+          mmCtx.moveTo(
+            px,
+            py
+          );
+        } else {
+          mmCtx.lineTo(
+            px,
+            py
+          );
+        }
       }
+
       mmCtx.stroke();
 
-      // 玩家位置
-      const playerIndex = Math.floor(game.position / SEG_LEN) % game.segments.length;
-      const px = 40 + (xs[playerIndex] / maxX) * 30;
-      const py = 90 - (playerIndex / xs.length) * 80;
-      mmCtx.fillStyle = '#2ecc71';
+      const playerIndex =
+        Math.floor(
+          game.position /
+          SEG_LEN
+        ) %
+        game.segments.length;
+
+      const playerX =
+        40 +
+        (
+          xs[playerIndex] /
+          maxX
+        ) *
+        30;
+
+      const playerY =
+        90 -
+        (
+          playerIndex /
+          xs.length
+        ) *
+        80;
+
+      mmCtx.fillStyle =
+        "#2ecc71";
+
       mmCtx.beginPath();
-      mmCtx.arc(px, py, 4, 0, Math.PI * 2);
+
+      mmCtx.arc(
+        playerX,
+        playerY,
+        4,
+        0,
+        Math.PI * 2
+      );
+
       mmCtx.fill();
 
-      // 目的地
-      mmCtx.fillStyle = '#e63946';
+      mmCtx.fillStyle =
+        "#e63946";
+
       mmCtx.beginPath();
-      mmCtx.arc(px, 10, 4, 0, Math.PI * 2);
+
+      mmCtx.arc(
+        40,
+        10,
+        4,
+        0,
+        Math.PI * 2
+      );
+
       mmCtx.fill();
     }
 
-    // ===== 撞车 =====
     function onCrash() {
       game.speed = 0;
       game.running = false;
       game.lives--;
-      document.getElementById('gameLives').textContent = Math.max(0, game.lives);
 
-      if (game.lives < 0) {
-        alert('任务失败！货物没送到。\n得分：' + game.score);
+      document.getElementById(
+        "gameLives"
+      ).textContent =
+        Math.max(
+          0,
+          game.lives
+        );
+
+      if (
+        game.lives <= 0
+      ) {
+        alert(
+          "任务失败，货物未能安全送达。\n得分：" +
+          game.score
+        );
+
         return;
       }
+
       showQuizModal();
     }
 
     function showQuizModal() {
-      const modal = document.getElementById('quizModal');
-      const q = questionBank[Math.floor(Math.random() * questionBank.length)];
-      const shuffled = shuffle(q.options.map((opt, i) => ({ opt, isCorrect: i === q.answer })));
+      const modal =
+        document.getElementById(
+          "quizModal"
+        );
 
-      document.getElementById('quizModalQuestion').textContent = q.question;
-      document.getElementById('quizModalFeedback').textContent = '';
+      const question =
+        questionBank[
+          Math.floor(
+            Math.random() *
+            questionBank.length
+          )
+        ];
 
-      const optDiv = document.getElementById('quizModalOptions');
-      optDiv.innerHTML = '';
+      const shuffledOptions =
+        shuffle(
+          question.options.map(
+            (option, index) => ({
+              option,
+              isCorrect:
+                index === question.answer
+            })
+          )
+        );
 
-      shuffled.forEach(item => {
-        const btn = document.createElement('button');
-        btn.textContent = item.opt;
-        btn.style.cssText = 'padding:10px; border:1px solid #ccc; border-radius:8px; background:#fff; cursor:pointer; text-align:left;';
-        btn.onclick = () => {
-          optDiv.querySelectorAll('button').forEach(b => b.disabled = true);
-          const fb = document.getElementById('quizModalFeedback');
-          if (item.isCorrect) {
-            fb.textContent = '✅ 答对了！继续送货。';
-            fb.style.color = '#2e7d32';
-          } else {
-            fb.textContent = '❌ 答错了。' + q.explanation;
-            fb.style.color = '#e63946';
-          }
-                    setTimeout(() => {
-            modal.style.display = 'none';
-            game.running = true;
-            game.lastTime = performance.now();
-            // 👇 替换这一行
-            if (game.frameId) cancelAnimationFrame(game.frameId);
-            game.frameId = requestAnimationFrame(gameLoop);
-          }, 1500);
-        };
-        optDiv.appendChild(btn);
-      });
+      document.getElementById(
+        "quizModalQuestion"
+      ).textContent =
+        question.question;
 
-      modal.style.display = 'flex';
+      document.getElementById(
+        "quizModalFeedback"
+      ).textContent = "";
+
+      const optionsElement =
+        document.getElementById(
+          "quizModalOptions"
+        );
+
+      optionsElement.innerHTML = "";
+
+      shuffledOptions.forEach(
+        item => {
+          const button =
+            document.createElement(
+              "button"
+            );
+
+          button.className =
+            "answer-btn";
+
+          button.textContent =
+            item.option;
+
+          button.onclick = () => {
+            optionsElement
+              .querySelectorAll(
+                "button"
+              )
+              .forEach(
+                element => {
+                  element.disabled = true;
+                }
+              );
+
+            const feedback =
+              document.getElementById(
+                "quizModalFeedback"
+              );
+
+            if (
+              item.isCorrect
+            ) {
+              feedback.textContent =
+                "✅ 答对了！继续完成任务。";
+
+              feedback.className =
+                "success";
+            } else {
+              feedback.textContent =
+                "❌ 答错了。" +
+                question.explanation;
+
+              feedback.className =
+                "error";
+            }
+
+            setTimeout(() => {
+              modal.style.display =
+                "none";
+
+              game.running = true;
+
+              game.lastTime =
+                performance.now();
+
+              if (game.frameId) {
+                cancelAnimationFrame(
+                  game.frameId
+                );
+              }
+
+              game.frameId =
+                requestAnimationFrame(
+                  gameLoop
+                );
+            }, 1500);
+          };
+
+          optionsElement.appendChild(
+            button
+          );
+        }
+      );
+
+      modal.style.display =
+        "flex";
     }
 
-    // ===== 键盘控制 =====
-    document.addEventListener('keydown', e => {
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') game.keys.left = true;
-      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') game.keys.right = true;
-      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') game.keys.gas = true;
-      if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') game.keys.brake = true;
-    });
-    document.addEventListener('keyup', e => {
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') game.keys.left = false;
-      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') game.keys.right = false;
-      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') game.keys.gas = false;
-      if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') game.keys.brake = false;
-    });
+    /* ================= 键盘控制 ================= */
 
-    // ===== 触摸控制 =====
-    canvas.addEventListener('touchstart', e => {
-      e.preventDefault();
+        document.addEventListener("keydown", event => {
+      if (["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)) {
+        event.preventDefault();
+      }
+      if (event.key === "ArrowLeft" || event.key === "a" || event.key === "A") game.keys.left = true;
+      if (event.key === "ArrowRight" || event.key === "d" || event.key === "D") game.keys.right = true;
+      if (event.key === "ArrowUp" || event.key === "w" || event.key === "W") game.keys.gas = true;
+      if (event.key === "ArrowDown" || event.key === "s" || event.key === "S") game.keys.brake = true;
+    }, { passive: false });
+
+    document.addEventListener("keyup", event => {
+      if (event.key === "ArrowLeft" || event.key === "a" || event.key === "A") game.keys.left = false;
+      if (event.key === "ArrowRight" || event.key === "d" || event.key === "D") game.keys.right = false;
+      if (event.key === "ArrowUp" || event.key === "w" || event.key === "W") game.keys.gas = false;
+      if (event.key === "ArrowDown" || event.key === "s" || event.key === "S") game.keys.brake = false;
+    });
+    /* ================= 手机触控 ================= */
+
+      // 触屏：分成三个区域，按住持续生效
+    canvas.addEventListener("touchstart", event => {
+      event.preventDefault();
       const rect = canvas.getBoundingClientRect();
-      const x = e.touches[0].clientX - rect.left;
+      const x = event.touches[0].clientX - rect.left;
       if (x < rect.width / 3) game.keys.left = true;
       else if (x > rect.width * 2 / 3) game.keys.right = true;
       else game.keys.gas = true;
     }, { passive: false });
-    canvas.addEventListener('touchend', e => {
-      e.preventDefault();
+
+    canvas.addEventListener("touchmove", event => {
+      event.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const x = event.touches[0].clientX - rect.left;
       game.keys.left = false;
       game.keys.right = false;
       game.keys.gas = false;
+      game.keys.brake = false;
+      if (x < rect.width / 3) game.keys.left = true;
+      else if (x > rect.width * 2 / 3) game.keys.right = true;
+      else game.keys.gas = true;
     }, { passive: false });
 
-    // 档位按钮初始化
-    setGear(3);
+    canvas.addEventListener("touchend", event => {
+      event.preventDefault();
+      game.keys.left = false;
+      game.keys.right = false;
+      game.keys.gas = false;
+      game.keys.brake = false;
+    }, { passive: false });
+
+    /* ================= 初始化 ================= */
+
+        document.addEventListener("DOMContentLoaded", () => {
+      updateAuthUI();
+      renderFeed();
+      updateCountdown();
+      loadDailyQuestion();
+      setGear(3);
+
+      // 先建立赛道并渲染一帧静态画面
+      buildTrack();
+      renderGame();
+      drawMiniMap();
+
+      setInterval(updateCountdown, 60 * 60 * 1000);
+    });
   </script>
+
 </body>
 </html>
