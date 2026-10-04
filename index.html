@@ -246,6 +246,18 @@
       
       <div id="recallResult" style="margin-top: 16px;"></div>
     </div>
+          <!-- 自动识别位置 -->
+      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
+        <h3>📍 您的位置</h3>
+        <button class="primary" onclick="detectLocation()">自动识别我的位置</button>
+        <div id="locationResult" style="margin-top: 12px;"></div>
+              <!-- 天气提醒 -->
+      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
+        <h3>🌤️ 今日天气提醒</h3>
+        <button class="primary" onclick="fetchWeather()">查看天气</button>
+        <div id="weatherResult" style="margin-top: 12px;"></div>
+      </div>
+      </div>
   </div>
   <div class="footer">多帮 DuoBang · 发现，寻找，解决问题</div>
 
@@ -502,6 +514,81 @@
         console.error(error);
       }
     }
+        // ===== 连接 IP-API：自动识别用户位置 =====
+    async function detectLocation() {
+      const resultDiv = document.getElementById('locationResult');
+      resultDiv.innerHTML = '<p>正在识别...</p>';
+
+      try {
+        // IP-API 免费接口，不需要 API Key
+        const response = await fetch('http://ip-api.com/json/');
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          resultDiv.innerHTML = `
+            <p>🌍 国家：<strong>${data.country}</strong></p>
+            <p>🏙️ 城市：<strong>${data.city}</strong></p>
+            <p>📡 网络服务商：${data.isp}</p>
+            <p style="font-size:13px; color:#999;">（基于您的网络IP地址）</p>
+          `;
+        } else {
+          resultDiv.innerHTML = '<p style="color:#e63946;">识别失败</p>';
+        }
+      } catch (error) {
+        resultDiv.innerHTML = '<p style="color:#e63946;">网络错误，请稍后再试</p>';
+        console.error(error);
+      }
+    }
+        // ===== 连接 Open-Meteo：天气提醒 =====
+    async function fetchWeather() {
+      const resultDiv = document.getElementById('weatherResult');
+      resultDiv.innerHTML = '<p>正在获取天气...</p>';
+
+      try {
+        // 先获取用户位置（用马来西亚吉隆坡作为默认值）
+        let lat = 3.1390;
+        let lon = 101.6869;
+        let city = '吉隆坡';
+
+        // 如果用户之前识别过位置，可以在这里更新
+
+        // Open-Meteo 免费天气 API，不需要 API Key
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=precipitation_probability`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const temp = data.current_weather.temperature;
+        const wind = data.current_weather.windspeed;
+        const weatherCode = data.current_weather.weathercode;
+
+        // 天气代码转文字
+        let weatherText = '未知';
+        if (weatherCode === 0) weatherText = '☀️ 晴天';
+        else if (weatherCode <= 3) weatherText = '⛅ 多云';
+        else if (weatherCode <= 67) weatherText = '🌧️ 下雨';
+        else if (weatherCode <= 77) weatherText = '❄️ 下雪';
+        else if (weatherCode <= 82) weatherText = '🌦️ 阵雨';
+        else weatherText = '⛈️ 雷暴';
+
+        let advice = '';
+        if (weatherCode >= 51) {
+          advice = '⚠️ 雨天路滑，刹车距离变长，请减速慢行。';
+        } else if (temp > 35) {
+          advice = '🔥 高温天气，注意引擎散热和轮胎气压。';
+        } else {
+          advice = '✅ 天气正常，适合出行。';
+        }
+
+        resultDiv.innerHTML = `
+          <p>${weatherText}　温度：<strong>${temp}°C</strong>　风速：${wind} km/h</p>
+          <p style="margin-top: 8px; color:#e63946; font-weight:600;">${advice}</p>
+          <p style="font-size:13px; color:#999;">数据来源：Open-Meteo（${city}）</p>
+        `;
+      } catch (error) {
+        resultDiv.innerHTML = '<p style="color:#e63946;">获取天气失败</p>';
+        console.error(error);
+      }
+    }  
   </script>
 </body>
 </html>
