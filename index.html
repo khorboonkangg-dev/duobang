@@ -950,7 +950,7 @@ function loadDailyQuestion() {
       document.getElementById('winModal').style.display = 'none';
       game.lastTime = performance.now();
       if (game.frameId) cancelAnimationFrame(game.frameId);
-      gameLoop();
+      game.frameId = requestAnimationFrame(gameLoop);
     }
 
     function stopGame() {
