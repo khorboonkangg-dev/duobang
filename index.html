@@ -114,6 +114,7 @@
     <button id="tabCommunity" onclick="showTab('community')">社区</button>
     <button id="tabStudy" onclick="showTab('study')">学习</button>
     <button id="tabNews" onclick="showTab('news')">资讯</button>
+    <button id="tabGame" onclick="showTab('game')">游戏</button>
   </div>
 
   <!-- ================= 1. 预约服务（问诊模式） ================= -->
@@ -253,6 +254,33 @@
       
       <div id="recallResult" style="margin-top: 16px;"></div>
     </div>
+      <!-- ================= 5. 游戏 ================= -->
+  <div id="gameTab" class="tab">
+    <div class="card">
+      <h2>🏎️ 汽车躲避游戏</h2>
+      <p style="color:#666; font-size:14px;">用 ← → 键或触摸左右移动，躲避障碍。撞到车就要答题！</p>
+      
+      <div style="display:flex; justify-content:space-between; margin:10px 0; font-size:15px;">
+        <span>得分：<strong id="gameScore" style="color:#e63946;">0</strong></span>
+        <span>生命：<strong id="gameLives" style="color:#e63946;">❤️❤️❤️</strong></span>
+      </div>
+      
+      <canvas id="gameCanvas" width="320" height="480" 
+              style="width:100%; max-width:320px; border-radius:10px; background:#333; display:block; margin:0 auto; touch-action:none;"></canvas>
+      
+      <button class="primary" style="margin-top:12px;" onclick="startGame()">开始 / 重新开始</button>
+      
+      <!-- 答题弹窗（默认隐藏） -->
+      <div id="quizModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:100; align-items:center; justify-content:center; padding:20px;">
+        <div style="background:#fff; border-radius:14px; padding:20px; max-width:400px; width:100%;">
+          <h3 style="margin-top:0; color:#e63946;">⚠️ 撞车了！答对才能继续</h3>
+          <p id="quizModalQuestion" style="font-weight:600; margin:12px 0;"></p>
+          <div id="quizModalOptions" style="display:flex; flex-direction:column; gap:8px;"></div>
+          <p id="quizModalFeedback" style="margin-top:12px; font-weight:600;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
 
     <!-- 自动识别位置 -->
     <div class="card">
@@ -715,6 +743,219 @@ function loadDailyQuestion() {
         optionsDiv.appendChild(btn);
       });
     }
+        // ===== 汽车躲避游戏 =====
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const CANVAS_W = 320;
+    const CANVAS_H = 480;
+    const CAR_W = 40;
+    const CAR_H = 60;
+
+    let game = {
+      running: false,
+      score: 0,
+      lives: 3,
+      player: { x: CANVAS_W / 2 - CAR_W / 2, y: CANVAS_H - CAR_H - 10 },
+      obstacles: [],
+      keys: { left: false, right: false },
+      spawnTimer: 0,
+      frameId: null,
+      speed: 3
+    };
+
+    function startGame() {
+      game.running = true;
+      game.score = 0;
+      game.lives = 3;
+      game.obstacles = [];
+      game.spawnTimer = 0;
+      game.speed = 3;
+      game.player.x = CANVAS_W / 2 - CAR_W / 2;
+      updateGameUI();
+      document.getElementById('quizModal').style.display = 'none';
+      if (game.frameId) cancelAnimationFrame(game.frameId);
+      gameLoop();
+    }
+
+    function updateGameUI() {
+      document.getElementById('gameScore').textContent = game.score;
+      const hearts = '❤️'.repeat(Math.max(0, game.lives));
+      document.getElementById('gameLives').textContent = hearts || '💀';
+    }
+
+    function gameLoop() {
+      if (!game.running) return;
+      
+      update();
+      draw();
+      game.frameId = requestAnimationFrame(gameLoop);
+    }
+
+    function update() {
+      // 玩家移动
+      if (game.keys.left) game.player.x -= 5;
+      if (game.keys.right) game.player.x += 5;
+      game.player.x = Math.max(0, Math.min(CANVAS_W - CAR_W, game.player.x));
+
+      // 生成障碍物
+      game.spawnTimer++;
+      if (game.spawnTimer > 60) {
+        game.spawnTimer = 0;
+        const obsW = 40;
+        const obsH = 60;
+        game.obstacles.push({
+          x: Math.random() * (CANVAS_W - obsW),
+          y: -obsH,
+          w: obsW,
+          h: obsH,
+          color: '#e63946'
+        });
+      }
+
+      // 移动障碍物
+      game.obstacles.forEach(o => o.y += game.speed);
+      game.obstacles = game.obstacles.filter(o => o.y < CANVAS_H + 100);
+
+      // 计分（每躲过一个障碍加1分）
+      game.obstacles.forEach(o => {
+        if (!o.scored && o.y > game.player.y + CAR_H) {
+          o.scored = true;
+          game.score++;
+          game.speed = Math.min(8, 3 + game.score * 0.1);
+          updateGameUI();
+        }
+      });
+
+      // 碰撞检测
+      for (let o of game.obstacles) {
+        if (rectsOverlap(game.player.x, game.player.y, CAR_W, CAR_H, o.x, o.y, o.w, o.h)) {
+          game.obstacles = game.obstacles.filter(x => x !== o);
+          onCrash();
+          return;
+        }
+      }
+    }
+
+    function rectsOverlap(x1, y1, w1, h1, x2, y2, w2, h2) {
+      return x1 < x2 + w2 && x1 + w1 > x2 && y1 < y2 + h2 && y1 + h1 > y2;
+    }
+
+    function draw() {
+      // 背景
+      ctx.fillStyle = '#333';
+      ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+      
+      // 车道线
+      ctx.strokeStyle = '#555';
+      ctx.setLineDash([20, 20]);
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(CANVAS_W / 2, 0);
+      ctx.lineTo(CANVAS_W / 2, CANVAS_H);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 玩家车
+      ctx.fillStyle = '#2ecc71';
+      ctx.fillRect(game.player.x, game.player.y, CAR_W, CAR_H);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(game.player.x + 8, game.player.y + 8, 24, 15);
+      ctx.fillRect(game.player.x + 8, game.player.y + 35, 24, 15);
+
+      // 障碍物
+      game.obstacles.forEach(o => {
+        ctx.fillStyle = o.color;
+        ctx.fillRect(o.x, o.y, o.w, o.h);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(o.x + 8, o.y + 8, 24, 15);
+        ctx.fillRect(o.x + 8, o.y + 35, 24, 15);
+      });
+    }
+
+    function onCrash() {
+      game.running = false;
+      game.lives--;
+      updateGameUI();
+      
+      if (game.lives < 0) {
+        alert('游戏结束！你的得分是：' + game.score);
+        game.running = false;
+        return;
+      }
+      
+      showQuizModal();
+    }
+
+    function showQuizModal() {
+      const modal = document.getElementById('quizModal');
+      const q = questionBank[Math.floor(Math.random() * questionBank.length)];
+      const shuffled = shuffle(q.options.map((opt, i) => ({ opt, isCorrect: i === q.answer })));
+      
+      document.getElementById('quizModalQuestion').textContent = q.question;
+      document.getElementById('quizModalFeedback').textContent = '';
+      
+      const optDiv = document.getElementById('quizModalOptions');
+      optDiv.innerHTML = '';
+      
+      shuffled.forEach(item => {
+        const btn = document.createElement('button');
+        btn.textContent = item.opt;
+        btn.style.cssText = 'padding:10px; border:1px solid #ccc; border-radius:8px; background:#fff; cursor:pointer; text-align:left;';
+        btn.onclick = () => {
+          optDiv.querySelectorAll('button').forEach(b => b.disabled = true);
+          const fb = document.getElementById('quizModalFeedback');
+          if (item.isCorrect) {
+            fb.textContent = '✅ 答对了！继续游戏。';
+            fb.style.color = '#2e7d32';
+            setTimeout(() => {
+              modal.style.display = 'none';
+              game.running = true;
+              gameLoop();
+            }, 1200);
+          } else {
+            fb.textContent = '❌ 答错了。' + q.explanation;
+            fb.style.color = '#e63946';
+            setTimeout(() => {
+              modal.style.display = 'none';
+              game.running = true;
+              gameLoop();
+            }, 2500);
+          }
+        };
+        optDiv.appendChild(btn);
+      });
+      
+      modal.style.display = 'flex';
+    }
+
+    // 键盘控制
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') game.keys.left = true;
+      if (e.key === 'ArrowRight') game.keys.right = true;
+    });
+    document.addEventListener('keyup', e => {
+      if (e.key === 'ArrowLeft') game.keys.left = false;
+      if (e.key === 'ArrowRight') game.keys.right = false;
+    });
+
+    // 触摸控制
+    canvas.addEventListener('touchstart', e => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const touchX = e.touches[0].clientX - rect.left;
+      const scale = CANVAS_W / rect.width;
+      const targetX = touchX * scale;
+      game.player.x = Math.max(0, Math.min(CANVAS_W - CAR_W, targetX - CAR_W / 2));
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', e => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const touchX = e.touches[0].clientX - rect.left;
+      const scale = CANVAS_W / rect.width;
+      const targetX = touchX * scale;
+      game.player.x = Math.max(0, Math.min(CANVAS_W - CAR_W, targetX - CAR_W / 2));
+    }, { passive: false });
   </script>
 </body>
 </html>
