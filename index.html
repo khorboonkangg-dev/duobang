@@ -106,13 +106,14 @@
     <p class="slogan" style="margin-left: 62px;">发现，寻找，解决问题</p>
   </div>
 
+  <!-- 标签栏 -->
   <div class="tabs">
     <button id="tabBooking" class="active" onclick="showTab('booking')">预约服务</button>
     <button id="tabCommunity" onclick="showTab('community')">社区</button>
-        <button id="tabStudy" onclick="showTab('study')">学习</button>
+    <button id="tabStudy" onclick="showTab('study')">学习</button>
   </div>
 
-  <!-- 预约服务（问诊模式） -->
+  <!-- 1. 预约服务（问诊模式） -->
   <div id="bookingTab" class="tab active">
     <div class="card">
       <h2 style="color: #e63946; margin-top: 0;">🔍 您的车遇到了什么情况？</h2>
@@ -181,12 +182,14 @@
           
           <label for="extra">补充说明（选填）</label>
           <textarea id="extra" name="extra" rows="2" placeholder="还有其他想告诉师傅的吗？"></textarea>
+        </div>
+
         <button type="submit" class="primary" style="margin-top: 16px;">生成问诊单并提交</button>
       </form>
     </div>
   </div>
 
-  <!-- 社区 -->
+  <!-- 2. 社区 -->
   <div id="communityTab" class="tab">
     <div id="authBox" class="card">
       <h2 style="margin-top:0;">登录 / 注册</h2>
@@ -207,7 +210,9 @@
       </div>
       <div id="feed"></div>
     </div>
-      <!-- 学习 -->
+  </div> <!-- 社区标签页正确闭合 -->
+
+  <!-- 3. 学习 -->
   <div id="studyTab" class="tab">
     <div class="card">
       <h2>📚 SPM 复习</h2>
@@ -220,13 +225,12 @@
         <p id="dailyFeedback" style="margin-top: 12px; font-weight: 600;"></p>
       </div>
     </div>
-  </div>
-  </div>
+  </div> <!-- 学习标签页正确闭合 -->
 
   <div class="footer">多帮 DuoBang · 发现，寻找，解决问题</div>
 
   <script>
-       // ===== 切换标签 =====
+    // ===== 切换标签 =====
     function showTab(tab) {
       // 移除所有标签的 active 状态
       document.getElementById('bookingTab').classList.remove('active');
@@ -248,6 +252,7 @@
         document.getElementById('tabStudy').classList.add('active');
       }
     }
+
     // ===== 本地数据（社区） =====
     let currentUser = localStorage.getItem('duobang_currentUser') || null;
 
@@ -380,12 +385,8 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      updateAuthUI();
-      renderFeed();
-    });
-        // ===== SPM 学习功能 =====
-    // 修改这里的日期为你的SPM考试日期
+    // ===== SPM 学习功能 =====
+    // 🚨 注意：请把下面的日期改成你真实的 SPM 考试日期！
     const spmDate = new Date('2026-11-15'); 
 
     function updateCountdown() {
@@ -395,12 +396,12 @@
       document.getElementById('spmCountdown').textContent = diffDays > 0 ? diffDays : 0;
     }
 
-    // 题库（你可以随时加题）
+    // 题库（你可以随时加题，建议把复习到的错题加进去）
     const questionBank = [
       {
         question: "下列哪个是液压煞车系统所应用的原理？",
         options: ["牛顿定理", "阿克曼原理", "巴斯噶原理", "阿基米德定理"],
-        answer: 2, // 索引从0开始，2代表第三个选项
+        answer: 2,
         explanation: "液压煞车是利用巴斯噶原理，在密闭液体中压力会等值传递。"
       },
       {
@@ -412,7 +413,6 @@
     ];
 
     function loadDailyQuestion() {
-      // 每天随机选一题（或者按日期固定选一题）
       const todayIndex = new Date().getDate() % questionBank.length;
       const q = questionBank[todayIndex];
       
@@ -434,7 +434,6 @@
       const feedback = document.getElementById('dailyFeedback');
       const buttons = document.getElementById('dailyOptions').querySelectorAll('button');
       
-      // 禁用所有按钮，防止重复作答
       buttons.forEach(b => b.disabled = true);
       
       if (selected === correct) {
@@ -446,15 +445,14 @@
       }
     }
 
-    // 初始化学习标签页
-    function initStudyTab() {
+    // ===== 初始化所有功能 =====
+    document.addEventListener('DOMContentLoaded', function() {
+      // 初始化社区
+      updateAuthUI();
+      renderFeed();
+      // 初始化学习
       updateCountdown();
       loadDailyQuestion();
-    }
-    
-    // 将 initStudyTab 添加到 DOMContentLoaded 事件中
-    document.addEventListener('DOMContentLoaded', function() {
-      initStudyTab();
     });
   </script>
 </body>
