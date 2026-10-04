@@ -221,7 +221,15 @@
         <h3>每日一题</h3>
         <p id="dailyQuestion" style="font-weight: 600; margin-bottom: 14px;">加载中...</p>
         <div id="dailyOptions" style="display: flex; flex-direction: column; gap: 8px;"></div>
-        <p id="dailyFeedback" style="margin-top: 12px; font-weight: 600;"></p>
+               <p id="dailyFeedback" style="margin-top: 12px; font-weight: 600;"></p>    
+        <button class="small" style="margin-top: 12px; width: 100%;" onclick="loadDailyQuestion()">🔄 换一题</button>       </div>
+            <!-- 练习模式 -->
+      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
+        <h3>📝 练习模式</h3>
+        <p style="color:#666; font-size:14px;">随机出题，看看你能答对几题。</p>
+        <button class="primary" onclick="startQuiz()">开始练习</button>
+        <div id="quizArea" style="margin-top: 16px;"></div>
+      </div>
       </div>
     </div>
   </div>
@@ -444,23 +452,50 @@
       }
     ];
 
-    function loadDailyQuestion() {
-      const todayIndex = new Date().getDate() % questionBank.length;
-      const q = questionBank[todayIndex];
+  // 打乱数组顺序（Fisher-Yates）
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function loadDailyQuestion() {
+  // 每次进入都随机打乱题库
+  const shuffled = shuffle(questionBank);
+  const q = shuffled[0];
+  
+  document.getElementById('dailyQuestion').textContent = q.question;
+  
+  // 记录当前正确答案（因为选项也会打乱）
+  const shuffledOptions = shuffle(q.options.map((opt, i) => ({ opt, isCorrect: i === q.answer })));
+  
+  const optionsDiv = document.getElementById('dailyOptions');
+  optionsDiv.innerHTML = '';
+  
+  shuffledOptions.forEach((item) => {
+    const btn = document.createElement('button');
+    btn.textContent = item.opt;
+    btn.style.cssText = "padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff; cursor: pointer; text-align: left;";
+    btn.onclick = () => {
+      const isCorrect = item.isCorrect;
+      const buttons = optionsDiv.querySelectorAll('button');
+      buttons.forEach(b => b.disabled = true);
       
-      document.getElementById('dailyQuestion').textContent = q.question;
-      
-      const optionsDiv = document.getElementById('dailyOptions');
-      optionsDiv.innerHTML = '';
-      
-      q.options.forEach((opt, index) => {
-        const btn = document.createElement('button');
-        btn.textContent = opt;
-        btn.style.cssText = "padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff; cursor: pointer; text-align: left;";
-        btn.onclick = () => checkAnswer(index, q.answer, q.explanation);
-        optionsDiv.appendChild(btn);
-      });
-    }
+      const feedback = document.getElementById('dailyFeedback');
+      if (isCorrect) {
+        feedback.textContent = "✅ 答对了！" + q.explanation;
+        feedback.style.color = "#2e7d32";
+      } else {
+        feedback.textContent = "❌ 答错了。" + q.explanation;
+        feedback.style.color = "#e63946";
+      }
+    };
+    optionsDiv.appendChild(btn);
+  });
+}
 
     function checkAnswer(selected, correct, explanation) {
       const feedback = document.getElementById('dailyFeedback');
@@ -615,6 +650,71 @@
       updateCountdown();
       loadDailyQuestion();
     });
+        // ===== 练习模式 =====
+    let quizState = { questions: [], current: 0, score: 0 };
+
+    function startQuiz() {
+      quizState = {
+        questions: shuffle(questionBank).slice(0, 5), // 每次抽5题
+        current: 0,
+        score: 0
+      };
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      const area = document.getElementById('quizArea');
+      const q = quizState.questions[quizState.current];
+      
+      if (!q) {
+        // 全部答完
+        area.innerHTML = `
+          <div style="padding:16px; background:#e8f5e9; border-radius:10px;">
+            <h3>🎉 练习结束！</h3>
+            <p>你答对了 <strong>${quizState.score} / ${quizState.questions.length}</strong> 题。</p>
+            <button class="small" onclick="startQuiz()">再来一次</button>
+          </div>
+        `;
+        return;
+      }
+
+      const shuffledOptions = shuffle(q.options.map((opt, i) => ({ opt, isCorrect: i === q.answer })));
+      
+      area.innerHTML = `
+        <p style="font-size:13px; color:#999;">第 ${quizState.current + 1} / ${quizState.questions.length} 题　得分：${quizState.score}</p>
+        <p style="font-weight:600; margin:12px 0;">${q.question}</p>
+        <div id="quizOptions" style="display:flex; flex-direction:column; gap:8px;"></div>
+        <p id="quizFeedback" style="margin-top:12px; font-weight:600;"></p>
+      `;
+
+      const optionsDiv = document.getElementById('quizOptions');
+      shuffledOptions.forEach(item => {
+        const btn = document.createElement('button');
+        btn.textContent = item.opt;
+        btn.style.cssText = "padding:10px; border:1px solid #ccc; border-radius:8px; background:#fff; cursor:pointer; text-align:left;";
+        btn.onclick = () => {
+          const buttons = optionsDiv.querySelectorAll('button');
+          buttons.forEach(b => b.disabled = true);
+          
+          const feedback = document.getElementById('quizFeedback');
+          if (item.isCorrect) {
+            quizState.score++;
+            feedback.textContent = "✅ 答对了！" + q.explanation;
+            feedback.style.color = "#2e7d32";
+          } else {
+            feedback.textContent = "❌ 答错了。" + q.explanation;
+            feedback.style.color = "#e63946";
+          }
+          
+          // 2秒后自动下一题
+          setTimeout(() => {
+            quizState.current++;
+            renderQuizQuestion();
+          }, 2000);
+        };
+        optionsDiv.appendChild(btn);
+      });
+    }
   </script>
 </body>
 </html>
