@@ -916,6 +916,7 @@ function loadDailyQuestion() {
       p.camera.x = (p.world.x || 0) - cameraX;
       p.camera.y = (p.world.y || 0) - cameraY;
       p.camera.z = (p.world.z || 0) - cameraZ;
+      if (p.camera.z < 0.01) p.camera.z = 0.01; 
       p.screen.scale = cameraDepth / p.camera.z;
       p.screen.x = Math.round((width / 2) + (p.screen.scale * p.camera.x * width / 2));
       p.screen.y = Math.round((height / 2) - (p.screen.scale * p.camera.y * height / 2));
@@ -1242,11 +1243,13 @@ function loadDailyQuestion() {
             fb.textContent = '❌ 答错了。' + q.explanation;
             fb.style.color = '#e63946';
           }
-          setTimeout(() => {
+                    setTimeout(() => {
             modal.style.display = 'none';
             game.running = true;
             game.lastTime = performance.now();
-            gameLoop();
+            // 👇 替换这一行
+            if (game.frameId) cancelAnimationFrame(game.frameId);
+            game.frameId = requestAnimationFrame(gameLoop);
           }, 1500);
         };
         optDiv.appendChild(btn);
