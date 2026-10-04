@@ -111,6 +111,7 @@
     <button id="tabBooking" class="active" onclick="showTab('booking')">预约服务</button>
     <button id="tabCommunity" onclick="showTab('community')">社区</button>
     <button id="tabStudy" onclick="showTab('study')">学习</button>
+    <button id="tabNews" onclick="showTab('news')">资讯</button>
   </div>
 
   <!-- 1. 预约服务（问诊模式） -->
@@ -226,31 +227,35 @@
       </div>
     </div>
   </div> <!-- 学习标签页正确闭合 -->
-
+  <!-- 资讯（自动更新） -->
+  <div id="newsTab" class="tab">
+    <div class="card">
+      <h2>📰 汽车资讯</h2>
+      <p>数据来源：NHTSA 美国国家公路交通安全管理局</p>
+      
+      <label for="newsMake">品牌（英文）</label>
+      <input type="text" id="newsMake" placeholder="例如：toyota" value="toyota">
+      
+      <label for="newsModel">车型（英文）</label>
+      <input type="text" id="newsModel" placeholder="例如：camry" value="camry">
+      
+      <label for="newsYear">年份</label>
+      <input type="number" id="newsYear" placeholder="例如：2020" value="2020">
+      
+      <button class="primary" onclick="fetchRecalls()">查询召回信息</button>
+      
+      <div id="recallResult" style="margin-top: 16px;"></div>
+    </div>
+  </div>
   <div class="footer">多帮 DuoBang · 发现，寻找，解决问题</div>
 
   <script>
-    // ===== 切换标签 =====
     function showTab(tab) {
-      // 移除所有标签的 active 状态
-      document.getElementById('bookingTab').classList.remove('active');
-      document.getElementById('communityTab').classList.remove('active');
-      document.getElementById('studyTab').classList.remove('active');
-      document.getElementById('tabBooking').classList.remove('active');
-      document.getElementById('tabCommunity').classList.remove('active');
-      document.getElementById('tabStudy').classList.remove('active');
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
 
-      // 添加对应标签的 active 状态
-      if (tab === 'booking') {
-        document.getElementById('bookingTab').classList.add('active');
-        document.getElementById('tabBooking').classList.add('active');
-      } else if (tab === 'community') {
-        document.getElementById('communityTab').classList.add('active');
-        document.getElementById('tabCommunity').classList.add('active');
-      } else if (tab === 'study') {
-        document.getElementById('studyTab').classList.add('active');
-        document.getElementById('tabStudy').classList.add('active');
-      }
+      document.getElementById(tab + 'Tab').classList.add('active');
+      document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
     }
 
     // ===== 本地数据（社区） =====
@@ -454,6 +459,49 @@
       updateCountdown();
       loadDailyQuestion();
     });
+        // ===== 连接外部网站（NHTSA API） =====
+    async function fetchRecalls() {
+      const make = document.getElementById('newsMake').value.trim();
+      const model = document.getElementById('newsModel').value.trim();
+      const year = document.getElementById('newsYear').value.trim();
+      const resultDiv = document.getElementById('recallResult');
+
+      if (!make || !model || !year) {
+        resultDiv.innerHTML = '<p style="color:#e63946;">请填写品牌、车型和年份</p>';
+        return;
+      }
+
+      resultDiv.innerHTML = '<p>正在从NHTSA获取数据...</p>';
+
+      // 这就是"连接其他网站"的核心代码
+      const url = `https://api.nhtsa.gov/recalls/recallsByVehicle?make=${make}&model=${model}&modelYear=${year}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.Count === 0) {
+          resultDiv.innerHTML = `<p style="color:#2e7d32;">✅ 没有找到 ${year} ${make} ${model} 的召回记录。</p>`;
+          return;
+        }
+
+        let html = `<h3>找到 ${data.Count} 条召回记录：</h3>`;
+        data.results.slice(0, 5).forEach(r => {
+          html += `
+            <div style="border:1px solid #eee; border-radius:8px; padding:12px; margin-bottom:10px;">
+              <strong>${r.Component || '未知部件'}</strong>
+              <p style="margin:8px 0; font-size:14px; color:#555;">${r.Summary || ''}</p>
+              <p style="font-size:13px; color:#999;">补救措施：${r.Remedy || '暂无'}</p>
+            </div>
+          `;
+        });
+        resultDiv.innerHTML = html;
+
+      } catch (error) {
+        resultDiv.innerHTML = '<p style="color:#e63946;">获取失败，请稍后再试。</p>';
+        console.error(error);
+      }
+    }
   </script>
 </body>
 </html>
