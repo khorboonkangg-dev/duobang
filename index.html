@@ -297,51 +297,61 @@
       </div>
     </div>
   </div> <!-- 资讯标签页正确闭合 -->
-
-   <!-- ================= 5. 游戏 ================= -->
+  <!-- ================= 5. 游戏 ================= -->
   <div id="gameTab" class="tab">
     <div class="card">
-      <h2>🏎️ 汽车驾驶游戏</h2>
-      <p style="color:#666; font-size:14px;">用 ← → 键或触摸左右移动，躲开障碍。撞车要答题才能继续。</p>
-      
-      <!-- 信息栏 -->
-      <div style="display:flex; justify-content:space-between; margin:10px 0; font-size:14px;">
-        <span>得分：<strong id="gameScore" style="color:#e63946;">0</strong></span>
-        <span>距离：<strong id="gameDistance" style="color:#e63946;">0</strong>m</span>
-        <span>生命：<strong id="gameLives">❤️❤️❤️</strong></span>
-      </div>
-      
-      <!-- 仪表盘速度 -->
-      <div style="display:flex; justify-content:center; margin-bottom:8px;">
-        <div style="background:#111; color:#0f0; padding:8px 20px; border-radius:10px; font-family:monospace; font-size:22px; font-weight:bold; letter-spacing:2px; border:2px solid #333;">
-          <span id="gameSpeed">0</span> <span style="font-size:12px; color:#888;">km/h</span>
+      <h2>🚚 多帮送货任务</h2>
+      <p style="color:#666; font-size:13px;">把货物送到目的地！↑油门　↓刹车　←→转向</p>
+
+      <!-- 进度条 -->
+      <div style="margin:10px 0;">
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:#666;">
+          <span>起点</span>
+          <span>进度 <strong id="gameProgress">0%</strong></span>
+          <span>目的地</span>
+        </div>
+        <div style="background:#eee; height:8px; border-radius:4px; overflow:hidden; margin-top:4px;">
+          <div id="gameProgressBar" style="width:0%; height:100%; background:#e63946; transition:width 0.2s;"></div>
         </div>
       </div>
-      
-      <canvas id="gameCanvas" width="320" height="480" 
-              style="width:100%; max-width:320px; border-radius:10px; background:#333; display:block; margin:0 auto; touch-action:none;"></canvas>
-      
-      <!-- 变速器 -->
+
+      <!-- 状态栏 -->
+      <div style="display:flex; justify-content:space-between; margin:8px 0; font-size:13px;">
+        <span>📦 <strong id="gameCargo">发动机零件</strong></span>
+        <span>💰 <strong id="gameScore" style="color:#e63946;">0</strong></span>
+        <span>❤️ <strong id="gameLives">3</strong></span>
+      </div>
+
+      <!-- 画布 + 小地图 -->
+      <div style="position:relative; max-width:320px; margin:0 auto;">
+        <canvas id="gameCanvas" width="320" height="480"
+          style="width:100%; border-radius:10px; background:#1a1a2e; display:block; touch-action:none;"></canvas>
+        <canvas id="miniMap" width="80" height="100"
+          style="position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.6); border-radius:6px; border:1px solid rgba(255,255,255,0.2);"></canvas>
+        <div id="gameSpeedHud" style="position:absolute; bottom:8px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.7); color:#0f0; padding:6px 16px; border-radius:10px; font-family:monospace; font-size:18px; font-weight:bold;">
+          <span id="gameSpeed">0</span> <span style="font-size:10px; color:#888;">km/h</span>
+        </div>
+      </div>
+
+      <!-- 档位 -->
       <div style="margin-top:12px; text-align:center;">
-        <p style="font-size:13px; color:#666; margin-bottom:6px;">🚗 变速器档位</p>
         <div id="gearSelector" style="display:flex; justify-content:center; gap:6px;">
           <button class="gear-btn" onclick="setGear(1)">1</button>
           <button class="gear-btn" onclick="setGear(2)">2</button>
           <button class="gear-btn active" onclick="setGear(3)">3</button>
           <button class="gear-btn" onclick="setGear(4)">4</button>
-          <button class="gear-btn" onclick="setGear(5)">5</button>
         </div>
-        <p style="font-size:12px; color:#999; margin-top:6px;">档位越高，速度越快，得分越多</p>
+        <p style="font-size:12px; color:#999; margin-top:6px;">档位越高，速度越快</p>
       </div>
-      
-      <!-- 开始 / 停止按钮 -->
+
+      <!-- 按钮 -->
       <div style="display:flex; gap:8px; margin-top:12px;">
-        <button class="primary" style="flex:1;" onclick="startGame()">▶️ 开始游戏</button>
-        <button class="small" style="flex:1; background:#333; color:#fff; padding:12px;" onclick="stopGame()">⏸️ 停止</button>
+        <button class="primary" style="flex:1;" onclick="startDelivery()">🚚 开始送货</button>
+        <button class="small" style="flex:1; background:#333; color:#fff; padding:12px;" onclick="stopGame()">⏸ 停止</button>
       </div>
-      
-      <!-- 答题弹窗 -->
-      <div id="quizModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:100; align-items:center; justify-content:center; padding:20px;">
+
+      <!-- 撞车答题 -->
+      <div id="quizModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.75); z-index:100; align-items:center; justify-content:center; padding:20px;">
         <div style="background:#fff; border-radius:14px; padding:20px; max-width:400px; width:100%;">
           <h3 style="margin-top:0; color:#e63946;">⚠️ 撞车了！答对继续</h3>
           <p id="quizModalQuestion" style="font-weight:600; margin:12px 0;"></p>
@@ -349,9 +359,17 @@
           <p id="quizModalFeedback" style="margin-top:12px; font-weight:600;"></p>
         </div>
       </div>
+
+      <!-- 通关 -->
+      <div id="winModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); z-index:101; align-items:center; justify-content:center; padding:20px;">
+        <div style="background:#fff; border-radius:14px; padding:24px; max-width:400px; width:100%; text-align:center;">
+          <h2 style="color:#2e7d32;">🎉 送货成功！</h2>
+          <p id="winStats"></p>
+          <button class="primary" onclick="startDelivery()">再来一单</button>
+        </div>
+      </div>
     </div>
   </div>
-
   <script>
     // ===== 切换标签 =====
     function showTab(tab) {
@@ -783,280 +801,417 @@ function loadDailyQuestion() {
         optionsDiv.appendChild(btn);
       });
     }
-        // ===== 汽车驾驶游戏（带弯道、上下坡、变速器） =====
+        // ===== 送货驾驶游戏（伪3D） =====
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    const CANVAS_W = 320;
-    const CANVAS_H = 480;
-    const CAR_W = 40;
-    const CAR_H = 60;
+    const miniMapCanvas = document.getElementById('miniMap');
+    const mmCtx = miniMapCanvas.getContext('2d');
+    const W = 320, H = 480;
 
-    // 各档位：速度(km/h) + 道路滚动速度
+    // 游戏常量
+    const SEG_LEN = 200;
+    const ROAD_WIDTH = 2000;
+    const CAMERA_HEIGHT = 1000;
+    const FIELD_OF_VIEW = 100;
+    const CAMERA_DEPTH = 1 / Math.tan((FIELD_OF_VIEW / 2) * Math.PI / 180);
+    const DRAW_DISTANCE = 150;
+    const PLAYER_Z = CAMERA_HEIGHT * CAMERA_DEPTH;
+    const FOG_DENSITY = 5;
+    const MAX_SPEED = SEG_LEN * 60;
+
+    // 各档位：速度上限 + 加速
     const GEAR_CONFIG = {
-      1: { speed: 30,  scroll: 2 },
-      2: { speed: 60,  scroll: 4 },
-      3: { speed: 90,  scroll: 6 },
-      4: { speed: 120, scroll: 8 },
-      5: { speed: 150, scroll: 10 }
+      1: { max: MAX_SPEED * 0.3, accel: MAX_SPEED / 4 },
+      2: { max: MAX_SPEED * 0.55, accel: MAX_SPEED / 3.5 },
+      3: { max: MAX_SPEED * 0.8, accel: MAX_SPEED / 3 },
+      4: { max: MAX_SPEED, accel: MAX_SPEED / 2.5 }
     };
 
+    // 游戏状态
     let game = {
       running: false,
+      ready: false,
       score: 0,
       lives: 3,
-      distance: 0,
       gear: 3,
-      currentSpeed: 90,
-      scrollSpeed: 6,
-      player: { x: CANVAS_W / 2 - CAR_W / 2, y: CANVAS_H - CAR_H - 20 },
-      obstacles: [],
-      keys: { left: false, right: false },
-      spawnTimer: 0,
+      position: 0,
+      playerX: 0,
+      speed: 0,
+      segments: [],
+      trackLength: 0,
+      cargo: '发动机零件',
+      destination: '吉隆坡修理厂',
+      keys: { left: false, right: false, gas: false, brake: false },
       frameId: null,
-      roadOffset: 0,
-      curveAmplitude: 80,
-      hillHeight: 50
+      lastTime: 0,
+      winShown: false
     };
 
-    // 切换档位
+    // ===== 赛道生成 =====
+    function lastY() {
+      return game.segments.length === 0 ? 0 : game.segments[game.segments.length - 1].p2.world.y;
+    }
+
+    function addSegment(curve, y) {
+      const n = game.segments.length;
+      game.segments.push({
+        index: n,
+        p1: { world: { y: lastY(), z: n * SEG_LEN }, camera: {}, screen: {} },
+        p2: { world: { y: y, z: (n + 1) * SEG_LEN }, camera: {}, screen: {} },
+        curve: curve,
+        color: Math.floor(n / 3) % 2 ? { road: '#4a4a4a', grass: '#2a4d2a', rumble: '#e63946' }
+                                     : { road: '#444', grass: '#2d5a2d', rumble: '#fff' }
+      });
+    }
+
+    function addRoad(enter, hold, leave, curve, y) {
+      const startY = lastY();
+      const endY = startY + y * SEG_LEN;
+      const total = enter + hold + leave;
+      for (let n = 0; n < enter; n++) addSegment(easeIn(0, curve, n / enter), easeInOut(startY, endY, n / total));
+      for (let n = 0; n < hold; n++) addSegment(curve, easeInOut(startY, endY, (enter + n) / total));
+      for (let n = 0; n < leave; n++) addSegment(easeInOut(curve, 0, n / leave), easeInOut(startY, endY, (enter + hold + n) / total));
+    }
+
+    function easeIn(a, b, p) { return a + (b - a) * Math.pow(p, 2); }
+    function easeInOut(a, b, p) { return a + (b - a) * (-Math.cos(p * Math.PI) / 2 + 0.5); }
+
+    function buildTrack() {
+      game.segments = [];
+      // 起点直道
+      addRoad(20, 40, 20, 0, 0);
+      // 右弯
+      addRoad(25, 50, 25, 4, 0);
+      // 上坡
+      addRoad(20, 40, 20, 0, 40);
+      // 左弯（S弯）
+      addRoad(25, 40, 25, -3, 0);
+      addRoad(25, 40, 25, 3, 0);
+      // 下坡
+      addRoad(20, 40, 20, 0, -60);
+      // 大直道
+      addRoad(20, 80, 20, 0, 0);
+      // 急右弯
+      addRoad(30, 40, 30, 5, 0);
+      // 上坡
+      addRoad(20, 40, 20, 0, 50);
+      // 缓左弯
+      addRoad(25, 50, 25, -2, 0);
+      // 下坡
+      addRoad(20, 40, 20, 0, -50);
+      // S弯
+      addRoad(20, 40, 20, 3, 0);
+      addRoad(20, 40, 20, -3, 0);
+      // 终点大直道
+      addRoad(30, 80, 30, 0, 0);
+      game.trackLength = game.segments.length * SEG_LEN;
+    }
+
+    function findSegment(z) {
+      return game.segments[Math.floor(z / SEG_LEN) % game.segments.length];
+    }
+
+    // ===== 投影 =====
+    function project(p, cameraX, cameraY, cameraZ, cameraDepth, width, height, roadWidth) {
+      p.camera.x = (p.world.x || 0) - cameraX;
+      p.camera.y = (p.world.y || 0) - cameraY;
+      p.camera.z = (p.world.z || 0) - cameraZ;
+      p.screen.scale = cameraDepth / p.camera.z;
+      p.screen.x = Math.round((width / 2) + (p.screen.scale * p.camera.x * width / 2));
+      p.screen.y = Math.round((height / 2) - (p.screen.scale * p.camera.y * height / 2));
+      p.screen.w = Math.round(p.screen.scale * roadWidth * width / 2);
+    }
+
+    function exponentialFog(distance, density) {
+      return 1 / Math.pow(Math.E, (distance * distance * density));
+    }
+
+    // ===== 游戏控制 =====
     function setGear(gear) {
       game.gear = gear;
-      game.currentSpeed = GEAR_CONFIG[gear].speed;
-      game.scrollSpeed = GEAR_CONFIG[gear].scroll;
       document.querySelectorAll('.gear-btn').forEach((btn, i) => {
         btn.classList.toggle('active', (i + 1) === gear);
       });
-      document.getElementById('gameSpeed').textContent = game.currentSpeed;
     }
 
-    // 开始游戏
-    function startGame() {
+    function startDelivery() {
+      buildTrack();
       game.running = true;
-      game.score = 0;
+      game.ready = true;
+      game.winShown = false;
+      game.position = 0;
+      game.playerX = 0;
+      game.speed = 0;
       game.lives = 3;
-      game.distance = 0;
-      game.obstacles = [];
-      game.spawnTimer = 0;
-      game.roadOffset = 0;
-      game.player.x = CANVAS_W / 2 - CAR_W / 2;
-      setGear(game.gear);
-      updateGameUI();
+      game.score = 0;
+      game.cargo = ['发动机零件', '刹车片', '变速箱油', '轮胎'][Math.floor(Math.random() * 4)];
+      document.getElementById('gameCargo').textContent = game.cargo;
       document.getElementById('quizModal').style.display = 'none';
+      document.getElementById('winModal').style.display = 'none';
+      game.lastTime = performance.now();
       if (game.frameId) cancelAnimationFrame(game.frameId);
       gameLoop();
     }
 
-    // 停止游戏
     function stopGame() {
       game.running = false;
       if (game.frameId) cancelAnimationFrame(game.frameId);
     }
 
-    function updateGameUI() {
-      document.getElementById('gameScore').textContent = game.score;
-      document.getElementById('gameDistance').textContent = Math.floor(game.distance);
-      document.getElementById('gameSpeed').textContent = game.currentSpeed;
-      const hearts = '❤️'.repeat(Math.max(0, game.lives));
-      document.getElementById('gameLives').textContent = hearts || '💀';
-    }
-
-    function gameLoop() {
+    // ===== 主循环 =====
+    function gameLoop(now) {
       if (!game.running) return;
-      update();
-      draw();
+      const dt = Math.min(1, (now - game.lastTime) / 1000);
+      game.lastTime = now;
+      update(dt);
+      render();
+      drawMiniMap();
       game.frameId = requestAnimationFrame(gameLoop);
     }
 
-    // 计算弯道：某 y 位置的道路中心 X
-    function getRoadCenterX(y) {
-      const phase = (CANVAS_H - y) * 0.012 + game.roadOffset * 0.008;
-      return CANVAS_W / 2 + Math.sin(phase) * game.curveAmplitude;
-    }
+    function update(dt) {
+      const playerSegment = findSegment(game.position + PLAYER_Z);
+      const speedPercent = game.speed / MAX_SPEED;
+      const gearConf = GEAR_CONFIG[game.gear];
+      const dx = dt * 2 * speedPercent;
 
-    // 计算坡道：某 y 位置的道路宽度
-    function getRoadWidth(y, horizonY) {
-      if (y < horizonY) return 0;
-      const ratio = (y - horizonY) / (CANVAS_H - horizonY);
-      const topW = 60;
-      const bottomW = 220;
-      return topW + (bottomW - topW) * ratio;
-    }
+      // 转向 + 离心力
+      if (game.keys.left) game.playerX -= dx;
+      else if (game.keys.right) game.playerX += dx;
+      game.playerX -= dx * speedPercent * playerSegment.curve * 0.3;
 
-    // 当前地平线位置（上下坡）
-    function getHorizonY() {
-      return 80 + Math.sin(game.roadOffset * 0.003) * game.hillHeight;
-    }
-
-    function update() {
-      // 道路滚动（视觉上车在前进）
-      game.roadOffset += game.scrollSpeed;
-      game.distance += game.scrollSpeed * 0.5;
-
-      // 玩家左右移动
-      if (game.keys.left) game.player.x -= 5;
-      if (game.keys.right) game.player.x += 5;
-
-      const horizonY = getHorizonY();
-      const playerCenterY = game.player.y + CAR_H / 2;
-      const roadCenter = getRoadCenterX(playerCenterY);
-      const roadWidth = getRoadWidth(playerCenterY, horizonY);
-      const leftLimit = roadCenter - roadWidth / 2 + 5;
-      const rightLimit = roadCenter + roadWidth / 2 - CAR_W - 5;
-      game.player.x = Math.max(leftLimit, Math.min(rightLimit, game.player.x));
-
-      // 生成障碍物
-      game.spawnTimer++;
-      const spawnInterval = Math.max(30, 80 - game.gear * 8);
-      if (game.spawnTimer > spawnInterval) {
-        game.spawnTimer = 0;
-        const obsW = 40;
-        const obsH = 60;
-        const topY = horizonY + 20;
-        const topCenter = getRoadCenterX(topY);
-        const topWidth = getRoadWidth(topY, horizonY);
-        const minX = topCenter - topWidth / 2 + 5;
-        const maxX = topCenter + topWidth / 2 - obsW - 5;
-        game.obstacles.push({
-          x: minX + Math.random() * Math.max(0, maxX - minX),
-          y: topY - obsH,
-          w: obsW,
-          h: obsH,
-          color: '#e63946'
-        });
+      // 油门 / 刹车
+      if (game.keys.gas) {
+        game.speed = Math.min(gearConf.max, game.speed + gearConf.accel * dt);
+      } else if (game.keys.brake) {
+        game.speed = Math.max(0, game.speed - MAX_SPEED * 0.8 * dt);
+      } else {
+        game.speed = Math.max(0, game.speed - MAX_SPEED * 0.15 * dt);
       }
 
-      // 障碍物向下移动 + 跟着弯道走
-      game.obstacles.forEach(o => {
-        o.y += game.scrollSpeed;
-        const oCenterY = o.y + o.h / 2;
-        const targetCenter = getRoadCenterX(oCenterY);
-        const oWidth = getRoadWidth(oCenterY, horizonY);
-        if (o.x + o.w / 2 < targetCenter - oWidth / 2) {
-          o.x = targetCenter - oWidth / 2 + 5;
-        } else if (o.x + o.w / 2 > targetCenter + oWidth / 2) {
-          o.x = targetCenter + oWidth / 2 - o.w - 5;
-        }
-      });
-      game.obstacles = game.obstacles.filter(o => o.y < CANVAS_H + 100);
-
-      // 得分（档位越高，得分越多）
-      game.obstacles.forEach(o => {
-        if (!o.scored && o.y > game.player.y + CAR_H) {
-          o.scored = true;
-          game.score += game.gear;
-          updateGameUI();
-        }
-      });
-
-      // 碰撞检测
-      for (let o of game.obstacles) {
-        if (rectsOverlap(game.player.x, game.player.y, CAR_W, CAR_H, o.x, o.y, o.w, o.h)) {
-          game.obstacles = game.obstacles.filter(x => x !== o);
-          onCrash();
-          return;
-        }
+      // 离路减速
+      if ((game.playerX < -1 || game.playerX > 1) && game.speed > MAX_SPEED * 0.25) {
+        game.speed = Math.max(0, game.speed - MAX_SPEED * 0.5 * dt);
       }
 
-      // 持续更新距离和仪表盘
-      updateGameUI();
+      // 撞到路边
+      if (Math.abs(game.playerX) > 1.4) {
+        game.playerX = Math.sign(game.playerX) * 1.4;
+        onCrash();
+        return;
+      }
+
+      // 前进
+      game.position += game.speed * dt;
+      game.score = Math.floor(game.position / 100);
+
+      // 仪表盘
+      document.getElementById('gameSpeed').textContent = Math.round(game.speed / MAX_SPEED * 150);
+
+      // 进度
+      const progress = Math.min(100, (game.position / game.trackLength) * 100);
+      document.getElementById('gameProgress').textContent = Math.round(progress) + '%';
+      document.getElementById('gameProgressBar').style.width = progress + '%';
+      document.getElementById('gameScore').textContent = game.score;
+
+      // 到达目的地
+      if (game.position >= game.trackLength - SEG_LEN * 10 && !game.winShown) {
+        game.winShown = true;
+        stopGame();
+        document.getElementById('winStats').innerHTML = `
+          你成功把 <strong>${game.cargo}</strong> 送到 <strong>${game.destination}</strong>！<br>
+          剩余生命：❤️ x ${game.lives}<br>
+          总得分：<strong>${game.score}</strong>
+        `;
+        document.getElementById('winModal').style.display = 'flex';
+      }
     }
 
-    function rectsOverlap(x1, y1, w1, h1, x2, y2, w2, h2) {
-      return x1 < x2 + w2 && x1 + w1 > x2 && y1 < y2 + h2 && y1 + h1 > y2;
-    }
+    // ===== 渲染 =====
+    function render() {
+      const baseSegment = findSegment(game.position);
+      const basePercent = (game.position % SEG_LEN) / SEG_LEN;
+      const playerSegment = findSegment(game.position + PLAYER_Z);
+      const playerPercent = ((game.position + PLAYER_Z) % SEG_LEN) / SEG_LEN;
+      const playerY = playerSegment.p1.world.y + (playerSegment.p2.world.y - playerSegment.p1.world.y) * playerPercent;
 
-    function draw() {
-      const horizonY = getHorizonY();
-
-      // 天空
-      const skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
-      skyGrad.addColorStop(0, '#1a1a2e');
-      skyGrad.addColorStop(1, '#16213e');
+      // 天空渐变
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, H / 2);
+      skyGrad.addColorStop(0, '#0a0a1e');
+      skyGrad.addColorStop(1, '#1a2a4e');
       ctx.fillStyle = skyGrad;
-      ctx.fillRect(0, 0, CANVAS_W, horizonY);
+      ctx.fillRect(0, 0, W, H);
 
-      // 地面
-      ctx.fillStyle = '#2a4d2a';
-      ctx.fillRect(0, horizonY, CANVAS_W, CANVAS_H - horizonY);
-
-      // 道路
-      drawRoad(horizonY);
-
-      // 玩家车
-      drawCar(game.player.x, game.player.y, CAR_W, CAR_H, '#2ecc71');
-
-      // 障碍物
-      game.obstacles.forEach(o => {
-        drawCar(o.x, o.y, o.w, o.h, o.color);
-      });
-    }
-
-    function drawRoad(horizonY) {
-      // 道路主体
-      ctx.fillStyle = '#444';
+      // 远山
+      ctx.fillStyle = '#0d1f33';
       ctx.beginPath();
-      ctx.moveTo(getRoadCenterX(horizonY) - getRoadWidth(horizonY, horizonY) / 2, horizonY);
-      ctx.lineTo(getRoadCenterX(horizonY) + getRoadWidth(horizonY, horizonY) / 2, horizonY);
-      for (let y = horizonY; y <= CANVAS_H; y += 10) {
-        ctx.lineTo(getRoadCenterX(y) + getRoadWidth(y, horizonY) / 2, y);
+      ctx.moveTo(0, H / 2);
+      for (let i = 0; i <= 10; i++) {
+        ctx.lineTo(i * 32, H / 2 - Math.sin(i * 0.8 + game.position * 0.0005) * 30);
       }
-      for (let y = CANVAS_H; y >= horizonY; y -= 10) {
-        ctx.lineTo(getRoadCenterX(y) - getRoadWidth(y, horizonY) / 2, y);
-      }
-      ctx.closePath();
+      ctx.lineTo(W, H / 2);
+      ctx.lineTo(W, H);
+      ctx.lineTo(0, H);
       ctx.fill();
 
-      // 道路两侧白线
-      ctx.strokeStyle = '#fff';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      for (let y = horizonY; y <= CANVAS_H; y += 10) {
-        const x = getRoadCenterX(y) - getRoadWidth(y, horizonY) / 2;
-        if (y === horizonY) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.beginPath();
-      for (let y = horizonY; y <= CANVAS_H; y += 10) {
-        const x = getRoadCenterX(y) + getRoadWidth(y, horizonY) / 2;
-        if (y === horizonY) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
+      let maxy = H;
+      let x = 0;
+      let dx = -(baseSegment.curve * basePercent);
 
-      // 中间黄色虚线（滚动 = 前进感）
-      ctx.strokeStyle = '#ffeb3b';
-      ctx.lineWidth = 3;
-      ctx.setLineDash([20, 20]);
-      ctx.lineDashOffset = -game.roadOffset * 3;
-      ctx.beginPath();
-      for (let y = horizonY; y <= CANVAS_H; y += 10) {
-        const x = getRoadCenterX(y);
-        if (y === horizonY) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+      for (let n = 0; n < DRAW_DISTANCE; n++) {
+        const segment = game.segments[(baseSegment.index + n) % game.segments.length];
+        segment.looped = segment.index < baseSegment.index;
+        segment.fog = exponentialFog(n / DRAW_DISTANCE, FOG_DENSITY);
+        segment.clip = maxy;
+
+        const camZ = game.position - (segment.looped ? game.trackLength : 0);
+
+        project(segment.p1, (game.playerX * ROAD_WIDTH) - x, playerY + CAMERA_HEIGHT, camZ, CAMERA_DEPTH, W, H, ROAD_WIDTH);
+        project(segment.p2, (game.playerX * ROAD_WIDTH) - x - dx, playerY + CAMERA_HEIGHT, camZ, CAMERA_DEPTH, W, H, ROAD_WIDTH);
+
+        x += dx;
+        dx += segment.curve;
+
+        if (segment.p1.camera.z <= CAMERA_DEPTH ||
+            segment.p2.screen.y >= segment.p1.screen.y ||
+            segment.p2.screen.y >= maxy) continue;
+
+        renderSegment(segment);
+        maxy = segment.p1.screen.y;
       }
-      ctx.stroke();
-      ctx.setLineDash([]);
+
+      // 渲染玩家车
+      renderPlayerCar(playerSegment, playerPercent);
     }
 
-    function drawCar(x, y, w, h, color) {
+    function renderSegment(segment) {
+      const p1 = segment.p1.screen;
+      const p2 = segment.p2.screen;
+      const fog = segment.fog;
+      const color = segment.color;
+
+      // 草地
+      ctx.fillStyle = color.grass;
+      ctx.fillRect(0, p2.y, W, p1.y - p2.y);
+
+      // 路面
+      const r1 = rumbleWidth(p1.w), r2 = rumbleWidth(p2.w);
+      const l1 = laneMarkerWidth(p1.w), l2 = laneMarkerWidth(p2.w);
+
+      polygon(p1.x - p1.w - r1, p1.y, p1.x - p1.w, p1.y, p2.x - p2.w, p2.y, p2.x - p2.w - r2, p2.y, color.rumble);
+      polygon(p1.x + p1.w + r1, p1.y, p1.x + p1.w, p1.y, p2.x + p2.w, p2.y, p2.x + p2.w + r2, p2.y, color.rumble);
+      polygon(p1.x - p1.w, p1.y, p1.x + p1.w, p1.y, p2.x + p2.w, p2.y, p2.x - p2.w, p2.y, color.road);
+
+      // 车道线（中间虚线）
+      if (segment.index % 2 === 0) {
+        polygon(p1.x - l1 / 2, p1.y, p1.x + l1 / 2, p1.y, p2.x + l2 / 2, p2.y, p2.x - l2 / 2, p2.y, '#ffeb3b');
+      }
+
+      // 雾
+      if (fog < 1) {
+        ctx.globalAlpha = 1 - fog;
+        ctx.fillStyle = '#1a1a2e';
+        ctx.fillRect(0, p2.y, W, p1.y - p2.y);
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function rumbleWidth(projectedRoadWidth) { return projectedRoadWidth / 6; }
+    function laneMarkerWidth(projectedRoadWidth) { return projectedRoadWidth / 32; }
+
+    function polygon(x1, y1, x2, y2, x3, y3, x4, y4, color) {
       ctx.fillStyle = color;
-      ctx.fillRect(x, y, w, h);
-      ctx.fillStyle = 'rgba(255,255,255,0.7)';
-      ctx.fillRect(x + w * 0.2, y + h * 0.1, w * 0.6, h * 0.2);
-      ctx.fillRect(x + w * 0.2, y + h * 0.65, w * 0.6, h * 0.2);
-      ctx.strokeStyle = 'rgba(0,0,0,0.3)';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(x, y, w, h);
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.lineTo(x3, y3);
+      ctx.lineTo(x4, y4);
+      ctx.closePath();
+      ctx.fill();
     }
 
+    function renderPlayerCar(playerSegment, playerPercent) {
+      const spriteY = H / 2 + 60;
+      const spriteX = W / 2 + (game.playerX * 60);
+      const carW = 60, carH = 45;
+
+      // 阴影
+      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+      ctx.beginPath();
+      ctx.ellipse(spriteX, spriteY + carH - 5, carW / 2, 6, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 车身
+      ctx.fillStyle = '#2ecc71';
+      ctx.fillRect(spriteX - carW / 2, spriteY - carH / 2, carW, carH);
+      // 车窗
+      ctx.fillStyle = '#222';
+      ctx.fillRect(spriteX - carW / 2 + 8, spriteY - carH / 2 + 6, carW - 16, 12);
+      // 后窗
+      ctx.fillRect(spriteX - carW / 2 + 10, spriteY + 6, carW - 20, 8);
+      // 尾灯
+      ctx.fillStyle = '#e63946';
+      ctx.fillRect(spriteX - carW / 2 + 4, spriteY + carH / 2 - 6, 8, 4);
+      ctx.fillRect(spriteX + carW / 2 - 12, spriteY + carH / 2 - 6, 8, 4);
+      // 货物标志
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('📦', spriteX, spriteY + 2);
+    }
+
+    // ===== 小地图 =====
+    function drawMiniMap() {
+      mmCtx.clearRect(0, 0, 80, 100);
+      mmCtx.fillStyle = 'rgba(0,0,0,0.5)';
+      mmCtx.fillRect(0, 0, 80, 100);
+
+      // 计算赛道 X 累积（用来画地图轮廓）
+      let xs = [0];
+      let x = 0;
+      for (let i = 1; i < game.segments.length; i++) {
+        x += game.segments[i].curve * 0.1;
+        xs.push(x);
+      }
+      const maxX = Math.max(...xs.map(Math.abs)) || 1;
+
+      // 画赛道
+      mmCtx.strokeStyle = '#fff';
+      mmCtx.lineWidth = 2;
+      mmCtx.beginPath();
+      for (let i = 0; i < xs.length; i += 5) {
+        const px = 40 + (xs[i] / maxX) * 30;
+        const py = 90 - (i / xs.length) * 80;
+        if (i === 0) mmCtx.moveTo(px, py);
+        else mmCtx.lineTo(px, py);
+      }
+      mmCtx.stroke();
+
+      // 玩家位置
+      const playerIndex = Math.floor(game.position / SEG_LEN) % game.segments.length;
+      const px = 40 + (xs[playerIndex] / maxX) * 30;
+      const py = 90 - (playerIndex / xs.length) * 80;
+      mmCtx.fillStyle = '#2ecc71';
+      mmCtx.beginPath();
+      mmCtx.arc(px, py, 4, 0, Math.PI * 2);
+      mmCtx.fill();
+
+      // 目的地
+      mmCtx.fillStyle = '#e63946';
+      mmCtx.beginPath();
+      mmCtx.arc(px, 10, 4, 0, Math.PI * 2);
+      mmCtx.fill();
+    }
+
+    // ===== 撞车 =====
     function onCrash() {
+      game.speed = 0;
       game.running = false;
       game.lives--;
-      updateGameUI();
+      document.getElementById('gameLives').textContent = Math.max(0, game.lives);
 
       if (game.lives < 0) {
-        alert('游戏结束！\n得分：' + game.score + '\n距离：' + Math.floor(game.distance) + 'm');
+        alert('任务失败！货物没送到。\n得分：' + game.score);
         return;
       }
       showQuizModal();
@@ -1064,7 +1219,6 @@ function loadDailyQuestion() {
 
     function showQuizModal() {
       const modal = document.getElementById('quizModal');
-      // 题目变动：每次从题库随机抽一题
       const q = questionBank[Math.floor(Math.random() * questionBank.length)];
       const shuffled = shuffle(q.options.map((opt, i) => ({ opt, isCorrect: i === q.answer })));
 
@@ -1082,22 +1236,18 @@ function loadDailyQuestion() {
           optDiv.querySelectorAll('button').forEach(b => b.disabled = true);
           const fb = document.getElementById('quizModalFeedback');
           if (item.isCorrect) {
-            fb.textContent = '✅ 答对了！继续游戏。';
+            fb.textContent = '✅ 答对了！继续送货。';
             fb.style.color = '#2e7d32';
-            setTimeout(() => {
-              modal.style.display = 'none';
-              game.running = true;
-              gameLoop();
-            }, 1200);
           } else {
             fb.textContent = '❌ 答错了。' + q.explanation;
             fb.style.color = '#e63946';
-            setTimeout(() => {
-              modal.style.display = 'none';
-              game.running = true;
-              gameLoop();
-            }, 2500);
           }
+          setTimeout(() => {
+            modal.style.display = 'none';
+            game.running = true;
+            game.lastTime = performance.now();
+            gameLoop();
+          }, 1500);
         };
         optDiv.appendChild(btn);
       });
@@ -1105,34 +1255,38 @@ function loadDailyQuestion() {
       modal.style.display = 'flex';
     }
 
-    // 键盘控制
+    // ===== 键盘控制 =====
     document.addEventListener('keydown', e => {
-      if (e.key === 'ArrowLeft') game.keys.left = true;
-      if (e.key === 'ArrowRight') game.keys.right = true;
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') game.keys.left = true;
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') game.keys.right = true;
+      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') game.keys.gas = true;
+      if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') game.keys.brake = true;
     });
     document.addEventListener('keyup', e => {
-      if (e.key === 'ArrowLeft') game.keys.left = false;
-      if (e.key === 'ArrowRight') game.keys.right = false;
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') game.keys.left = false;
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') game.keys.right = false;
+      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') game.keys.gas = false;
+      if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') game.keys.brake = false;
     });
 
-    // 触摸控制
+    // ===== 触摸控制 =====
     canvas.addEventListener('touchstart', e => {
       e.preventDefault();
       const rect = canvas.getBoundingClientRect();
-      const touchX = e.touches[0].clientX - rect.left;
-      const scale = CANVAS_W / rect.width;
-      const targetX = touchX * scale;
-      game.player.x = Math.max(0, Math.min(CANVAS_W - CAR_W, targetX - CAR_W / 2));
+      const x = e.touches[0].clientX - rect.left;
+      if (x < rect.width / 3) game.keys.left = true;
+      else if (x > rect.width * 2 / 3) game.keys.right = true;
+      else game.keys.gas = true;
+    }, { passive: false });
+    canvas.addEventListener('touchend', e => {
+      e.preventDefault();
+      game.keys.left = false;
+      game.keys.right = false;
+      game.keys.gas = false;
     }, { passive: false });
 
-    canvas.addEventListener('touchmove', e => {
-      e.preventDefault();
-      const rect = canvas.getBoundingClientRect();
-      const touchX = e.touches[0].clientX - rect.left;
-      const scale = CANVAS_W / rect.width;
-      const targetX = touchX * scale;
-      game.player.x = Math.max(0, Math.min(CANVAS_W - CAR_W, targetX - CAR_W / 2));
-    }, { passive: false });
+    // 档位按钮初始化
+    setGear(3);
   </script>
 </body>
 </html>
