@@ -2604,40 +2604,15 @@ function applyTranslations() {
         playerSegment.curve *
         0.3;
       // 默认缓慢加速（自动挡），按刹车才减速
-      const autoGas = !game.keys.brake;
-      
-      if (game.keys.gas || autoGas) {
+        // 默认缓慢加速（自动挡），按刹车才减速
+      if (game.keys.brake) {
+        game.speed = Math.max(0, game.speed - MAX_SPEED * 0.8 * dt);
+      } else if (game.keys.gas) {
         game.speed = Math.min(gearConfig.max, game.speed + gearConfig.accel * dt);
-      } else if (game.keys.brake) {
-        game.speed =
-          Math.min(
-            gearConfig.max,
-            game.speed +
-            gearConfig.accel *
-            dt
-          );
-      } else if (game.keys.brake) {
-        game.speed =
-          Math.max(
-            0,
-            game.speed -
-            MAX_SPEED *
-            0.8 *
-            dt
-          );
       } else {
-        game.speed =
-          Math.max(
-            0,
-            game.speed -
-            MAX_SPEED *
-            0.15 *
-            dt
-          );
+        game.speed = Math.min(gearConfig.max, game.speed + gearConfig.accel * 0.5 * dt);
       }
 
-      if (
-        (
           game.playerX < -1 ||
           game.playerX > 1
         ) &&
