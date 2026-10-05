@@ -2543,31 +2543,60 @@ function applyTranslations() {
     }
 
     function updateGame(dt) {
-      const playerSegment =
-        findSegment(
-          game.position +
-          PLAYER_Z
-        );
+      const playerSegment = findSegment(game.position + PLAYER_Z);
+      if (!playerSegment) return;
 
-      const speedPercent =
-        game.speed /
-        MAX_SPEED;
+      const speedPercent = game.speed / MAX_SPEED;
+      const gearConfig = GEAR_CONFIG[game.gear];
+      const dx = dt * 2 * speedPercent;
 
-      const gearConfig =
-        GEAR_CONFIG[
-          game.gear
-        ];
+      if (game.keys.left) game.playerX -= dx;
+      else if (game.keys.right) game.playerX += dx;
+      game.playerX -= dx * speedPercent * playerSegment.curve * 0.3;
 
-      const dx =
-        dt *
-        2 *
-        speedPercent;
-
-      if (game.keys.left) {
-        game.playerX -= dx;
-      } else if (game.keys.right) {
-        game.playerX += dx;
+      // 默认缓慢加速（自动挡），按刹车才减速
+      if (game.keys.brake) {
+        game.speed = Math.max(0, game.speed - MAX_SPEED * 0.8 * dt);
+      } else if (game.keys.gas) {
+        game.speed = Math.min(gearConfig.max, game.speed + gearConfig.accel * dt);
+      } else {
+        game.speed = Math.min(gearConfig.max, game.speed + gearConfig.accel * 0.5 * dt);
       }
+
+      // 离路减速
+      if ((game.playerX < -1 || game.playerX > 1) && game.speed > MAX_SPEED * 0.25) {
+        game.speed = Math.max(0, game.speed - MAX_SPEED * 0.5 * dt);
+      }
+
+      // 撞到路边
+      if (Math.abs(game.playerX) > 1.4) {
+        game.playerX = Math.sign(game.playerX) * 1.4;
+        onCrash();
+        return;
+      }
+
+      game.position += game.speed * dt;
+      game.score = Math.floor(game.position / 100);
+
+      document.getElementById("gameSpeed").textContent = Math.round(game.speed / MAX_SPEED * 150);
+
+      const progress = Math.min(100, (game.position / game.trackLength) * 100);
+      document.getElementById("gameProgress").textContent = Math.round(progress) + "%";
+      document.getElementById("gameProgressBar").style.width = progress + "%";
+      document.getElementById("gameScore").textContent = game.score;
+
+      // 到达目的地
+      if (game.position >= game.trackLength - SEG_LEN * 10 && !game.winShown) {
+        game.winShown = true;
+        stopGame();
+        document.getElementById("winStats").innerHTML =
+          `你已成功将 <strong>${escapeHtml(game.cargo)}</strong> 安全送达 ` +
+          `<strong>${escapeHtml(game.destination)}</strong>！<br><br>` +
+          `剩余生命：❤️ × ${game.lives}<br>` +
+          `任务得分：<strong>${game.score}</strong>`;
+        document.getElementById("winModal").style.display = "flex";
+      }
+    }
 
       game.playerX -=
         dx *
@@ -2580,7 +2609,6 @@ function applyTranslations() {
       if (game.keys.gas || autoGas) {
         game.speed = Math.min(gearConfig.max, game.speed + gearConfig.accel * dt);
       } else if (game.keys.brake) {
-      if (game.keys.gas) {
         game.speed =
           Math.min(
             gearConfig.max,
