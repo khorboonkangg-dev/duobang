@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,7 +81,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: #e63946
 <!-- 语言切换小按钮 -->
 <button class="lang-switch" onclick="showLangPicker()">🌐 <span id="langLabel">EN</span></button>
 
-<!-- 欢迎 / 语言选择 -->
+<!-- ========== 欢迎 / 语言选择 ========== -->
 <div id="langOverlay">
   <div class="lang-box">
     <img src="logo.png" alt="DuoBang" class="lang-logo">
@@ -99,134 +99,134 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: #e63946
 <!-- 品牌头部 -->
 <div class="card">
   <div class="brand">
-    <img src="logo.png" alt="多帮 DuoBang">
-    <h1 data-i18n="brand">多帮 DuoBang</h1>
+    <img src="logo.png" alt="DuoBang">
+    <h1 data-i18n="brand">DuoBang</h1>
   </div>
-  <p class="slogan" data-i18n="slogan">车主服务、经验交流、学习工具，一站解决用车问题</p>
+  <p class="slogan" data-i18n="slogan">Car service, experience sharing, learning tools — all in one place</p>
 </div>
 
 <!-- 主导航 -->
 <div class="tabs">
-  <button id="tabBooking" class="active" onclick="showTab('booking')" data-i18n="tabBooking">维修预约</button>
-  <button id="tabCommunity" onclick="showTab('community')" data-i18n="tabCommunity">车主社区</button>
-  <button id="tabStudy" onclick="showTab('study')" data-i18n="tabStudy">学习中心</button>
-  <button id="tabNews" onclick="showTab('news')" data-i18n="tabNews">车主工具</button>
-  <button id="tabGame" onclick="showTab('game')" data-i18n="tabGame">轻松一局</button>
+  <button id="tabBooking" class="active" onclick="showTab('booking')" data-i18n="tabBooking">Booking</button>
+  <button id="tabCommunity" onclick="showTab('community')" data-i18n="tabCommunity">Community</button>
+  <button id="tabStudy" onclick="showTab('study')" data-i18n="tabStudy">Learning</button>
+  <button id="tabNews" onclick="showTab('news')" data-i18n="tabNews">Car Tools</button>
+  <button id="tabGame" onclick="showTab('game')" data-i18n="tabGame">Play Game</button>
 </div>
 
 <!-- 1. 维修预约 -->
 <div id="bookingTab" class="tab active">
   <div class="card">
-    <h2 style="color:#e63946;" data-i18n="bookingTitle">🔍 先描述问题，再安排维修</h2>
-    <p class="muted" style="margin-bottom:20px;" data-i18n="bookingDesc">只需回答几个简单问题，我们会整理成维修需求单。</p>
+    <h2 style="color:#e63946;" data-i18n="bookingTitle">🔍 Describe the problem</h2>
+    <p class="muted" style="margin-bottom:20px;" data-i18n="bookingDesc">Answer a few simple questions.</p>
 
     <form name="duobang-booking" method="POST" data-netlify="true">
       <input type="hidden" name="problem" id="finalProblemDesc">
 
       <div class="question-step">
-        <label class="step-label" data-i18n="q1Label">1. 问题通常在什么时候出现？</label>
+        <label class="step-label" data-i18n="q1Label">1. When does the problem occur?</label>
         <div class="options-group">
-          <button type="button" class="option-btn" onclick="selectOption(this,'time','行驶中')" data-i18n="optDriving">🛣️ 行驶中</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'time','转弯时')" data-i18n="optTurning">🔄 转弯时</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'time','减速带/坑洞')" data-i18n="optBump">🚧 减速带 / 坑洞</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'time','刹车时')" data-i18n="optBraking">🛑 刹车时</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'time','启动/怠速时')" data-i18n="optIdle">🔑 启动 / 怠速</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'time','driving')" data-i18n="optDriving">🛣️ While driving</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'time','turning')" data-i18n="optTurning">🔄 While turning</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'time','bump')" data-i18n="optBump">🚧 Speed bump</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'time','braking')" data-i18n="optBraking">🛑 While braking</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'time','idle')" data-i18n="optIdle">🔑 Start / idle</button>
         </div>
       </div>
 
       <div class="question-step">
-        <label class="step-label" data-i18n="q2Label">2. 主要出现什么症状？</label>
+        <label class="step-label" data-i18n="q2Label">2. Main symptom?</label>
         <div class="options-group">
-          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','有异响')" data-i18n="optNoise">🔊 有异响</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','有震动')" data-i18n="optVibrate">📳 有震动</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','动力不足')" data-i18n="optWeak">🐢 动力不足 / 加速慢</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','有异味')" data-i18n="optSmell">👃 有异味</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','漏油漏液')" data-i18n="optLeak">💧 漏油 / 漏液</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','故障灯亮起')" data-i18n="optLight">💡 故障灯亮起</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','noise')" data-i18n="optNoise">🔊 Strange noise</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','vibrate')" data-i18n="optVibrate">📳 Vibration</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','weak')" data-i18n="optWeak">🐢 Weak power</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','smell')" data-i18n="optSmell">👃 Strange smell</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','leak')" data-i18n="optLeak">💧 Leak</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'feeling','light')" data-i18n="optLight">💡 Warning light</button>
         </div>
       </div>
 
       <div class="question-step">
-        <label class="step-label" data-i18n="q3Label">3. 有什么声音或明显感觉？</label>
+        <label class="step-label" data-i18n="q3Label">3. Sound or feel like?</label>
         <div class="options-group">
-          <button type="button" class="option-btn" onclick="selectOption(this,'sound','金属摩擦声')" data-i18n="optMetal">🔩 金属摩擦声</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'sound','敲击声')" data-i18n="optKnock">🔨 敲击 / 哒哒声</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'sound','吱吱声')" data-i18n="optSqueak">🐦 吱吱 / 尖叫声</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'sound','嗡嗡声')" data-i18n="optHum">🕳️ 嗡嗡 / 共振声</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'sound','咯噔声')" data-i18n="optClunk">🎯 咯噔 / 松动感</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'sound','说不清')" data-i18n="optUnsure">❓ 说不清</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'sound','metal')" data-i18n="optMetal">🔩 Metal grinding</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'sound','knock')" data-i18n="optKnock">🔨 Knocking</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'sound','squeak')" data-i18n="optSqueak">🐦 Squeaking</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'sound','hum')" data-i18n="optHum">🕳️ Humming</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'sound','clunk')" data-i18n="optClunk">🎯 Clunking</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'sound','unsure')" data-i18n="optUnsure">❓ Not sure</button>
         </div>
       </div>
 
       <div class="question-step">
-        <label class="step-label" data-i18n="q4Label">4. 目前情况严重吗？</label>
+        <label class="step-label" data-i18n="q4Label">4. How serious?</label>
         <div class="options-group">
-          <button type="button" class="option-btn" onclick="selectOption(this,'severity','偶尔出现')" data-i18n="optRare">🟢 偶尔出现</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'severity','经常出现')" data-i18n="optOften">🟡 经常出现</button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'severity','持续出现')" data-i18n="optAlways">🔴 持续出现</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'severity','rare')" data-i18n="optRare">🟢 Rarely</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'severity','often')" data-i18n="optOften">🟡 Often</button>
+          <button type="button" class="option-btn" onclick="selectOption(this,'severity','always')" data-i18n="optAlways">🔴 Always</button>
         </div>
       </div>
 
       <div class="divider">
-        <h3 style="margin-bottom:12px;" data-i18n="contactTitle">留下联系方式，方便安排服务</h3>
-        <label for="car_plate" data-i18n="carPlate">车牌号码</label>
-        <input type="text" id="car_plate" name="car_plate" data-i18n-placeholder="carPlatePh" placeholder="例如：W 1234 A" required>
-        <label for="phone" data-i18n="phone">联系电话</label>
-        <input type="tel" id="phone" name="phone" data-i18n-placeholder="phonePh" placeholder="例如：0123456789" required>
-        <label for="mode" data-i18n="mode">维修方式</label>
+        <h3 style="margin-bottom:12px;" data-i18n="contactTitle">Leave your contact info</h3>
+        <label for="car_plate" data-i18n="carPlate">Car Plate</label>
+        <input type="text" id="car_plate" name="car_plate" placeholder="W 1234 A" required>
+        <label for="phone" data-i18n="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="0123456789" required>
+        <label for="mode" data-i18n="mode">Service Mode</label>
         <select id="mode" name="mode">
-          <option value="到店维修" data-i18n="toShop">到店维修</option>
-          <option value="上门维修" data-i18n="onSite">上门维修</option>
+          <option value="toShop" data-i18n="toShop">At Shop</option>
+          <option value="onSite" data-i18n="onSite">On-Site</option>
         </select>
-        <p class="hint" data-i18n="submitHint">提交后，我们会根据你的维修需求安排后续联系。</p>
-        <label for="extra" data-i18n="extra">补充说明（选填）</label>
-        <textarea id="extra" name="extra" rows="3" data-i18n-placeholder="extraPh" placeholder="例如：问题持续多久、最近是否维修过……"></textarea>
+        <p class="hint" data-i18n="submitHint">After submitting, we'll follow up.</p>
+        <label for="extra" data-i18n="extra">Extra Notes (optional)</label>
+        <textarea id="extra" name="extra" rows="3"></textarea>
       </div>
 
-      <button type="submit" class="primary" data-i18n="submitBooking">提交维修需求</button>
+      <button type="submit" class="primary" data-i18n="submitBooking">Submit Request</button>
     </form>
   </div>
 </div>
 
-<!-- 2. 车主社区 -->
+<!-- 2. 社区 -->
 <div id="communityTab" class="tab">
   <div id="authBox" class="card">
-    <h2 data-i18n="communityTitle">👋 加入车主社区</h2>
-    <p class="muted" data-i18n="communityDesc">分享经验、互相帮忙，一起少走维修弯路。</p>
-    <input type="text" id="username" data-i18n-placeholder="usernamePh" placeholder="输入用户名">
-    <input type="password" id="password" data-i18n-placeholder="passwordPh" placeholder="输入密码">
-    <button class="primary" onclick="login()" data-i18n="loginBtn">登录</button>
-    <button class="small" style="width:100%; margin-top:8px;" onclick="register()" data-i18n="registerBtn">注册账号</button>
+    <h2 data-i18n="communityTitle">👋 Join Community</h2>
+    <p class="muted" data-i18n="communityDesc">Share experiences and help each other.</p>
+    <input type="text" id="username" data-i18n-placeholder="usernamePh" placeholder="Username">
+    <input type="password" id="password" data-i18n-placeholder="passwordPh" placeholder="Password">
+    <button class="primary" onclick="login()" data-i18n="loginBtn">Login</button>
+    <button class="small" style="width:100%; margin-top:8px;" onclick="register()" data-i18n="registerBtn">Register</button>
     <p id="authMsg" class="auth-msg"></p>
   </div>
   <div id="communityBox" style="display:none;">
     <div class="card">
-      <p><span data-i18n="welcomeBack">欢迎回来，</span><strong id="currentUser"></strong>
-        <button class="small" onclick="logout()" data-i18n="logoutBtn">退出</button>
+      <p><span data-i18n="welcomeBack">Welcome back, </span><strong id="currentUser"></strong>
+        <button class="small" onclick="logout()" data-i18n="logoutBtn">Logout</button>
       </p>
-      <textarea id="postContent" rows="3" data-i18n-placeholder="postPh" placeholder="分享维修经验、用车问题……"></textarea>
-      <button class="primary" onclick="createPost()" data-i18n="publishBtn">发布内容</button>
+      <textarea id="postContent" rows="3" data-i18n-placeholder="postPh" placeholder="Share..."></textarea>
+      <button class="primary" onclick="createPost()" data-i18n="publishBtn">Publish</button>
     </div>
     <div id="feed"></div>
   </div>
 </div>
 
-<!-- 3. 学习中心 -->
+<!-- 3. 学习 -->
 <div id="studyTab" class="tab">
   <div class="card">
-    <h2 data-i18n="studyTitle">📚 SPM 汽车技术复习</h2>
-    <p><span data-i18n="daysLeftPrefix">距离 SPM 考试还有</span> <strong id="spmCountdown" style="color:#e63946; font-size:20px;">--</strong> <span data-i18n="daysLeftSuffix">天</span></p>
+    <h2 data-i18n="studyTitle">📚 SPM Revision</h2>
+    <p><span data-i18n="daysLeftPrefix">Days left:</span> <strong id="spmCountdown" style="color:#e63946; font-size:20px;">--</strong> <span data-i18n="daysLeftSuffix">days</span></p>
     <div class="divider">
-      <h3 data-i18n="dailyTitle">🎯 每日一题</h3>
-      <p id="dailyQuestion" style="font-weight:600; margin-bottom:14px;" data-i18n="loading">加载中……</p>
+      <h3 data-i18n="dailyTitle">🎯 Daily Question</h3>
+      <p id="dailyQuestion" style="font-weight:600; margin-bottom:14px;" data-i18n="loading">Loading...</p>
       <div id="dailyOptions" style="display:flex; flex-direction:column; gap:8px;"></div>
       <p id="dailyFeedback" style="margin-top:12px; font-weight:600;"></p>
-      <button class="small" style="margin-top:12px; width:100%;" onclick="loadDailyQuestion()" data-i18n="changeBtn">🔄 换一题</button>
+      <button class="small" style="margin-top:12px; width:100%;" onclick="loadDailyQuestion()" data-i18n="changeBtn">🔄 Change</button>
     </div>
     <div class="divider">
-      <h3 data-i18n="practiceTitle">📝 专项练习</h3>
-      <p class="muted" data-i18n="practiceDesc">随机抽取题目，测试你的汽车技术基础。</p>
-      <button class="primary" onclick="startQuiz()" data-i18n="startPractice">开始练习</button>
+      <h3 data-i18n="practiceTitle">📝 Practice</h3>
+      <p class="muted" data-i18n="practiceDesc">Random questions to test your basics.</p>
+      <button class="primary" onclick="startQuiz()" data-i18n="startPractice">Start Practice</button>
       <div id="quizArea" style="margin-top:16px;"></div>
     </div>
   </div>
@@ -235,34 +235,34 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: #e63946
 <!-- 4. 车主工具 -->
 <div id="newsTab" class="tab">
   <div class="card">
-    <h2 data-i18n="recallTitle">📰 车辆召回查询</h2>
-    <p class="muted" data-i18n="recallDesc">查询车辆是否存在公开召回记录。</p>
-    <p class="hint" data-i18n="recallSource">数据来源：NHTSA 美国国家公路交通安全管理局</p>
-    <label for="newsMake" data-i18n="brandEnLabel">品牌（英文）</label>
+    <h2 data-i18n="recallTitle">📰 Vehicle Recall</h2>
+    <p class="muted" data-i18n="recallDesc">Check recall records.</p>
+    <p class="hint" data-i18n="recallSource">Source: NHTSA (USA)</p>
+    <label for="newsMake" data-i18n="brandEnLabel">Brand (English)</label>
     <input type="text" id="newsMake" value="Toyota">
-    <label for="newsModel" data-i18n="modelEnLabel">车型（英文）</label>
+    <label for="newsModel" data-i18n="modelEnLabel">Model (English)</label>
     <input type="text" id="newsModel" value="Camry">
-    <label for="newsYear" data-i18n="yearLabel">年份</label>
+    <label for="newsYear" data-i18n="yearLabel">Year</label>
     <input type="number" id="newsYear" value="2020">
-    <button class="primary" onclick="fetchRecalls()" data-i18n="queryRecall">查询召回信息</button>
+    <button class="primary" onclick="fetchRecalls()" data-i18n="queryRecall">Query</button>
     <div id="recallResult" class="result-box"></div>
   </div>
   <div class="card">
-    <h3 data-i18n="locationTitle">📍 我的网络位置</h3>
-    <p class="muted" data-i18n="locationDesc">根据当前网络 IP 尝试识别国家与城市。</p>
-    <button class="primary" onclick="detectLocation()" data-i18n="detectLocation">自动识别位置</button>
+    <h3 data-i18n="locationTitle">📍 My Location</h3>
+    <p class="muted" data-i18n="locationDesc">Detect from your IP.</p>
+    <button class="primary" onclick="detectLocation()" data-i18n="detectLocation">Detect</button>
     <div id="locationResult" class="result-box"></div>
   </div>
   <div class="card">
-    <h3 data-i18n="weatherTitle">🌤️ 今日天气提醒</h3>
-    <p class="muted" data-i18n="weatherDesc">查看天气，并获取简单的驾驶提醒。</p>
-    <button class="primary" onclick="fetchWeather()" data-i18n="checkWeather">查看天气</button>
+    <h3 data-i18n="weatherTitle">🌤️ Weather</h3>
+    <p class="muted" data-i18n="weatherDesc">Weather + driving tips.</p>
+    <button class="primary" onclick="fetchWeather()" data-i18n="checkWeather">Check</button>
     <div id="weatherResult" class="result-box"></div>
   </div>
   <div class="card">
-    <h3 data-i18n="rateTitle">💱 零件进口汇率</h3>
-    <p class="muted" data-i18n="rateDesc">查看主要货币与美元之间的最新汇率。</p>
-    <button class="primary" onclick="fetchExchangeRate()" data-i18n="checkRate">查看今日汇率</button>
+    <h3 data-i18n="rateTitle">💱 Exchange Rates</h3>
+    <p class="muted" data-i18n="rateDesc">Latest currency rates.</p>
+    <button class="primary" onclick="fetchExchangeRate()" data-i18n="checkRate">Check</button>
     <div id="rateResult" class="result-box"></div>
   </div>
 </div>
@@ -270,14 +270,14 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: #e63946
 <!-- 5. 游戏 -->
 <div id="gameTab" class="tab">
   <div class="card">
-    <h2 data-i18n="gameTitle">🚚 多帮送货挑战</h2>
-    <p class="muted" style="font-size:13px;" data-i18n="gameDesc">把汽车零件安全送到目的地。↑ 油门　↓ 刹车　← → 转向</p>
+    <h2 data-i18n="gameTitle">🚚 Delivery Challenge</h2>
+    <p class="muted" style="font-size:13px;" data-i18n="gameDesc">Deliver parts safely. ↑ gas　↓ brake　← → steer</p>
 
     <div style="margin:10px 0;">
       <div style="display:flex; justify-content:space-between; font-size:12px; color:#666;">
-        <span data-i18n="startPoint">起点</span>
-        <span><span data-i18n="progressLabel">进度</span> <strong id="gameProgress">0%</strong></span>
-        <span data-i18n="destinationLabel">目的地</span>
+        <span data-i18n="startPoint">Start</span>
+        <span><span data-i18n="progressLabel">Progress</span> <strong id="gameProgress">0%</strong></span>
+        <span data-i18n="destinationLabel">Destination</span>
       </div>
       <div style="background:#eee; height:8px; border-radius:4px; overflow:hidden; margin-top:4px;">
         <div id="gameProgressBar" style="width:0%; height:100%; background:#e63946;"></div>
@@ -285,7 +285,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: #e63946
     </div>
 
     <div style="display:flex; justify-content:space-between; margin:8px 0; font-size:13px;">
-      <span>📦 <strong id="gameCargo" data-i18n="cargoName">发动机零件</strong></span>
+      <span>📦 <strong id="gameCargo">Parts</strong></span>
       <span>💰 <strong id="gameScore" style="color:#e63946;">0</strong></span>
       <span>❤️ <strong id="gameLives">3</strong></span>
     </div>
@@ -305,12 +305,12 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: #e63946
         <button class="gear-btn active" onclick="setGear(3)">3</button>
         <button class="gear-btn" onclick="setGear(4)">4</button>
       </div>
-      <p class="hint" data-i18n="gearHint">档位越高，速度上限越高</p>
+      <p class="hint" data-i18n="gearHint">Higher gear, higher speed</p>
     </div>
 
     <div style="display:flex; gap:8px; margin-top:12px;">
-      <button class="primary" style="flex:1;" onclick="startDelivery()" data-i18n="startTask">🚚 开始任务</button>
-      <button class="small" style="flex:1; background:#333; color:#fff; padding:12px;" onclick="stopGame()" data-i18n="stopTask">⏸ 停止</button>
+      <button class="primary" style="flex:1;" onclick="startDelivery()" data-i18n="startTask">🚚 Start</button>
+      <button class="small" style="flex:1; background:#333; color:#fff; padding:12px;" onclick="stopGame()" data-i18n="stopTask">⏸ Stop</button>
     </div>
   </div>
 </div>
@@ -318,8 +318,8 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: #e63946
 <!-- 撞车问答 -->
 <div id="quizModal" class="modal">
   <div class="modal-content">
-    <h3 style="margin-top:0; color:#e63946;" data-i18n="quizTitle">⚠️ 车辆偏离路线</h3>
-    <p data-i18n="quizDesc">回答一道汽车知识题，继续完成送货任务。</p>
+    <h3 style="margin-top:0; color:#e63946;" data-i18n="quizTitle">⚠️ Off Track</h3>
+    <p data-i18n="quizDesc">Answer to continue.</p>
     <p id="quizModalQuestion" style="font-weight:600; margin:12px 0;"></p>
     <div id="quizModalOptions" style="display:flex; flex-direction:column; gap:8px;"></div>
     <p id="quizModalFeedback" style="margin-top:12px; font-weight:600;"></p>
@@ -329,213 +329,198 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: #e63946
 <!-- 通关 -->
 <div id="winModal" class="modal" style="background:rgba(0,0,0,0.8);">
   <div class="modal-content" style="text-align:center;">
-    <h2 style="color:#2e7d32;" data-i18n="winTitle">🎉 任务完成</h2>
+    <h2 style="color:#2e7d32;" data-i18n="winTitle">🎉 Done</h2>
     <p id="winStats"></p>
-    <button class="primary" onclick="startDelivery()" data-i18n="playAgain">再来一单</button>
+    <button class="primary" onclick="startDelivery()" data-i18n="playAgain">Play Again</button>
   </div>
 </div>
 
-<div class="footer" data-i18n="footer">多帮 DuoBang · 让车主更容易找到帮助</div>
+<div class="footer" data-i18n="footer">DuoBang</div>
 
 <script>
-/* ========== 完整翻译表 ========== */
+/* ========== 翻译表 ========== */
 const translations = {
   ms: {
     brand: "DuoBang",
     slogan: "Servis kereta, kongsi pengalaman, alat pembelajaran — semua di satu tempat",
     tabBooking: "Tempahan", tabCommunity: "Komuniti", tabStudy: "Pembelajaran",
     tabNews: "Alat Kereta", tabGame: "Main Game",
-    bookingTitle: "🔍 Terangkan masalah, kami uruskan",
-    bookingDesc: "Jawab beberapa soalan mudah, kami akan sediakan borang untuk mekanik.",
-    q1Label: "1. Bila masalah ini biasanya berlaku?",
+    bookingTitle: "🔍 Terangkan masalah",
+    bookingDesc: "Jawab beberapa soalan mudah.",
+    q1Label: "1. Bila masalah berlaku?",
     optDriving: "🛣️ Semasa memandu", optTurning: "🔄 Semasa membelok",
-    optBump: "🚧 Bonggol / lubang", optBraking: "🛑 Semasa brek",
-    optIdle: "🔑 Mula / melahu",
-    q2Label: "2. Apakah gejala utama?",
+    optBump: "🚧 Bonggol", optBraking: "🛑 Semasa brek", optIdle: "🔑 Mula / melahu",
+    q2Label: "2. Gejala utama?",
     optNoise: "🔊 Bunyi pelik", optVibrate: "📳 Bergetar",
     optWeak: "🐢 Kurang kuasa", optSmell: "👃 Bau pelik",
-    optLeak: "💧 Bocor minyak", optLight: "💡 Lampu amaran",
-    q3Label: "3. Bunyi atau rasa seperti apa?",
+    optLeak: "💧 Bocor", optLight: "💡 Lampu amaran",
+    q3Label: "3. Bunyi seperti?",
     optMetal: "🔩 Geseran logam", optKnock: "🔨 Ketukan",
-    optSqueak: "🐦 Decit / jerit", optHum: "🕳️ Dengung / resonans",
-    optClunk: "🎯 Bunyi 'klunk'", optUnsure: "❓ Tidak pasti",
-    q4Label: "4. Setakat mana seriusnya?",
-    optRare: "🟢 Jarang berlaku", optOften: "🟡 Kerap berlaku",
-    optAlways: "🔴 Sentiasa berlaku",
-    contactTitle: "Tinggalkan maklumat, kami hubungi anda",
-    carPlate: "Nombor Plat", carPlatePh: "Contoh: W 1234 A",
-    phone: "Nombor Telefon", phonePh: "Contoh: 0123456789",
+    optSqueak: "🐦 Decit", optHum: "🕳️ Dengung",
+    optClunk: "🎯 Klunk", optUnsure: "❓ Tidak pasti",
+    q4Label: "4. Setakat mana serius?",
+    optRare: "🟢 Jarang", optOften: "🟡 Kerap", optAlways: "🔴 Sentiasa",
+    contactTitle: "Tinggalkan maklumat",
+    carPlate: "Nombor Plat", phone: "Nombor Telefon",
     mode: "Cara Servis", toShop: "Ke Kedai", onSite: "Panggil ke Rumah",
-    submitHint: "Selepas hantar, kami akan susuli mengikut keperluan anda.",
-    extra: "Catatan Tambahan (pilihan)", extraPh: "Contoh: berapa lama, baru baiki...",
-    submitBooking: "Hantar Permintaan",
+    submitHint: "Selepas hantar, kami akan susuli.",
+    extra: "Catatan (pilihan)",
+    submitBooking: "Hantar",
     communityTitle: "👋 Sertai Komuniti",
-    communityDesc: "Kongsi pengalaman, bantu satu sama lain.",
+    communityDesc: "Kongsi pengalaman.",
     usernamePh: "Nama pengguna", passwordPh: "Kata laluan",
-    loginBtn: "Log Masuk", registerBtn: "Daftar Akaun",
+    loginBtn: "Log Masuk", registerBtn: "Daftar",
     welcomeBack: "Selamat kembali, ", logoutBtn: "Log Keluar",
-    postPh: "Kongsi pengalaman, soalan kereta...", publishBtn: "Hantar",
-    studyTitle: "📚 Ulang Kaji SPM Automotif",
-    daysLeftPrefix: "Tinggal", daysLeftSuffix: "hari sebelum SPM",
+    postPh: "Kongsi pengalaman...", publishBtn: "Hantar",
+    studyTitle: "📚 Ulang Kaji SPM",
+    daysLeftPrefix: "Tinggal", daysLeftSuffix: "hari",
     dailyTitle: "🎯 Soalan Harian", loading: "Memuatkan...",
-    changeBtn: "🔄 Tukar Soalan",
-    practiceTitle: "📝 Latihan", practiceDesc: "Soalan rawak untuk uji asas automotif anda.",
-    startPractice: "Mula Latihan",
-    recallTitle: "📰 Semak Rekall Kereta",
-    recallDesc: "Semak sama ada kereta anda ada rekod rekall.",
-    recallSource: "Sumber: NHTSA Amerika Syarikat",
+    changeBtn: "🔄 Tukar",
+    practiceTitle: "📝 Latihan", practiceDesc: "Soalan rawak.",
+    startPractice: "Mula",
+    recallTitle: "📰 Semak Rekall",
+    recallDesc: "Semak rekod rekall.",
+    recallSource: "Sumber: NHTSA",
     brandEnLabel: "Jenama (English)", modelEnLabel: "Model (English)", yearLabel: "Tahun",
-    queryRecall: "Semak Rekall",
-    locationTitle: "📍 Lokasi Rangkaian",
-    locationDesc: "Cuba kesan negara dan bandar dari IP.",
-    detectLocation: "Kesan Lokasi",
-    weatherTitle: "🌤️ Cuaca Hari Ini",
-    weatherDesc: "Lihat cuaca dan peringatan memandu.",
-    checkWeather: "Lihat Cuaca",
-    rateTitle: "💱 Kadar Pertukaran",
-    rateDesc: "Lihat kadar mata wang terkini.",
-    checkRate: "Lihat Kadar",
-    gameTitle: "🚚 Cabaran Penghantaran",
-    gameDesc: "Hantar alat ganti kereta dengan selamat. ↑ gas　↓ brek　← → stereng",
+    queryRecall: "Semak",
+    locationTitle: "📍 Lokasi",
+    locationDesc: "Kesan dari IP.",
+    detectLocation: "Kesan",
+    weatherTitle: "🌤️ Cuaca",
+    weatherDesc: "Cuaca + tip memandu.",
+    checkWeather: "Lihat",
+    rateTitle: "💱 Kadar",
+    rateDesc: "Kadar mata wang.",
+    checkRate: "Lihat",
+    gameTitle: "🚚 Cabaran",
+    gameDesc: "Hantar alat ganti. ↑ gas　↓ brek　← → stereng",
     startPoint: "Mula", progressLabel: "Kemajuan", destinationLabel: "Destinasi",
-    cargoName: "Alat Ganti Enjin",
-    gearHint: "Gear lebih tinggi, laju lebih tinggi",
-    startTask: "🚚 Mula Tugasan", stopTask: "⏸ Berhenti",
-    quizTitle: "⚠️ Kereta Tersasar",
-    quizDesc: "Jawab soalan untuk teruskan perjalanan.",
-    winTitle: "🎉 Misi Selesai", playAgain: "Main Lagi",
-    footer: "DuoBang · Bantu pemandu lebih mudah cari bantuan"
+    gearHint: "Gear tinggi, laju tinggi",
+    startTask: "🚚 Mula", stopTask: "⏸ Berhenti",
+    quizTitle: "⚠️ Tersasar", quizDesc: "Jawab untuk teruskan.",
+    winTitle: "🎉 Selesai", playAgain: "Main Lagi",
+    footer: "DuoBang · Bantu pemandu"
   },
   en: {
     brand: "DuoBang",
     slogan: "Car service, experience sharing, learning tools — all in one place",
     tabBooking: "Booking", tabCommunity: "Community", tabStudy: "Learning",
     tabNews: "Car Tools", tabGame: "Play Game",
-    bookingTitle: "🔍 Describe the problem, we'll arrange it",
-    bookingDesc: "Answer a few simple questions and we'll prepare a request for the mechanic.",
-    q1Label: "1. When does the problem usually occur?",
+    bookingTitle: "🔍 Describe the problem",
+    bookingDesc: "Answer a few simple questions.",
+    q1Label: "1. When does the problem occur?",
     optDriving: "🛣️ While driving", optTurning: "🔄 While turning",
-    optBump: "🚧 Speed bump / pothole", optBraking: "🛑 While braking",
-    optIdle: "🔑 Start / idle",
-    q2Label: "2. What is the main symptom?",
+    optBump: "🚧 Speed bump", optBraking: "🛑 While braking", optIdle: "🔑 Start / idle",
+    q2Label: "2. Main symptom?",
     optNoise: "🔊 Strange noise", optVibrate: "📳 Vibration",
     optWeak: "🐢 Weak power", optSmell: "👃 Strange smell",
-    optLeak: "💧 Oil / fluid leak", optLight: "💡 Warning light",
-    q3Label: "3. What does it sound or feel like?",
+    optLeak: "💧 Leak", optLight: "💡 Warning light",
+    q3Label: "3. Sound like?",
     optMetal: "🔩 Metal grinding", optKnock: "🔨 Knocking",
-    optSqueak: "🐦 Squeaking", optHum: "🕳️ Humming / resonance",
+    optSqueak: "🐦 Squeaking", optHum: "🕳️ Humming",
     optClunk: "🎯 Clunking", optUnsure: "❓ Not sure",
-    q4Label: "4. How serious is it?",
-    optRare: "🟢 Rarely happens", optOften: "🟡 Happens often",
-    optAlways: "🔴 Always happening",
-    contactTitle: "Leave your contact info, we'll reach out",
-    carPlate: "Car Plate", carPlatePh: "e.g. W 1234 A",
-    phone: "Phone Number", phonePh: "e.g. 0123456789",
+    q4Label: "4. How serious?",
+    optRare: "🟢 Rarely", optOften: "🟡 Often", optAlways: "🔴 Always",
+    contactTitle: "Leave your contact info",
+    carPlate: "Car Plate", phone: "Phone Number",
     mode: "Service Mode", toShop: "At Shop", onSite: "On-Site",
-    submitHint: "After submitting, we'll follow up based on your request.",
-    extra: "Extra Notes (optional)", extraPh: "e.g. how long, recent repair...",
+    submitHint: "After submitting, we'll follow up.",
+    extra: "Extra Notes (optional)",
     submitBooking: "Submit Request",
-    communityTitle: "👋 Join the Community",
+    communityTitle: "👋 Join Community",
     communityDesc: "Share experiences and help each other.",
     usernamePh: "Username", passwordPh: "Password",
     loginBtn: "Login", registerBtn: "Register",
     welcomeBack: "Welcome back, ", logoutBtn: "Logout",
-    postPh: "Share repair tips, car questions...", publishBtn: "Publish",
-    studyTitle: "📚 SPM Automotive Revision",
-    daysLeftPrefix: "Only", daysLeftSuffix: "days left before SPM",
+    postPh: "Share repair tips...", publishBtn: "Publish",
+    studyTitle: "📚 SPM Revision",
+    daysLeftPrefix: "Days left:", daysLeftSuffix: "days",
     dailyTitle: "🎯 Daily Question", loading: "Loading...",
-    changeBtn: "🔄 Change Question",
-    practiceTitle: "📝 Practice Mode", practiceDesc: "Random questions to test your basics.",
+    changeBtn: "🔄 Change",
+    practiceTitle: "📝 Practice", practiceDesc: "Random questions.",
     startPractice: "Start Practice",
-    recallTitle: "📰 Vehicle Recall Check",
-    recallDesc: "Check if your vehicle has any public recall records.",
+    recallTitle: "📰 Vehicle Recall",
+    recallDesc: "Check recall records.",
     recallSource: "Source: NHTSA (USA)",
     brandEnLabel: "Brand (English)", modelEnLabel: "Model (English)", yearLabel: "Year",
-    queryRecall: "Query Recall",
-    locationTitle: "📍 My Network Location",
-    locationDesc: "Detect country and city from your IP.",
-    detectLocation: "Detect Location",
-    weatherTitle: "🌤️ Today's Weather",
-    weatherDesc: "Check weather and driving reminders.",
-    checkWeather: "Check Weather",
-    rateTitle: "💱 Import Exchange Rates",
-    rateDesc: "Check latest currency exchange rates.",
-    checkRate: "Check Rates",
-    gameTitle: "🚚 DuoBang Delivery Challenge",
-    gameDesc: "Deliver car parts safely. ↑ gas　↓ brake　← → steer",
+    queryRecall: "Query",
+    locationTitle: "📍 My Location",
+    locationDesc: "Detect from your IP.",
+    detectLocation: "Detect",
+    weatherTitle: "🌤️ Weather",
+    weatherDesc: "Weather + driving tips.",
+    checkWeather: "Check",
+    rateTitle: "💱 Exchange Rates",
+    rateDesc: "Latest currency rates.",
+    checkRate: "Check",
+    gameTitle: "🚚 Delivery Challenge",
+    gameDesc: "Deliver parts safely. ↑ gas　↓ brake　← → steer",
     startPoint: "Start", progressLabel: "Progress", destinationLabel: "Destination",
-    cargoName: "Engine Parts",
     gearHint: "Higher gear, higher speed",
-    startTask: "🚚 Start Task", stopTask: "⏸ Stop",
-    quizTitle: "⚠️ Vehicle Off Track",
-    quizDesc: "Answer a car knowledge question to continue.",
-    winTitle: "🎉 Mission Complete", playAgain: "Play Again",
-    footer: "DuoBang · Help more drivers find help easily"
+    startTask: "🚚 Start", stopTask: "⏸ Stop",
+    quizTitle: "⚠️ Off Track", quizDesc: "Answer to continue.",
+    winTitle: "🎉 Done", playAgain: "Play Again",
+    footer: "DuoBang · Help more drivers"
   },
   zh: {
     brand: "多帮 DuoBang",
     slogan: "车主服务、经验交流、学习工具，一站解决用车问题",
     tabBooking: "维修预约", tabCommunity: "车主社区", tabStudy: "学习中心",
     tabNews: "车主工具", tabGame: "轻松一局",
-    bookingTitle: "🔍 先描述问题，再安排维修",
-    bookingDesc: "只需回答几个简单问题，我们会整理成维修需求单。",
-    q1Label: "1. 问题通常在什么时候出现？",
+    bookingTitle: "🔍 先描述问题",
+    bookingDesc: "只需回答几个简单问题。",
+    q1Label: "1. 什么时候出现？",
     optDriving: "🛣️ 行驶中", optTurning: "🔄 转弯时",
-    optBump: "🚧 减速带 / 坑洞", optBraking: "🛑 刹车时",
-    optIdle: "🔑 启动 / 怠速",
-    q2Label: "2. 主要出现什么症状？",
+    optBump: "🚧 减速带", optBraking: "🛑 刹车时", optIdle: "🔑 启动/怠速",
+    q2Label: "2. 主要症状？",
     optNoise: "🔊 有异响", optVibrate: "📳 有震动",
     optWeak: "🐢 动力不足", optSmell: "👃 有异味",
-    optLeak: "💧 漏油 / 漏液", optLight: "💡 故障灯亮起",
-    q3Label: "3. 有什么声音或明显感觉？",
-    optMetal: "🔩 金属摩擦声", optKnock: "🔨 敲击 / 哒哒声",
-    optSqueak: "🐦 吱吱 / 尖叫声", optHum: "🕳️ 嗡嗡 / 共振声",
-    optClunk: "🎯 咯噔 / 松动感", optUnsure: "❓ 说不清",
-    q4Label: "4. 目前情况严重吗？",
-    optRare: "🟢 偶尔出现", optOften: "🟡 经常出现",
-    optAlways: "🔴 持续出现",
-    contactTitle: "留下联系方式，方便安排服务",
-    carPlate: "车牌号码", carPlatePh: "例如：W 1234 A",
-    phone: "联系电话", phonePh: "例如：0123456789",
+    optLeak: "💧 漏油/漏液", optLight: "💡 故障灯亮",
+    q3Label: "3. 声音像什么？",
+    optMetal: "🔩 金属摩擦声", optKnock: "🔨 敲击声",
+    optSqueak: "🐦 吱吱声", optHum: "🕳️ 嗡嗡声",
+    optClunk: "🎯 咯噔声", optUnsure: "❓ 说不清",
+    q4Label: "4. 严重程度？",
+    optRare: "🟢 偶尔出现", optOften: "🟡 经常出现", optAlways: "🔴 持续出现",
+    contactTitle: "留下联系方式",
+    carPlate: "车牌号码", phone: "联系电话",
     mode: "维修方式", toShop: "到店维修", onSite: "上门维修",
-    submitHint: "提交后，我们会根据你的维修需求安排后续联系。",
-    extra: "补充说明（选填）", extraPh: "例如：问题持续多久、最近是否维修过……",
+    submitHint: "提交后，我们会安排联系。",
+    extra: "补充说明（选填）",
     submitBooking: "提交维修需求",
     communityTitle: "👋 加入车主社区",
-    communityDesc: "分享经验、互相帮忙，一起少走维修弯路。",
+    communityDesc: "分享经验、互相帮忙。",
     usernamePh: "输入用户名", passwordPh: "输入密码",
     loginBtn: "登录", registerBtn: "注册账号",
     welcomeBack: "欢迎回来，", logoutBtn: "退出",
-    postPh: "分享维修经验、用车问题……", publishBtn: "发布内容",
+    postPh: "分享维修经验……", publishBtn: "发布内容",
     studyTitle: "📚 SPM 汽车技术复习",
-    daysLeftPrefix: "距离 SPM 考试还有", daysLeftSuffix: "天",
+    daysLeftPrefix: "距离考试还有", daysLeftSuffix: "天",
     dailyTitle: "🎯 每日一题", loading: "加载中……",
     changeBtn: "🔄 换一题",
-    practiceTitle: "📝 专项练习", practiceDesc: "随机抽取题目，测试你的汽车技术基础。",
+    practiceTitle: "📝 专项练习", practiceDesc: "随机抽取题目。",
     startPractice: "开始练习",
     recallTitle: "📰 车辆召回查询",
-    recallDesc: "查询车辆是否存在公开召回记录。",
-    recallSource: "数据来源：NHTSA 美国国家公路交通安全管理局",
+    recallDesc: "查询车辆召回记录。",
+    recallSource: "数据来源：NHTSA",
     brandEnLabel: "品牌（英文）", modelEnLabel: "车型（英文）", yearLabel: "年份",
-    queryRecall: "查询召回信息",
+    queryRecall: "查询",
     locationTitle: "📍 我的网络位置",
-    locationDesc: "根据当前网络 IP 尝试识别国家与城市。",
-    detectLocation: "自动识别位置",
-    weatherTitle: "🌤️ 今日天气提醒",
-    weatherDesc: "查看天气，并获取简单的驾驶提醒。",
-    checkWeather: "查看天气",
-    rateTitle: "💱 零件进口汇率",
-    rateDesc: "查看主要货币与美元之间的最新汇率。",
-    checkRate: "查看今日汇率",
+    locationDesc: "根据 IP 识别。",
+    detectLocation: "自动识别",
+    weatherTitle: "🌤️ 今日天气",
+    weatherDesc: "天气 + 驾驶提醒。",
+    checkWeather: "查看",
+    rateTitle: "💱 汇率",
+    rateDesc: "最新汇率数据。",
+    checkRate: "查看",
     gameTitle: "🚚 多帮送货挑战",
-    gameDesc: "把汽车零件安全送到目的地。↑ 油门　↓ 刹车　← → 转向",
+    gameDesc: "送汽车零件到目的地。↑ 油门　↓ 刹车　← → 转向",
     startPoint: "起点", progressLabel: "进度", destinationLabel: "目的地",
-    cargoName: "发动机零件",
-    gearHint: "档位越高，速度上限越高",
-    startTask: "🚚 开始任务", stopTask: "⏸ 停止",
-    quizTitle: "⚠️ 车辆偏离路线",
-    quizDesc: "回答一道汽车知识题，继续完成送货任务。",
-    winTitle: "🎉 任务完成", playAgain: "再来一单",
+    gearHint: "档位越高，速度越快",
+    startTask: "🚚 开始", stopTask: "⏸ 停止",
+    quizTitle: "⚠️ 车辆偏离", quizDesc: "答题继续。",
+    winTitle: "🎉 完成", playAgain: "再来一单",
     footer: "多帮 DuoBang · 让车主更容易找到帮助"
   }
 };
@@ -549,7 +534,6 @@ function setLanguage(lang) {
   localStorage.setItem("duobang_lang", lang);
   applyTranslations();
   document.getElementById("langOverlay").classList.add("hidden");
-  document.documentElement.lang = lang === "zh" ? "zh-CN" : lang;
   document.getElementById("langLabel").textContent = lang.toUpperCase();
 }
 
@@ -590,9 +574,9 @@ function register() {
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
   const msg = document.getElementById("authMsg");
-  if (!u || !p) { msg.textContent = "请填写用户名和密码 / Fill in all fields"; return; }
+  if (!u || !p) { msg.textContent = "Fill in all fields"; return; }
   const users = getUsers();
-  if (users.some(x => x.username === u)) { msg.textContent = "用户名已存在 / Username taken"; return; }
+  if (users.some(x => x.username === u)) { msg.textContent = "Username taken"; return; }
   users.push({ username: u, password: p });
   saveUsers(users);
   msg.style.color = "#2e7d32";
@@ -605,7 +589,7 @@ function login() {
   const msg = document.getElementById("authMsg");
   const users = getUsers();
   const user = users.find(x => x.username === u && x.password === p);
-  if (!user) { msg.style.color = "#e63946"; msg.textContent = "错误 / Wrong"; return; }
+  if (!user) { msg.style.color = "#e63946"; msg.textContent = "Wrong username or password"; return; }
   currentUser = u;
   localStorage.setItem("duobang_currentUser", u);
   msg.textContent = "";
@@ -634,7 +618,7 @@ function updateAuthUI() {
 }
 
 function createPost() {
-  if (!currentUser) { alert("请先登录 / Please login"); return; }
+  if (!currentUser) { alert("Please login"); return; }
   const content = document.getElementById("postContent").value.trim();
   if (!content) return;
   const posts = getPosts();
@@ -645,7 +629,7 @@ function createPost() {
 }
 
 function toggleLike(postId) {
-  if (!currentUser) { alert("请先登录 / Please login"); return; }
+  if (!currentUser) { alert("Please login"); return; }
   const posts = getPosts();
   const post = posts.find(p => p.id === postId);
   if (!post) return;
@@ -661,7 +645,7 @@ function renderFeed() {
   const feed = document.getElementById("feed");
   const posts = getPosts();
   if (posts.length === 0) {
-    feed.innerHTML = '<div class="card feed-empty">还没有内容 / No posts yet</div>';
+    feed.innerHTML = '<div class="card feed-empty">No posts yet</div>';
     return;
   }
   feed.innerHTML = posts.map(post => {
@@ -696,7 +680,7 @@ function updateProblemDescription() {
   const { time, feeling, sound, severity } = formAnswers;
   const hiddenInput = document.getElementById("finalProblemDesc");
   if (time && feeling && sound && severity) {
-    hiddenInput.value = `【车辆情况】问题通常在${time}出现；主要症状为${feeling}；声音或感觉为${sound}；目前情况：${severity}。`;
+    hiddenInput.value = `Time: ${time} | Symptom: ${feeling} | Sound: ${sound} | Severity: ${severity}`;
   } else {
     hiddenInput.value = "";
   }
@@ -712,8 +696,8 @@ function updateCountdown() {
 }
 
 const questionBank = [
-  { question: "下列哪个是液压煞车系统所应用的原理？", options: ["牛顿定理", "阿克曼原理", "巴斯噶原理", "阿基米德定理"], answer: 2, explanation: "液压煞车利用巴斯噶原理。" },
-  { question: "当煞车踏板放松后，煞车油能由分泵回流主要靠什么？", options: ["分泵内的弹簧", "惯性", "踏片间的回拉弹簧", "踏板的回拉弹簧"], answer: 0, explanation: "分泵内的弹簧会帮助活塞回位。" }
+  { question: "Which principle does hydraulic braking use?", options: ["Newton", "Ackermann", "Pascal", "Archimedes"], answer: 2, explanation: "Hydraulic braking uses Pascal's principle." },
+  { question: "After releasing the brake pedal, brake fluid returns mainly by?", options: ["Spring in wheel cylinder", "Inertia", "Return spring of shoes", "Pedal return spring"], answer: 0, explanation: "The spring in the wheel cylinder pushes the piston back." }
 ];
 
 function shuffle(array) {
@@ -861,7 +845,7 @@ const GEAR_CONFIG = {
 
 let game = {
   running: false, score: 0, lives: 3, gear: 3, position: 0, playerX: 0, speed: 0,
-  segments: [], trackLength: 0, cargo: "Engine Parts", destination: "KL",
+  segments: [], trackLength: 0, cargo: "Parts",
   keys: { left: false, right: false, gas: false, brake: false },
   frameId: null, lastTime: 0, winShown: false
 };
@@ -919,8 +903,6 @@ function startDelivery() {
   game.speed = 0;
   game.lives = 3;
   game.score = 0;
-  game.cargo = t("cargoName");
-  document.getElementById("gameCargo").textContent = game.cargo;
   document.getElementById("gameLives").textContent = game.lives;
   document.getElementById("gameScore").textContent = 0;
   document.getElementById("gameProgress").textContent = "0%";
@@ -1089,7 +1071,7 @@ function onCrash() {
   game.running = false;
   game.lives--;
   document.getElementById("gameLives").textContent = Math.max(0, game.lives);
-  if (game.lives <= 0) { alert("Game over / 游戏结束"); return; }
+  if (game.lives <= 0) { alert("Game over"); return; }
   showQuizModal();
 }
 function showQuizModal() {
@@ -1160,7 +1142,10 @@ canvas.addEventListener("touchend", e => {
 
 /* ========== 初始化 ========== */
 document.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("duobang_lang")) {
+  // 默认显示语言选择界面（除非之前已经选过）
+  if (!localStorage.getItem("duobang_lang")) {
+    document.getElementById("langOverlay").classList.remove("hidden");
+  } else {
     document.getElementById("langOverlay").classList.add("hidden");
   }
   applyTranslations();
