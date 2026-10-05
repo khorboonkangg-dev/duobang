@@ -1142,12 +1142,9 @@ canvas.addEventListener("touchend", e => {
 
 /* ========== 初始化 ========== */
 document.addEventListener("DOMContentLoaded", () => {
-  // 默认显示语言选择界面（除非之前已经选过）
-  if (!localStorage.getItem("duobang_lang")) {
-    document.getElementById("langOverlay").classList.remove("hidden");
-  } else {
-    document.getElementById("langOverlay").classList.add("hidden");
-  }
+ document.addEventListener("DOMContentLoaded", () => {
+  // 每次都显示语言选择界面
+  document.getElementById("langOverlay").classList.remove("hidden");
   applyTranslations();
   updateAuthUI();
   renderFeed();
@@ -1159,6 +1156,7 @@ document.addEventListener("DOMContentLoaded", () => {
   drawMiniMap();
   setInterval(updateCountdown, 60 * 60 * 1000);
 });
+document.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
